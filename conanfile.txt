@@ -1,9 +1,5 @@
 [requires]
-bincrafter/2.5.0@bincrafters/stable
-
-[options]
-sfml:window = True
-sfml:graphics = True
+sfml/2.5.0@bincrafters/stable
 
 [generators]
 cmake
