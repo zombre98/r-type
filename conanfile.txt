@@ -1,5 +1,5 @@
 [requires]
-sfml/2.5.0@bincrafters/stable
+bincrafter/2.5.0@bincrafters/stable
 
 [options]
 sfml:window = True
