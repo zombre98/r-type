@@ -27,6 +27,13 @@
 *.lib
 
 # Executables
+r-type
 *.exe
 *.out
 *.app
+
+# Build artifacts
+build/
+cmake-build*/
+bin/
+.idea/
