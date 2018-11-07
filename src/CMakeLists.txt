@@ -13,5 +13,5 @@ add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 if (WIN32)
     # TODO Add library linking under windows
 else ()
-    target_link_libraries(${PROJECT_NAME} sfml-system sfml-graphics sfml-audio)
+    target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system sfml-audio sfml-network)
 endif ()
