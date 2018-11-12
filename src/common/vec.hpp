@@ -15,6 +15,14 @@ public:
 	                                       z(value3)
 	{}
 	~vec3d() = default;
+	bool operator==(const vec3d &other) const {
+		return x == other.x && y == other.y && z == other.z;
+	}
+
+	bool operator!=(const vec3d &other) const {
+		return !(other == *this);
+	}
+	
 	vec3d operator+(vec3d &v) {
 		return vec3d(x + v.x, y + v.y, z + v.z);
 	}
@@ -49,13 +57,11 @@ public:
 	vec2d(T value1, T value2) : x(value1), y(value2)
 	{}
 	~vec2d() = default;
-	bool operator==(const vec2d &other) const
-	{
+	bool operator==(const vec2d &other) const {
 		return x == other.x && y == other.y;
 	}
 
-	bool operator!=(const vec2d &other) const
-	{
+	bool operator!=(const vec2d &other) const {
 		return !(other == *this);
 	}
 
