@@ -12,7 +12,7 @@
 
 namespace ecs {
 
-	enum comp : std::size_t {
+	enum comp_e : std::size_t {
 		COMP_ORIENTATION,
 		COMP_VELOCITY,
 		COMP_POSITION,
@@ -27,7 +27,7 @@ namespace ecs {
 		Velocity(float w, float v) : x(w), y(v)
 		{};
 		~Velocity() = default;
-		static comp const type = COMP_VELOCITY;
+		static comp_e const type = COMP_VELOCITY;
 		float x;
 		float y;
 	};
@@ -36,7 +36,7 @@ namespace ecs {
 		explicit Orientation(float ori) : orientation(ori)
 		{};
 		~Orientation() = default;
-		static comp const type = COMP_ORIENTATION;
+		static comp_e const type = COMP_ORIENTATION;
 		float orientation;
 	};
 
@@ -44,7 +44,7 @@ namespace ecs {
 		Position(float d, float v) : x(d), y(v)
 		{};
 		~Position() = default;
-		static comp const type = COMP_POSITION;
+		static comp_e const type = COMP_POSITION;
 		float x;
 		float y;
 	};

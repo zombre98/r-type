@@ -8,7 +8,7 @@
 #pragma once
 
 #include <algorithm>
-#include "engine/Entity.hpp"
+#include "Entity.hpp"
 
 namespace ecs {
 	using entityVector = std::shared_ptr<std::vector<std::unique_ptr<Entity>>>;
@@ -32,7 +32,7 @@ namespace ecs {
 		template<class... Types>
 		bool passFilter(const std::unique_ptr<Entity> &entity, Types... types) {
 			auto typesArr = {types...};
-			return std::all_of(std::begin(typesArr), std::end(typesArr), [&entity](comp type) {
+			return std::all_of(std::begin(typesArr), std::end(typesArr), [&entity](comp_e type) {
 				return entity->bit[type];
 			});
 		}
