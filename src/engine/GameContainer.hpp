@@ -9,9 +9,6 @@
 
 #include <stack>
 
-#ifdef _IRR_WINDOWS_
-#endif
-
 namespace ids {
 	class GameContainer {
 	public:
