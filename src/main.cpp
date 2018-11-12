@@ -4,31 +4,27 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "sol.hpp"
 
 int main() {
+	std::cout << "=== running lua code ===" << std::endl;
+	sol::state lua;
+	lua.open_libraries(sol::lib::base);
+    lua.script_file("a_lua_script.lua");
+	sol::function luaFactorial = lua["fact"];
+    int value = luaFactorial(5);
+	std::cout << value << std::endl;
+
+
 	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
 
-	// run the program as long as the window is open
-	while (window.isOpen())
-	{
-		// check all the window's events that were triggered since the last iteration of the loop
+	while (window.isOpen()) {
 		sf::Event event{};
 		while (window.pollEvent(event))
-		{
-			// "close requested" event: we close the window
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-
-		// clear the window with black color
+		  if (event.type == sf::Event::Closed)
+			window.close();
 		window.clear(sf::Color::Black);
-
-		// draw everything here...
-		// window.draw(...);
-
-		// end the current frame
 		window.display();
 	}
-
 	return 0;
 }
