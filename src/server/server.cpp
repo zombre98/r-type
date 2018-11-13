@@ -11,7 +11,6 @@ net::server::server(boost::asio::io_context &context, unsigned short port) :
 	_port{port},
 	_socket(_ioContext, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port)) {
 
-	//	_ioContext.run(); Maybe Useful
 	startReceive();
 
 }
@@ -41,7 +40,7 @@ void net::server::handleReceive(const boost::system::error_code &error, std::siz
 }
 
 std::string net::server::make_daytime_string() {
-	time_t now = time(0);
+	time_t now = time(nullptr);
 	return ctime(&now);
 }
 
