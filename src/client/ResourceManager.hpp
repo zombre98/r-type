@@ -1,5 +1,3 @@
-#include <utility>
-
 //
 // EPITECH PROJECT, 2018
 // r-type
@@ -9,6 +7,7 @@
 
 #pragma once
 
+#include <utility>
 #include <iostream>
 #include <unordered_map>
 #include <experimental/filesystem>
@@ -119,8 +118,7 @@ class ResourceManager {
 			filename);
 	}
 
-	void loadAllTexturesInDirectory(const fs::path &filename
-	) {
+	void loadAllTexturesInDirectory(const fs::path &filename) {
 		for (auto &it : fs::recursive_directory_iterator(
 			_resourceDirectoryPath)) {
 			if (it.status().type() == fs::file_type::directory &&
@@ -145,8 +143,7 @@ class ResourceManager {
 		_texturesRegistry.remove(id);
 	}
 
-	AnimationState &loadAnimation(const fs::path &filename
-	) {
+	AnimationState &loadAnimation(const fs::path &filename) {
 		/*
 		 * Search for the animation directory
 		 */
