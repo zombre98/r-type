@@ -14,6 +14,11 @@
 #include "events/EventManager.hpp"
 #include "ResourceManager.hpp"
 
+struct Texts {
+	sf::Text t;
+	sf::Vector2f pos;
+};
+
 class AScene;
 
 class SceneManager {

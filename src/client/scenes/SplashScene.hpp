@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2018
-** MenuScene
+** SplashScene
 ** File description:
-** MenuScene
+** SplashScene
 */
 
 #pragma once
@@ -13,9 +13,9 @@
 
 namespace fs = std::experimental::filesystem;
 
-class MenuScene final : public AScene, public Receiver {
+class SplashScene final : public AScene, public Receiver {
 	public:
-	explicit MenuScene(SceneManager &parent) noexcept : AScene(parent,
+	explicit SplashScene(SceneManager &parent) noexcept : AScene(parent,
 		fs::current_path().parent_path() / "assets" / "images" / "menu") {
 	}
 

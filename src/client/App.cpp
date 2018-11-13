@@ -6,10 +6,10 @@
 */
 
 #include "App.hpp"
-#include "scenes/MenuScene.hpp"
+#include "scenes/SplashScene.hpp"
 
 void App::init() {
-	AScene::create<MenuScene>(_sceneMgr);
+	AScene::create<SplashScene>(_sceneMgr);
 }
 
 void App::run() {

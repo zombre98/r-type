@@ -1,14 +1,14 @@
 /*
 ** EPITECH PROJECT, 2018
-** MenuScene
+** SplashScene
 ** File description:
-** MenuScene by armandmgt
+** SplashScene by armandmgt
 */
 
 #include "GameScene.hpp"
-#include "MenuScene.hpp"
+#include "SplashScene.hpp"
 
-void MenuScene::enter() noexcept {
+void SplashScene::enter() noexcept {
 	_evtMgr.subscribe<SfmlEvent>(*this);
 	_resourceMgr.loadTexture("play_background2.png");
 	const auto &font = _resourceMgr.loadFont(
@@ -19,10 +19,10 @@ void MenuScene::enter() noexcept {
 	});
 }
 
-void MenuScene::exit() noexcept {
+void SplashScene::exit() noexcept {
 }
 
-void MenuScene::update(float timeSinceLastFrame[[maybe_unused]]) noexcept {
+void SplashScene::update(float timeSinceLastFrame[[maybe_unused]]) noexcept {
 	auto &window = _parent.getWindow();
 	window.draw(sf::Sprite{_resourceMgr.getTexture("play_background2")});
 	std::for_each(_texts.begin(), _texts.end(), [&window](auto &tc) {
@@ -30,12 +30,12 @@ void MenuScene::update(float timeSinceLastFrame[[maybe_unused]]) noexcept {
 	});
 }
 
-void MenuScene::receive(const SfmlEvent &event) noexcept {
+void SplashScene::receive(const SfmlEvent &event) noexcept {
 	if (event._event.type == sf::Event::KeyPressed) {
 		if (event._event.key.code == sf::Keyboard::Escape) {
 			_parent.getWindow().close();
 		} else if (event._event.key.code == sf::Keyboard::Space) {
-			AScene::create<GameScene>(_parent);
+			AScene::create<MenuScene>(_parent);
 		}
 	}
 }

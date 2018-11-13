@@ -13,6 +13,7 @@ set(CLIENT
 
 set(CLIENT_SCENES
         scenes/GameScene.cpp
+        scenes/SplashScene.cpp
         scenes/MenuScene.cpp
         )
 
