@@ -11,6 +11,9 @@
 #include <vector>
 #include <array>
 #include "Components.hpp"
+#include "ComponentTypeId.hpp"
+
+constexpr std::size_t MAX_COMPONENTS = 256;
 
 namespace ecs {
 
@@ -27,37 +30,38 @@ namespace ecs {
 		template<class T>
 		T &getComponent() {
 			static_assert(std::is_base_of<Component, T>(), "T is not a component");
-			if (!bit[T::type])
+			if (!bit[ComponentTypeId<T>::getTypeId()])
 				throw std::runtime_error("Entity has no T component");
-			return static_cast<T&>(*componentArray[T::type]);
+			return static_cast<T &>(*componentArray[ComponentTypeId<T>::getTypeId()]);
 		}
 
 		template<class T>
 		const T &getComponent() const {
 			static_assert(std::is_base_of<Component, T>(), "T is not a component");
-			if (!bit[T::type])
+			if (!bit[ComponentTypeId<T>::getTypeId()])
 				throw std::runtime_error("Entity has no T component");
-			return static_cast<T&>(*componentArray[T::type]);
+			return static_cast<T &>(*componentArray[ComponentTypeId<T>::getTypeId()]);
 		}
 
 		template<class T>
 		bool hasComponent() const {
 			static_assert(std::is_base_of<Component, T>(), "T is not a component");
-			return bit[T::type];
+			return bit[ComponentTypeId<T>::getTypeId()];
 		}
 
 		template <typename T, typename... Args>
 		void addComponent(Args&&... args) {
 			static_assert(std::is_base_of<Component, T>(), "T is not a component");
-			bit[T::type] = true;
-			componentArray[T::type] = std::unique_ptr<T>(new T{std::forward<Args>(args)...});
+			bit[ComponentTypeId<T>::getTypeId()] = true;
+			componentArray[ComponentTypeId<T>::getTypeId()] = std::unique_ptr<T>(
+				new T{std::forward<Args>(args)...});
 		}
 
 		template<class T>
 		void removeComponent() {
 			static_assert(std::is_base_of<Component, T>(), "T is not a component");
-			bit[T::type] = false;
-			componentArray[T::type].reset(nullptr);
+			bit[ComponentTypeId<T>::getTypeId()] = false;
+			componentArray[ComponentTypeId<T>::getTypeId()].reset(nullptr);
 		}
 
 	public:

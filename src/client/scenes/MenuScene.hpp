@@ -16,7 +16,7 @@ namespace fs = std::experimental::filesystem;
 class MenuScene final : public AScene, public Receiver {
 	public:
 	explicit MenuScene(SceneManager &parent) noexcept : AScene(parent,
-		fs::current_path().parent_path() / "assets" / "menu") {
+		fs::current_path().parent_path() / "assets" / "images" / "menu") {
 	}
 
 	/*
@@ -30,4 +30,7 @@ class MenuScene final : public AScene, public Receiver {
 	 * Events Callback
 	 */
 	void receive(const SfmlEvent &event) noexcept;
+
+	private:
+	std::vector<Texts> _texts;
 };

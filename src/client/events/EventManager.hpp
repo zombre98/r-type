@@ -102,7 +102,6 @@ class EventManager {
 
 	/*
 	 * This function is used to unsubscribe a receiver to a certain type of event
-	 * This function is must be called when the receiver is deleted
 	 */
 	template<typename EventType, typename Receiver>
 	void unsubscribe(Receiver &receiver) noexcept {
@@ -118,10 +117,12 @@ class EventManager {
 		}
 	};
 
+	/*
+	 * This function must be called when the receiver is deleted
+	 */
 	template<typename Receiver>
 	void unsubscribeAll(Receiver &receiver) noexcept {
-		for (auto it = _receiversList.begin();
-			it != _receiversList.end();) {
+		for (auto it = _receiversList.begin(); it != _receiversList.end();) {
 			if (it->second.receiver == &receiver)
 				it = _receiversList.erase(it);
 			else

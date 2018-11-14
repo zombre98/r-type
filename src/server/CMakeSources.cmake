@@ -9,6 +9,7 @@ set(ENGINE
         engine/Components.hpp
         engine/Entity.cpp
         engine/GameContainer.cpp
+        engine/ComponentTypeId.hpp
         )
 
 set(SOURCES
