@@ -11,7 +11,8 @@
 #include "Entity.hpp"
 
 namespace ecs {
-	using entityVector = std::shared_ptr<std::vector<std::unique_ptr<Entity>>>;
+    using entityPtr = std::unique_ptr<Entity>;
+	using entityVector = std::shared_ptr<std::vector<entityPtr>>;
 
 	class System {
 	public:

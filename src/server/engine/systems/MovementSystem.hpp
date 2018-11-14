@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Systems.hpp"
+#include "System.hpp"
 
 namespace ecs {
 	class MovementSystem : public System {
