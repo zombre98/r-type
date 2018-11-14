@@ -10,9 +10,21 @@
 #include <boost/asio.hpp>
 
 namespace net {
+	struct Header {
+		int id;
+		int op;
+	};
+
+	struct pos {
+		Header head;
+		int x;
+		int y;
+	};
+
+	namespace ba = boost::asio;
 	class server {
 	public:
-		server(boost::asio::io_context &context,unsigned short port);
+		server(ba::io_context &context,unsigned short port);
 		static std::string make_daytime_string();
 
 	private:
@@ -25,11 +37,10 @@ namespace net {
 
 
 	private:
-		boost::asio::io_context &_ioContext;
+		ba::io_context &_ioContext;
 		unsigned short _port;
-		boost::asio::ip::udp::socket _socket;
-		boost::array<char, 1> _recv_buff;
-		boost::asio::ip::udp::endpoint _remote_endpoint;
+		ba::ip::udp::socket _socket;
+		ba::ip::udp::endpoint _remote_endpoint;
 	};
 }
 
