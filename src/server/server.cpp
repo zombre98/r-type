@@ -32,11 +32,16 @@ void net::server::handleReceive(const boost::system::error_code &error, std::siz
 	if (!error || error == ba::error::message_size)
 	{
 		char buff[bytes_transferred];
-		std::cout << "Receive value : " << bytes_transferred << std::endl;
+		std::cout << "Receive value size : " << bytes_transferred << std::endl;
 		for (size_t i = 0; i < bytes_transferred; i++) {
 			buff[i] = _recvBuff[i];
 		}
 		Header *header = reinterpret_cast<Header *>(buff);
+		if (header->op == 1) {
+			pos position = getDataFromBuff<pos>(buff);
+			std::cout << "position.x : " << position.x << std::endl << "position.y : " << position.y << std::endl;
+		}
+
 
 		auto message = boost::make_shared<std::string>(server::make_daytime_string());
 		_socket.async_send_to(ba::buffer(*message), _remote_endpoint,
