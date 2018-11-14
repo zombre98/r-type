@@ -40,6 +40,7 @@ namespace net {
 		ba::io_context &_ioContext;
 		unsigned short _port;
 		ba::ip::udp::socket _socket;
+		boost::array<char, 128> _recvBuff{};
 		ba::ip::udp::endpoint _remote_endpoint;
 	};
 }
