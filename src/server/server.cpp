@@ -17,40 +17,32 @@ net::server::server(ba::io_context &context, unsigned short port) :
 }
 
 void net::server::startReceive() {
-	static boost::array<char, 1> recvBuff = {};
-
 	_socket.async_receive_from(
-			ba::buffer(recvBuff),
+			ba::buffer(_recvBuff),
 			_remote_endpoint,
 			boost::bind(&server::handleReceive, this,
 					ba::placeholders::error, ba::placeholders::bytes_transferred));
-	char buff[sizeof(recvBuff[0])];
-	std::cout << "Receive value : " << ba::placeholders::bytes_transferred << std::endl;
-	for (size_t i = 0; i < sizeof(recvBuff[0]); i++) {
-		buff[i] = recvBuff[i];
-	}
-	Header header{};
-	for (auto i = 0; i < sizeof(Header); i++)
-		std::memcpy(&header+i, &buff[i], 1);
-	std::cout << "Header id : " << header.id << std::endl;
-	std::cout << "Header op : " << header.op << std::endl;
-	std::cout << "Pos structure size = " << sizeof(pos) << std::endl;
-	for (auto &it : recvBuff) {
-		std::cout << "it.x : " << it << std::endl;
-	}
+//	for (auto &it : recvBuff) {
+//		std::cout << "it.x : " << it << std::endl;
+//	}
 	std::cout << std::endl;
 }
 
 void net::server::handleReceive(const boost::system::error_code &error, std::size_t bytes_transferred) {
 	if (!error || error == ba::error::message_size)
 	{
-		auto message = boost::make_shared<std::string>(server::make_daytime_string());
+		char buff[bytes_transferred];
+		std::cout << "Receive value : " << bytes_transferred << std::endl;
+		for (size_t i = 0; i < bytes_transferred; i++) {
+			buff[i] = _recvBuff[i];
+		}
+		Header *header = reinterpret_cast<Header *>(buff);
 
+		auto message = boost::make_shared<std::string>(server::make_daytime_string());
 		_socket.async_send_to(ba::buffer(*message), _remote_endpoint,
 		                      boost::bind(&server::handleSend, this, message,
 		                                  ba::placeholders::error,
 		                                  ba::placeholders::bytes_transferred));
-		std::cout << *message << "size : [" << bytes_transferred << "]" << std::endl;
 		startReceive();
 	}
 }
