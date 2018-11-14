@@ -34,7 +34,12 @@ namespace net {
 		void handleSend(boost::shared_ptr<std::string> message,
 		                 const boost::system::error_code &error,
 		                 std::size_t bTransferred);
-
+		template<typename T>
+		T getDataFromBuff(char *buff) {
+			T *pData = reinterpret_cast<T *>(buff);
+			T data = *pData;
+			return data;
+		}
 
 	private:
 		ba::io_context &_ioContext;
