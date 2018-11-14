@@ -7,15 +7,18 @@
 
 #include "GameScene.hpp"
 
+void GameScene::enter() noexcept {
+	_evtMgr.subscribe<SfmlEvent>(*this);
+	_resourceMgr.loadTexture("background.png");
+}
+
 void GameScene::update(float timeSinceLastFrame) noexcept {
 	displayGame(timeSinceLastFrame);
 }
 
 void GameScene::displayGame(float timeSinceLastFrame[[maybe_unused]]) noexcept {
-}
-
-void GameScene::enter() noexcept {
-	_evtMgr.subscribe<SfmlEvent>(*this);
+	auto &window = _parent.getWindow();
+	window.draw(sf::Sprite{_resourceMgr.getTexture("background")});
 }
 
 void GameScene::exit() noexcept {

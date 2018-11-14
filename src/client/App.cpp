@@ -9,7 +9,7 @@
 #include "scenes/SplashScene.hpp"
 
 void App::init() {
-	AScene::create<SplashScene>(_sceneMgr);
+	_sceneMgr.pushScene(AScene::create<SplashScene>(_sceneMgr));
 }
 
 void App::run() {

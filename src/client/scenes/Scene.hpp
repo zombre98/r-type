@@ -67,10 +67,10 @@ class AScene {
 	 * Create a scene
 	 */
 	template<typename T>
-	static void create(SceneManager &parent) {
+	static std::unique_ptr<T> create(SceneManager &parent) {
 		static_assert(std::is_base_of<AScene, T>(),
 			"Template parameter is not based of AScene");
-		parent.pushScene(std::make_unique<T>(parent));
+		return std::make_unique<T>(parent);
 	}
 
 	/*
@@ -86,6 +86,7 @@ class AScene {
 	}
 
 	virtual void update(float timeSinceLastFrame) = 0;
+
 	public:
 	EventManager _evtMgr;
 	protected:

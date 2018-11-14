@@ -16,7 +16,7 @@ namespace fs = std::experimental::filesystem;
 class SplashScene final : public AScene, public Receiver {
 	public:
 	explicit SplashScene(SceneManager &parent) noexcept : AScene(parent,
-		fs::current_path().parent_path() / "assets" / "images" / "menu") {
+		fs::current_path().parent_path() / "assets" / "images" / "splash") {
 	}
 
 	/*
