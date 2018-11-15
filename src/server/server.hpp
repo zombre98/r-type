@@ -10,42 +10,34 @@
 #include <boost/asio.hpp>
 
 namespace net {
-	struct Header {
-		int id;
-		int op;
-	};
-
-	struct pos {
-		Header head;
-		int x;
-		int y;
-	};
-
 	namespace ba = boost::asio;
 	class server {
 	public:
 		server(ba::io_context &context,unsigned short port);
 		static std::string make_daytime_string();
 
-	private:
+	protected:
 		void startReceive();
-		void handleReceive(const boost::system::error_code &error,
-		                   std::size_t bytes_transferred);
+		void receive(const boost::system::error_code &error, std::size_t bytes_transferred);
 		void handleSend(boost::shared_ptr<std::string> message,
 		                 const boost::system::error_code &error,
 		                 std::size_t bTransferred);
+
+
 		template<typename T>
 		T getDataFromBuff(char *buff) {
 			T *pData = reinterpret_cast<T *>(buff);
-			T data = *pData;
+			T data(*pData);
 			return data;
 		}
 
-	private:
+	protected:
 		ba::io_context &_ioContext;
 		unsigned short _port;
 		ba::ip::udp::socket _socket;
-		boost::array<char, 128> _recvBuff{};
+		std::size_t lastTransfer;
+		char _buff[128];
+		boost::array<char, 128> _recvArr{};
 		ba::ip::udp::endpoint _remote_endpoint;
 	};
 }

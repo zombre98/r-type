@@ -2,6 +2,9 @@ set(SOURCE_FILES
         main.cpp
         server/server.hpp
         server/server.cpp
+        server/protocolServer.cpp
+        server/protocolServer.hpp
+        network/protocol.hpp
         )
 
 if (WIN32)
@@ -11,11 +14,12 @@ else ()
 endif ()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/network)
 
 if (WIN32)
     # TODO Add library linking under windows
 else ()
-    FIND_PACKAGE(Boost 1.42.0 REQUIRED COMPONENTS system thread regex)
+    find_package(Boost 1.42.0 REQUIRED COMPONENTS system thread regex)
     IF(Boost_FOUND)
         INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
         LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})

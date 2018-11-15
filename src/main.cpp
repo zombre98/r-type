@@ -3,10 +3,12 @@
 //
 
 #include <iostream>
+#include <protocol.hpp>
 #include "server/server.hpp"
+#include "server/protocolServer.hpp"
 
 int main() {
 	boost::asio::io_context ioContext;
-	net::server serv(ioContext, 8080);
-	ioContext.run();
+	net::protocolServer serv(ioContext, 8080);
+	serv.poll();
 }
