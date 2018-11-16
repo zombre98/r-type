@@ -24,7 +24,7 @@ namespace net {
 		}
 
 		template<typename T>
-		void doReceive(boost::shared_ptr<boost::array<T, 1>> &)
+		void doReceive(boost::shared_ptr<boost::array<T, 1>>)
 		{
 		}
 
