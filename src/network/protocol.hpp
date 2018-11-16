@@ -22,8 +22,15 @@ namespace net {
 		protocolRType op;
 	};
 
-	struct Pos {
+	struct Package {
+		Package() = default;
+		explicit Package(Header &head) : head(head) {}
 		Header head;
+	};
+
+	struct Pos : Package {
+		Pos() = default;
+		Pos(Header &head, int x, int y) : Package{head}, x{x}, y{y} {}
 		int x;
 		int y;
 	};
