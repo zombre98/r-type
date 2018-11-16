@@ -11,8 +11,8 @@
 
 class App : public sf::RenderWindow {
 	public:
-	explicit App() : sf::RenderWindow(sf::VideoMode(1280, 960), "R-Type",
-		sf::Style::Close), _sceneMgr(*this) {
+	explicit App() : sf::RenderWindow(sf::VideoMode(1920, 1080), "R-Type",
+		sf::Style::Close | sf::Style::Fullscreen), _sceneMgr(*this) {
 	}
 
 	void init();
