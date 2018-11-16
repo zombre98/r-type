@@ -8,7 +8,7 @@
 #include "LuaSystem.hpp"
 
 #define GET_COMPONENT(Type) "getComponent" #Type, sol::resolve<Type &()>(&Entity::getComponent<Type>)
-#define GET_CONST_COMPONENT(Type) "getComponent" #Type, sol::resolve<const Type &() const>(&Entity::getComponent<Type>)
+#define GET_CONST_COMPONENT(Type) "getConstComponent" #Type, sol::resolve<const Type &() const>(&Entity::getComponent<Type>)
 #define REMOVE_COMPONENT(Type) "removeComponent" #Type, &Entity::removeComponent<Type>
 #define ADD_COMPONENT(Type, ...) "addComponent" #Type, &Entity::addComponent<Type, __VA_ARGS__>
 #define HAS_COMPONENT(Type) "hasComponent" #Type, &Entity::hasComponent<Type>
