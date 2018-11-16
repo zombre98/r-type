@@ -3,6 +3,8 @@
 //
 
 #include <iostream>
+#include <boost/bind.hpp>
+#include <boost/make_shared.hpp>
 #include "protocol.hpp"
 #include "protocolServer.hpp"
 
@@ -11,9 +13,11 @@ net::protocolServer::protocolServer(boost::asio::io_context &context, unsigned s
 
 void net::protocolServer::poll() {
 	while (!_ioContext.stopped()) {
-		auto i = _ioContext.poll();
-		if (i)
+		_ioContext.poll();
+		if (_bytesToRead) {
+			std::cout << "I value : " << _bytesToRead << std::endl;
 			getData();
+		}
 	}
 }
 
@@ -22,6 +26,9 @@ void net::protocolServer::getData() {
 	if (header->op == protocolRType::PLAYER_POSITION) {
 		Pos position = getDataFromBuff<Pos>(_buff);
 		std::cout << "position.x : " << position.x << std::endl << "position.y : " << position.y << std::endl;
+		sendData<Pos>(position);
+		_bytesToRead -= sizeof(Pos);
 	}
+
 }
 

@@ -12,9 +12,7 @@ net::server::server(ba::io_context &context, unsigned short port) :
 	_ioContext{context},
 	_port{port},
 	_socket(_ioContext, {ba::ip::udp::v4(), port}) {
-
 	startReceive();
-
 }
 
 void net::server::startReceive() {
@@ -28,22 +26,11 @@ void net::server::startReceive() {
 void net::server::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {
 	if (!error || error == ba::error::message_size)
 	{
-		lastTransfer = bytes_transferred;
+		_bytesToRead = bytes_transferred;
 		for (size_t i = 0; i < bytes_transferred; i++)
 			_buff[i] = _recvArr[i];
-
-
-		auto message = boost::make_shared<std::string>(server::make_daytime_string());
-		_socket.async_send_to(ba::buffer(*message), _remote_endpoint,
-		                      boost::bind(&server::handleSend, this, message,
-		                                  ba::placeholders::error,
-		                                  ba::placeholders::bytes_transferred));
 		startReceive();
 	}
-}
-
-void net::server::handleSend(boost::shared_ptr<std::string> message, const boost::system::error_code &error,
-                             std::size_t bTransferred) {
 }
 
 std::string net::server::make_daytime_string() {

@@ -16,12 +16,9 @@ namespace net {
 		server(ba::io_context &context,unsigned short port);
 		static std::string make_daytime_string();
 
-	protected:
+	public:
 		void startReceive();
 		void receive(const boost::system::error_code &error, std::size_t bytes_transferred);
-		void handleSend(boost::shared_ptr<std::string> message,
-		                 const boost::system::error_code &error,
-		                 std::size_t bTransferred);
 
 
 		template<typename T>
@@ -35,7 +32,7 @@ namespace net {
 		ba::io_context &_ioContext;
 		unsigned short _port;
 		ba::ip::udp::socket _socket;
-		std::size_t lastTransfer;
+		std::size_t _bytesToRead;
 		char _buff[128];
 		boost::array<char, 128> _recvArr{};
 		ba::ip::udp::endpoint _remote_endpoint;
