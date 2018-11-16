@@ -34,10 +34,20 @@ namespace net {
 			boost::array<T, 1> newData = {{data}};
 			boost::shared_ptr<boost::array<T, 1>> dataToSend = boost::make_shared<boost::array<T, 1>>(newData);
 			std::cout << "Before sending : " << dataToSend->at(0).x << std::endl;
-			_socket.async_send_to(ba::buffer(*dataToSend), _remote_endpoint,
-			                   [this, dataToSend](boost::system::error_code /*ec*/, std::size_t /*bytes_sent*/) {
+			std::cout << "Adress  : [" << _serverEndpoint.address() << " ] Port : [" << _serverEndpoint.port() << "]" << std::endl;
+			_socket.async_send_to(ba::buffer(*dataToSend, sizeof(T)), _serverEndpoint,
+			                   [this, dataToSend](boost::system::error_code , std::size_t) {
 				                   doReceive(dataToSend);
 			                   });
+			std::cout << "After sending"  << std::endl;
+		}
+
+		template<typename T>
+		void sendDataToAll(T data) {
+			for (auto &it : _vecPort) {
+				_serverEndpoint.port(it);
+				sendData<T>(data);
+			}
 		}
 	};
 }
