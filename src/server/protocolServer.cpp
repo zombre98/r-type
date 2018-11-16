@@ -26,7 +26,7 @@ void net::protocolServer::getData() {
 	if (header->op == protocolRType::PLAYER_POSITION) {
 		Pos position = getDataFromBuff<Pos>(_buff);
 		std::cout << "position.x : " << position.x << std::endl << "position.y : " << position.y << std::endl;
-		sendData<Pos>(position);
+		sendDataToAll<Pos>(position);
 		_bytesToRead -= sizeof(Pos);
 	}
 

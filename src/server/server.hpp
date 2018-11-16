@@ -6,11 +6,13 @@
 #define R_TYPE_SERVER_HPP
 
 #include <string>
+#include <vector>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
 
 namespace net {
 	namespace ba = boost::asio;
+
 	class server {
 	public:
 		server(ba::io_context &context,unsigned short port);
@@ -31,11 +33,12 @@ namespace net {
 	protected:
 		ba::io_context &_ioContext;
 		unsigned short _port;
+		ba::ip::udp::endpoint _serverEndpoint;
 		ba::ip::udp::socket _socket;
 		std::size_t _bytesToRead;
 		char _buff[128];
+		std::vector<unsigned short> _vecPort;
 		boost::array<char, 128> _recvArr{};
-		ba::ip::udp::endpoint _remote_endpoint;
 	};
 }
 
