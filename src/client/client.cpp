@@ -22,9 +22,11 @@ net::Header net::client::getHeaderAndReadBuff() {
 	_bytesReceived = _socket.receive_from(boost::asio::buffer(recvArr), _receiverEndpoint);
 	for (size_t i = 0; i < _bytesReceived; i++)
 		_buff[i] = recvArr[i];
-	std::cout << "Bytes received : " << _bytesReceived << std::endl;
-	auto header = reinterpret_cast<Header *>(_buff);
-	Header returnHeader(*header);
+	Header returnHeader;
+	if (_bytesReceived) {
+		auto header = reinterpret_cast<Header *>(_buff);
+		returnHeader = *header;
+	}
 	return returnHeader;
 }
 
@@ -38,8 +40,8 @@ int main()
 	net::client Client(io_context, addr, port);
 	net::Header head{15, net::protocolRType::PLAYER_POSITION};
 	net::Pos pos{head, 15, 40};
-	for (auto i = 0; i < 3; i++) {
-		Client.sendData<net::Pos>(pos);
+	Client.sendData<net::Pos>(pos);
+	while (1) {
 		net::Header newhead = Client.getHeaderAndReadBuff();
 		net::Pos position{};
 		if (newhead.op == net::protocolRType::PLAYER_POSITION)
