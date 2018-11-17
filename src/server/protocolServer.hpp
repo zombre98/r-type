@@ -14,7 +14,7 @@ namespace net {
 	class protocolServer : public server {
 	public:
 		protocolServer(ba::io_context &context,unsigned short port);
-		void getData();
+		void handleData();
 		void poll();
 
 		template<typename T>
