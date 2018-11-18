@@ -33,13 +33,11 @@ namespace net {
 			static_assert(std::is_base_of<Package, T>(), "Data you trying to send is not base of Package struct");
 			boost::array<T, 1> newData = {{data}};
 			boost::shared_ptr<boost::array<T, 1>> dataToSend = boost::make_shared<boost::array<T, 1>>(newData);
-			std::cout << "Before sending : " << dataToSend->at(0).x << std::endl;
 			std::cout << "Adress  : [" << _serverEndpoint.address() << " ] Port : [" << _serverEndpoint.port() << "]" << std::endl;
 			_socket.async_send_to(ba::buffer(*dataToSend, sizeof(T)), _serverEndpoint,
 			                   [this, dataToSend](boost::system::error_code , std::size_t) {
 				                   doReceive(dataToSend);
 			                   });
-			std::cout << "After sending"  << std::endl;
 		}
 
 		template<typename T>

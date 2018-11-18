@@ -15,7 +15,6 @@ void net::protocolServer::poll() {
 	while (!_ioContext.stopped()) {
 		_ioContext.poll();
 		if (_bytesToRead) {
-			std::cout << "I value : " << _bytesToRead << std::endl;
 			handleData();
 		}
 	}
@@ -25,7 +24,6 @@ void net::protocolServer::handleData() {
 	Header *header = reinterpret_cast<Header *>(_buff);
 	if (header->op == protocolRType::PLAYER_POSITION) {
 		Pos position = getDataFromBuff<Pos>(_buff);
-		std::cout << "position.x : " << position.x << std::endl << "position.y : " << position.y << std::endl;
 		sendDataToAll<Pos>(position);
 		_bytesToRead -= sizeof(Pos);
 	}
