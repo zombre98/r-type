@@ -12,7 +12,16 @@ set(ENGINE
         engine/ComponentTypeId.hpp
         )
 
+set(SERVER
+        server.hpp
+        server.cpp
+        protocolServer.cpp
+        protocolServer.hpp
+        ../network/protocol.hpp
+        )
+
 set(SOURCES
         ${CORE}
-        ${ENGINE}
+#        ${ENGINE}
+        ${SERVER}
         )
