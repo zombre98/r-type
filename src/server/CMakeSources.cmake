@@ -12,7 +12,12 @@ set(ENGINE
         engine/ComponentTypeId.hpp
         )
 
+set(LIBRARY
+		library/Loader.cpp
+		)
+
 set(SOURCES
         ${CORE}
         ${ENGINE}
+		${LIBRARY}
         )
