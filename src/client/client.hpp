@@ -30,6 +30,17 @@ namespace net {
 		}
 
 		template<typename T>
+		void asyncSendData(T data) {
+			static_assert(std::is_base_of<Package, T>(), "Data you trying to send is not base of Package struct");
+			boost::array<T, 1> newData = {{data}};
+			boost::shared_ptr<boost::array<T, 1>> dataToSend = boost::make_shared<boost::array<T, 1>>(newData);
+			_socket.async_send_to(ba::buffer(*dataToSend, sizeof(T)), _senderEndpoint,
+			                      [this, dataToSend](boost::system::error_code , std::size_t) {
+									afterSend(dataToSend);
+			                      });
+		}
+
+		template<typename T>
 		T getData() {
 			T *pData = reinterpret_cast<T *>(_buff);
 			T data(*pData);
@@ -37,10 +48,15 @@ namespace net {
 		}
 
 	private:
+		template<typename T>
+		void afterSend(boost::shared_ptr<boost::array<T, 1>> data) {
+
+		}
+
+	private:
 		ba::io_context &_ioContext;
 		std::string &_address;
 		std::string &_port;
-
 		ba::ip::udp::resolver _resolver;
 		ba::ip::udp::endpoint _receiverEndpoint;
 		ba::ip::udp::endpoint _senderEndpoint;

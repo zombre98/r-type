@@ -37,7 +37,7 @@ namespace net {
 		ba::ip::udp::socket _socket;
 		std::size_t _bytesToRead;
 		char _buff[128];
-		std::vector<unsigned short> _vecPort;
+		std::vector<std::pair<ba::ip::address, unsigned short>> _vecClient;
 		boost::array<char, 128> _recvArr{};
 	};
 }

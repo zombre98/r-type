@@ -43,8 +43,8 @@ namespace net {
 		template<typename T>
 		void sendDataToAll(T data) {
 			std::cout << "New sendDataToAll" << std::endl;
-			for (auto &it : _vecPort) {
-				_serverEndpoint.port(it);
+			for (auto &it : _vecClient) {
+				_serverEndpoint.port(it.second);
 				sendData<T>(data);
 			}
 		}

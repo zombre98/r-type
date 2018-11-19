@@ -22,7 +22,7 @@ net::Header net::client::getHeaderAndReadBuff() {
 	_bytesReceived = _socket.receive_from(boost::asio::buffer(recvArr), _receiverEndpoint);
 	for (size_t i = 0; i < _bytesReceived; i++)
 		_buff[i] = recvArr[i];
-	Header returnHeader;
+	Header returnHeader{};
 	if (_bytesReceived) {
 		auto header = reinterpret_cast<Header *>(_buff);
 		returnHeader = *header;
@@ -30,7 +30,8 @@ net::Header net::client::getHeaderAndReadBuff() {
 	return returnHeader;
 }
 
-/*
+
+
 int main()
 {
 	boost::asio::io_context io_context;
@@ -40,7 +41,7 @@ int main()
 	net::client Client(io_context, addr, port);
 	net::Header head{15, net::protocolRType::PLAYER_POSITION};
 	net::Pos pos{head, 15, 40};
-	Client.sendData<net::Pos>(pos);
+	Client.asyncSendData<net::Pos>(pos);
 	while (1) {
 		net::Header newhead = Client.getHeaderAndReadBuff();
 		net::Pos position{};
@@ -49,4 +50,4 @@ int main()
 		std::cout << "Position x : " << position.x << " Position y : " << position.y << std::endl;
 	}
 	return 0;
-}*/
+}

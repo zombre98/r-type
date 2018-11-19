@@ -25,9 +25,11 @@ void net::server::startReceive() {
 			_serverEndpoint,
 			boost::bind(&server::receive, this,
 					ba::placeholders::error, ba::placeholders::bytes_transferred));
-	if (std::find(std::begin(_vecPort), std::end(_vecPort), _serverEndpoint.port()) == std::end(_vecPort) &&
-		_serverEndpoint.port() != _port)
-		_vecPort.push_back(_serverEndpoint.port());
+
+	if (std::find(std::begin(_vecClient), std::end(_vecClient),
+			std::make_pair(_serverEndpoint.address(), _serverEndpoint.port())) == std::end(_vecClient) &&
+			_serverEndpoint.port() != _port)
+		_vecClient.emplace_back(_serverEndpoint.address(), _serverEndpoint.port());
 }
 
 void net::server::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {
