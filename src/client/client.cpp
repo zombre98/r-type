@@ -55,18 +55,3 @@ void net::client::poll() {
 		_ioContext.poll();
 	}
 }
-
-
-int main()
-{
-	boost::asio::io_context io_context;
-	std::string addr("127.0.0.1");
-	std::string port("8080");
-
-	net::client Client(io_context, addr, port);
-	net::Header head{15, net::protocolRType::PLAYER_POSITION};
-	net::Pos pos{head, 15, 40};
-	Client.asyncSendData<net::Pos>(pos);
-	Client.poll();
-	return 0;
-}
