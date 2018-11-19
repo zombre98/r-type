@@ -28,8 +28,6 @@ void net::Server::startReceive() {
 
 	if (_serverEndpoint.port() != _port)
 		_setClient.emplace(_serverEndpoint.address(), _serverEndpoint.port());
-	for (auto &it : _setClient)
-		std::cout << "Id : " << it.getId()  << " Address : " <<  it.address << " Port : " << it.port << std::endl;
 }
 
 void net::Server::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {
