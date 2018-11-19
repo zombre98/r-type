@@ -30,10 +30,9 @@ namespace net {
 
 		template<typename T>
 		void sendData(T data) {
-			static_assert(std::is_base_of<Package, T>(), "Data you trying to send is not base of Package struct");
+			static_assert(std::is_base_of<Package, T>(), "Data is not a base of Package");
 			boost::array<T, 1> newData = {{data}};
-			boost::shared_ptr<boost::array<T, 1>> dataToSend = boost::make_shared<boost::array<T, 1>>(newData);
-			std::cout << "Address  : [" << _serverEndpoint.address() << " ] Port : [" << _serverEndpoint.port() << "]" << std::endl;
+			auto dataToSend = boost::make_shared<boost::array<T, 1>>(newData);
 			_socket.async_send_to(ba::buffer(*dataToSend, sizeof(T)), _serverEndpoint,
 			                   [this, dataToSend](boost::system::error_code , std::size_t) {
 				                   doReceive(dataToSend);
@@ -42,7 +41,6 @@ namespace net {
 
 		template<typename T>
 		void sendDataToAll(T data) {
-			std::cout << "New sendDataToAll" << std::endl;
 			for (auto &it : _vecClient) {
 				_serverEndpoint.port(it.second);
 				sendData<T>(data);

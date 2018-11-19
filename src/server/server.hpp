@@ -2,8 +2,7 @@
 // Created by Thomas Burgaud on 12/11/2018.
 //
 
-#ifndef R_TYPE_SERVER_HPP
-#define R_TYPE_SERVER_HPP
+#pragma once
 
 #include <string>
 #include <vector>
@@ -40,5 +39,3 @@ namespace net {
 		boost::array<char, 128> _recvArr{};
 	};
 }
-
-#endif //R_TYPE_SERVER_HPP

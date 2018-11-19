@@ -11,30 +11,30 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 #include <iostream>
-#include "../network/protocol.hpp"
+#include "protocol.hpp"
 
 namespace net {
 
 	namespace ba = boost::asio;
 
-	class client {
+	class Client {
 	public:
-		explicit client(ba::io_context &context, std::string &address, std::string &port);
+		explicit Client(ba::io_context &context, std::string &address, std::string &port);
 		Header getHeaderAndReadBuff();
 		void poll();
 
 		template<typename T>
 		void sendData(T data) {
-			static_assert(std::is_base_of<Package, T>(), "Data you trying to send is not base of Package struct");
+			static_assert(std::is_base_of<Package, T>(), "Data is not a base of Package");
 			boost::array<T, 1> dataToSend = {{data}};
 			_socket.send_to(ba::buffer(dataToSend, sizeof(T)), _senderEndpoint);
 		}
 
 		template<typename T>
 		void asyncSendData(T data) {
-			static_assert(std::is_base_of<Package, T>(), "Data you trying to send is not base of Package struct");
+			static_assert(std::is_base_of<Package, T>(), "Data is not a base of Package");
 			boost::array<T, 1> newData = {{data}};
-			boost::shared_ptr<boost::array<T, 1>> dataToSend = boost::make_shared<boost::array<T, 1>>(newData);
+			auto dataToSend = boost::make_shared<boost::array<T, 1>>(newData);
 			_socket.async_send_to(ba::buffer(*dataToSend, sizeof(T)), _senderEndpoint,
 			                      [this, dataToSend](boost::system::error_code , std::size_t) {
 									afterSend(dataToSend);
@@ -59,8 +59,7 @@ namespace net {
 		template<typename T>
 		T getDataFromBuff(char *buff) {
 			T *pData = reinterpret_cast<T *>(buff);
-			T data(*pData);
-			return data;
+			return *pData;
 		}
 
 		void receive(const boost::system::error_code &error, std::size_t bytes_transferre);

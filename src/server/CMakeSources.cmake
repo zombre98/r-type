@@ -22,6 +22,6 @@ set(SERVER
 
 set(SOURCES
         ${CORE}
-#        ${ENGINE}
+        ${ENGINE}
         ${SERVER}
         )

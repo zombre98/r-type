@@ -6,7 +6,7 @@
 #include <iostream>
 #include "client.hpp"
 
-net::client::client(boost::asio::io_context &context, std::string &address, std::string &port) :
+net::Client::Client(ba::io_context &context, std::string &address, std::string &port) :
 _ioContext{context},
 _address{address},
 _port{port},
@@ -17,7 +17,7 @@ _socket{_ioContext}
 	_socket.open(ba::ip::udp::v4());
 }
 
-net::Header net::client::getHeaderAndReadBuff() {
+net::Header net::Client::getHeaderAndReadBuff() {
 	boost::array<char, 128> recvArr{};
 	_bytesReceived = _socket.receive_from(ba::buffer(recvArr), _receiverEndpoint);
 	for (size_t i = 0; i < _bytesReceived; i++)
@@ -30,15 +30,15 @@ net::Header net::client::getHeaderAndReadBuff() {
 	return returnHeader;
 }
 
-void net::client::asyncReceive() {
+void net::Client::asyncReceive() {
 	_socket.async_receive_from(
 			ba::buffer(_recvArr),
 			_receiverEndpoint,
-			boost::bind(&client::receive, this,
+			boost::bind(&Client::receive, this,
 			            ba::placeholders::error, ba::placeholders::bytes_transferred));
 }
 
-void net::client::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {
+void net::Client::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {
 	if (!error || error == ba::error::message_size)
 	{
 		for (size_t i = 0; i < bytes_transferred; i++)
@@ -51,7 +51,7 @@ void net::client::receive(const boost::system::error_code &error, std::size_t by
 	}
 }
 
-void net::client::poll() {
+void net::Client::poll() {
 	asyncReceive();
 	while (!_ioContext.stopped()) {
 		_ioContext.poll();
