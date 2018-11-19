@@ -11,7 +11,7 @@
 #include <dlfcn.h>
 #include <stdexcept>
 
-namespace loader {
+namespace lib {
 
   class Loader {
   public:
@@ -27,17 +27,7 @@ namespace loader {
 	};
 
 	template<typename T>
-	T &getFunction(const std::string &functionName) const {
-	  dlerror();
-	  T func = (T)dlsym(_handle, functionName.c_str());
-	  const char *dlsym_error = dlerror();
-	  if (dlsym_error)
-		throw std::invalid_argument(std::string("Cannot load symbol: ", dlsym_error));
-	  return (func);
-	};
-
-	template<typename T>
-	const T &getFunction(const std::string &functionName) const {
+	T getFunction(const std::string &functionName) const {
 	  dlerror();
 	  T func = (T)dlsym(_handle, functionName.c_str());
 	  const char *dlsym_error = dlerror();
