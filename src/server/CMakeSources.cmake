@@ -4,12 +4,12 @@ set(CORE
         )
 
 set(ENGINE
-        engine/systems/Systems.hpp
+        engine/Entity.hpp
+        engine/ComponentId.hpp
+        engine/systems/System.hpp
         engine/systems/MovementSystem.cpp
         engine/Components.hpp
-        engine/Entity.cpp
         engine/GameContainer.cpp
-        engine/ComponentTypeId.hpp
         )
 
 set(SOURCES
