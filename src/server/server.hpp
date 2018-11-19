@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by Thomas Burgaud on 12/11/2018.
 //
@@ -5,16 +7,17 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include <unordered_set>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
+#include "address.hpp"
 
 namespace net {
 	namespace ba = boost::asio;
 
-	class server {
+	class Server {
 	public:
-		server(ba::io_context &context,unsigned short port);
+		Server(ba::io_context &context,unsigned short port);
 
 	public:
 		void startReceive();
@@ -35,7 +38,7 @@ namespace net {
 		ba::ip::udp::socket _socket;
 		std::size_t _bytesToRead;
 		char _buff[128];
-		std::vector<std::pair<ba::ip::address, unsigned short>> _vecClient;
+		std::unordered_set<Address> _setClient;
 		boost::array<char, 128> _recvArr{};
 	};
 }

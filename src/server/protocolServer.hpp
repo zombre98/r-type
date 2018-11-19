@@ -11,7 +11,7 @@
 #include "protocol.hpp"
 
 namespace net {
-	class protocolServer : public server {
+	class protocolServer : public Server {
 	public:
 		protocolServer(ba::io_context &context,unsigned short port);
 		void handleData();
@@ -41,8 +41,8 @@ namespace net {
 
 		template<typename T>
 		void sendDataToAll(T data) {
-			for (auto &it : _vecClient) {
-				_serverEndpoint.port(it.second);
+			for (auto &it : _setClient) {
+				_serverEndpoint.port(it.port);
 				sendData<T>(data);
 			}
 		}

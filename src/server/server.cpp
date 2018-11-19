@@ -11,7 +11,7 @@
 #include "server.hpp"
 #include "protocol.hpp"
 
-net::server::server(ba::io_context &context, unsigned short port) :
+net::Server::Server(ba::io_context &context, unsigned short port) :
 	_ioContext{context},
 	_port{port},
 	_serverEndpoint(ba::ip::udp::v4(), _port),
@@ -19,20 +19,20 @@ net::server::server(ba::io_context &context, unsigned short port) :
 	startReceive();
 }
 
-void net::server::startReceive() {
+void net::Server::startReceive() {
 	_socket.async_receive_from(
 			ba::buffer(_recvArr),
 			_serverEndpoint,
-			boost::bind(&server::receive, this,
+			boost::bind(&Server::receive, this,
 					ba::placeholders::error, ba::placeholders::bytes_transferred));
 
-	if (std::find(_vecClient.begin(), _vecClient.end(),
-	              std::pair{_serverEndpoint.address(), _serverEndpoint.port()}) == _vecClient.end() &&
-			_serverEndpoint.port() != _port)
-		_vecClient.emplace_back(_serverEndpoint.address(), _serverEndpoint.port());
+	if (_serverEndpoint.port() != _port)
+		_setClient.emplace(_serverEndpoint.address(), _serverEndpoint.port());
+	for (auto &it : _setClient)
+		std::cout << "Id : " << it.getId()  << " Address : " <<  it.address << " Port : " << it.port << std::endl;
 }
 
-void net::server::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {
+void net::Server::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {
 	if (!error || error == ba::error::message_size)
 	{
 		_bytesToRead = bytes_transferred;

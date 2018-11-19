@@ -8,7 +8,7 @@
 #include "protocol.hpp"
 #include "protocolServer.hpp"
 
-net::protocolServer::protocolServer(boost::asio::io_context &context, unsigned short port) : server(context, port) {
+net::protocolServer::protocolServer(boost::asio::io_context &context, unsigned short port) : Server(context, port) {
 }
 
 void net::protocolServer::poll() {

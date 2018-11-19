@@ -18,6 +18,7 @@ set(SERVER
         protocolServer.cpp
         protocolServer.hpp
         ../network/protocol.hpp
+        address.hpp
         )
 
 set(SOURCES
