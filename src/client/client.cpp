@@ -19,7 +19,7 @@ _socket{_ioContext}
 
 net::Header net::client::getHeaderAndReadBuff() {
 	boost::array<char, 128> recvArr{};
-	_bytesReceived = _socket.receive_from(boost::asio::buffer(recvArr), _receiverEndpoint);
+	_bytesReceived = _socket.receive_from(ba::buffer(recvArr), _receiverEndpoint);
 	for (size_t i = 0; i < _bytesReceived; i++)
 		_buff[i] = recvArr[i];
 	Header returnHeader{};
@@ -30,6 +30,31 @@ net::Header net::client::getHeaderAndReadBuff() {
 	return returnHeader;
 }
 
+void net::client::asyncReceive() {
+	_socket.async_receive_from(
+			ba::buffer(_recvArr),
+			_receiverEndpoint,
+			boost::bind(&client::receive, this,
+			            ba::placeholders::error, ba::placeholders::bytes_transferred));
+}
+
+void net::client::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {
+	if (!error || error == ba::error::message_size)
+	{
+		for (size_t i = 0; i < bytes_transferred; i++)
+			_buff[i] = _recvArr[i];
+		Header head = getDataFromBuff<Header>(_buff);
+		std::cout << "Head id : " << head.id << std::endl;
+		asyncReceive();
+	}
+}
+
+void net::client::poll() {
+	asyncReceive();
+	while (!_ioContext.stopped()) {
+		_ioContext.poll();
+	}
+}
 
 
 int main()
@@ -42,12 +67,6 @@ int main()
 	net::Header head{15, net::protocolRType::PLAYER_POSITION};
 	net::Pos pos{head, 15, 40};
 	Client.asyncSendData<net::Pos>(pos);
-	while (1) {
-		net::Header newhead = Client.getHeaderAndReadBuff();
-		net::Pos position{};
-		if (newhead.op == net::protocolRType::PLAYER_POSITION)
-			position = Client.getData<net::Pos>();
-		std::cout << "Position x : " << position.x << " Position y : " << position.y << std::endl;
-	}
+	Client.poll();
 	return 0;
 }

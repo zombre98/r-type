@@ -21,6 +21,7 @@ namespace net {
 	public:
 		explicit client(ba::io_context &context, std::string &address, std::string &port);
 		Header getHeaderAndReadBuff();
+		void poll();
 
 		template<typename T>
 		void sendData(T data) {
@@ -47,11 +48,22 @@ namespace net {
 			return data;
 		}
 
+		void asyncReceive();
+
 	private:
 		template<typename T>
 		void afterSend(boost::shared_ptr<boost::array<T, 1>> data) {
 
 		}
+
+		template<typename T>
+		T getDataFromBuff(char *buff) {
+			T *pData = reinterpret_cast<T *>(buff);
+			T data(*pData);
+			return data;
+		}
+
+		void receive(const boost::system::error_code &error, std::size_t bytes_transferre);
 
 	private:
 		ba::io_context &_ioContext;
