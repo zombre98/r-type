@@ -26,8 +26,8 @@ void net::server::startReceive() {
 			boost::bind(&server::receive, this,
 					ba::placeholders::error, ba::placeholders::bytes_transferred));
 
-	if (std::find(std::begin(_vecClient), std::end(_vecClient),
-			std::make_pair(_serverEndpoint.address(), _serverEndpoint.port())) == std::end(_vecClient) &&
+	if (std::find(_vecClient.begin(), _vecClient.end(),
+	              std::pair{_serverEndpoint.address(), _serverEndpoint.port()}) == _vecClient.end() &&
 			_serverEndpoint.port() != _port)
 		_vecClient.emplace_back(_serverEndpoint.address(), _serverEndpoint.port());
 }
@@ -40,9 +40,4 @@ void net::server::receive(const boost::system::error_code &error, std::size_t by
 			_buff[i] = _recvArr[i];
 		startReceive();
 	}
-}
-
-std::string net::server::make_daytime_string() {
-	time_t now = time(nullptr);
-	return ctime(&now);
 }

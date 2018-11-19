@@ -16,7 +16,6 @@ namespace net {
 	class server {
 	public:
 		server(ba::io_context &context,unsigned short port);
-		static std::string make_daytime_string();
 
 	public:
 		void startReceive();
