@@ -10,4 +10,4 @@ target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/server
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/server/engine/systems)
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/network)
 
-target_link_libraries(${TARGET_NAME} ${BOOST_LIBS})
+target_link_libraries(${TARGET_NAME} PRIVATE ${BOOST_LIBS})
