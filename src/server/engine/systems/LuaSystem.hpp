@@ -20,7 +20,7 @@
 #include "sol.hpp"
 #include "System.hpp"
 
- namespace ecs {
+namespace ecs {
 
    template <typename... Types>
    class LuaSystem : public System {
@@ -72,4 +72,4 @@
 								   "y", &Position::y);
 	 }
    };
- }
+}
