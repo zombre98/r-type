@@ -44,8 +44,7 @@ namespace net {
 		template<typename T>
 		T getData() {
 			T *pData = reinterpret_cast<T *>(_buff);
-			T data(*pData);
-			return data;
+			return *pData;
 		}
 
 		void asyncReceive();
