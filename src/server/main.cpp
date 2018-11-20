@@ -1,12 +1,10 @@
-//
-// Created by armandmgt on 11/5/18.
-//
-
 #include <iostream>
+#include "protocol.hpp"
+#include "Server.hpp"
+#include "ProtocolServer.hpp"
 
-int main(int argc, char *argv[]) {
-	if (argc == 2) {
-		std::cout << "Server started on port: " << argv[1] << std::endl;
-	}
-	return 0;
+int main() {
+	boost::asio::io_context ioContext;
+	net::ProtocolServer serv(ioContext, 8080);
+	serv.poll();
 }

@@ -9,6 +9,9 @@ set(CLIENT
         events/SfmlEvents.hpp
         events/EventManager.hpp
         ResourceManager.hpp
+        ../network/protocol.hpp
+        Client.hpp
+        Client.cpp
         )
 
 set(CLIENT_SCENES

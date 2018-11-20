@@ -12,7 +12,17 @@ set(ENGINE
         engine/GameContainer.cpp
         )
 
+set(SERVER
+        Server.hpp
+        Server.cpp
+        ProtocolServer.cpp
+        ProtocolServer.hpp
+        ../network/protocol.hpp
+        address.hpp
+        )
+
 set(SOURCES
         ${CORE}
         ${ENGINE}
+        ${SERVER}
         )
