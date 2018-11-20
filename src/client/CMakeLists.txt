@@ -13,5 +13,6 @@ target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/networ
 if (WIN32)
     # TODO Add library linking under windows
 else ()
-    target_link_libraries(${TARGET_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-audio sfml-network)
+    set(SFML_LIBS sfml-graphics sfml-window sfml-system sfml-audio sfml-network)
+    target_link_libraries(${TARGET_NAME} PRIVATE ${SFML_LIBS} ${BOOST_LIBS})
 endif ()

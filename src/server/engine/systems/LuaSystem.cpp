@@ -20,7 +20,7 @@ namespace ecs {
 	: System{allEntities}, _fileName{fileName} {
 	  _lua.open_libraries();
 	  _defineClasses();
-	  _lua["entities"] = getEntities(COMP_VELOCITY);
+	  _lua["entities"] = getEntities<Velocity>();
 	  _lua.script_file(LUA_FOLDER_PATH + _fileName);
 	  _luaUpdate = _lua["update"];
 	}
