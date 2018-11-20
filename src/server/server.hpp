@@ -27,8 +27,7 @@ namespace net {
 		template<typename T>
 		T getDataFromBuff(char *buff) {
 			T *pData = reinterpret_cast<T *>(buff);
-			T data(*pData);
-			return data;
+			return *pData;
 		}
 
 	protected:
