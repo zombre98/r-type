@@ -9,8 +9,8 @@
 
 using TypeId = std::size_t;
 
-template<typename TBase>
-class ComponentTypeId {
+class ComponentId {
+	public:
 	template<typename T>
 	static TypeId getTypeId() {
 		static const TypeId id = _nextId++;
@@ -21,4 +21,4 @@ class ComponentTypeId {
 	static std::atomic<TypeId> _nextId;
 };
 
-template<typename TBase> std::atomic<TypeId> ComponentTypeId<TBase>::_nextId{0};
+inline std::atomic<TypeId> ComponentId::_nextId{0};

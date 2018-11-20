@@ -17,7 +17,7 @@ namespace ecs {
 
 	bool MovementSystem::_isValidPosition(float x, float y)
 	{
-		auto entities = getEntities(COMP_POSITION);
+		auto entities = getEntities<Position>();
 
 		for (auto &entitie : entities) {
 				auto &posE = entitie->getComponent<Position>();
@@ -30,7 +30,7 @@ namespace ecs {
 	}
 
 	void MovementSystem::update(double delta[[maybe_unused]]) {
-		auto entities = getEntities(COMP_POSITION, COMP_VELOCITY);
+		auto entities = getEntities<Position, Velocity>();
 
 		for (auto e : entities) {
 			auto &position = e->getComponent<Position>();
