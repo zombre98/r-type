@@ -9,11 +9,12 @@ int main(int argc, char *argv[]) {
   ecs::entityVector v = std::make_shared<std::vector<ecs::entityPtr>>();
   v->push_back(std::make_unique<ecs::Entity>());
   (*v)[0]->addComponent<ecs::Velocity>(1.5f, 4.f);
+  (*v)[0]->addComponent<ecs::Position>(0.f, 0.f);
 
   std::cout << "Base velocity component x: " << (*v)[0]->getComponent<ecs::Velocity>().x << std::endl;
 
   // creating LuaSystem with the entityVector and the file name (will check in assets/lua)
-  ecs::LuaSystem testSystem(v, "test_system.lua");
+  ecs::LuaSystem<ecs::Velocity, ecs::Position> testSystem(v, "test_system.lua");
   //updating the system with a custom delta
   testSystem.update(102);
 
