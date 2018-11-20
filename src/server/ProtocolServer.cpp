@@ -6,12 +6,12 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 #include "protocol.hpp"
-#include "protocolServer.hpp"
+#include "ProtocolServer.hpp"
 
-net::protocolServer::protocolServer(boost::asio::io_context &context, unsigned short port) : Server(context, port) {
+net::ProtocolServer::ProtocolServer(boost::asio::io_context &context, unsigned short port) : Server(context, port) {
 }
 
-void net::protocolServer::poll() {
+void net::ProtocolServer::poll() {
 	while (!_ioContext.stopped()) {
 		_ioContext.poll();
 		if (_bytesToRead) {
@@ -20,7 +20,7 @@ void net::protocolServer::poll() {
 	}
 }
 
-void net::protocolServer::handleData() {
+void net::ProtocolServer::handleData() {
 	Header *header = reinterpret_cast<Header *>(_buff);
 	if (header->op == protocolRType::PLAYER_POSITION) {
 		Pos position = getDataFromBuff<Pos>(_buff);

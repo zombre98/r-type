@@ -8,7 +8,7 @@
 #include <iterator>
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
-#include "server.hpp"
+#include "Server.hpp"
 #include "protocol.hpp"
 
 net::Server::Server(ba::io_context &context, unsigned short port) :

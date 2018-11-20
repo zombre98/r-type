@@ -10,8 +10,8 @@ set(CLIENT
         events/EventManager.hpp
         ResourceManager.hpp
         ../network/protocol.hpp
-        client.hpp
-        client.cpp
+        Client.hpp
+        Client.cpp
         )
 
 set(CLIENT_SCENES

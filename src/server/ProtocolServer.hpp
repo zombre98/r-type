@@ -7,13 +7,13 @@
 #include <boost/make_shared.hpp>
 #include <boost/bind.hpp>
 #include <iostream>
-#include "server.hpp"
+#include "Server.hpp"
 #include "protocol.hpp"
 
 namespace net {
-	class protocolServer : public Server {
+	class ProtocolServer : public Server {
 	public:
-		protocolServer(ba::io_context &context,unsigned short port);
+		ProtocolServer(ba::io_context &context,unsigned short port);
 		void handleData();
 		void poll();
 

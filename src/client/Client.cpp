@@ -4,7 +4,7 @@
 
 #include <string>
 #include <iostream>
-#include "client.hpp"
+#include "Client.hpp"
 
 net::Client::Client(ba::io_context &context, std::string &address, std::string &port) :
 _ioContext{context},

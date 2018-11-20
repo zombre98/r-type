@@ -13,10 +13,10 @@ set(ENGINE
         )
 
 set(SERVER
-        server.hpp
-        server.cpp
-        protocolServer.cpp
-        protocolServer.hpp
+        Server.hpp
+        Server.cpp
+        ProtocolServer.cpp
+        ProtocolServer.hpp
         ../network/protocol.hpp
         address.hpp
         )
