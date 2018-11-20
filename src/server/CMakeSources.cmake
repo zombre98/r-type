@@ -7,17 +7,28 @@ set(ENGINE
         engine/Entity.hpp
         engine/ComponentId.hpp
         engine/systems/System.hpp
+		engine/systems/LuaSystem.hpp
         engine/systems/MovementSystem.cpp
         engine/Components.hpp
         engine/GameContainer.cpp
         )
 
+set(SERVER
+        Server.hpp
+        Server.cpp
+        ProtocolServer.cpp
+        ProtocolServer.hpp
+        ../network/protocol.hpp
+        address.hpp
+        )
+
 set(LIBRARY
 		library/Loader.cpp
 		)
-	  
+
 set(SOURCES
         ${CORE}
         ${ENGINE}
 		${LIBRARY}
+        ${SERVER}
         )

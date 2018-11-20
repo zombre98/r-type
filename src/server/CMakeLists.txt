@@ -10,4 +10,13 @@ target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/server
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/server/engine)
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/server/engine/systems)
 
-target_link_libraries(${TARGET_NAME} PRIVATE dl)
+target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/network)
+
+SET(LUA_LIB lua)
+SET(FS_LIB stdc++fs)
+SET(DL_LIB dl)
+
+target_link_libraries(${TARGET_NAME} PRIVATE ${BOOST_LIBS})
+target_link_libraries(${TARGET_NAME} PRIVATE ${LUA_LIB})
+target_link_libraries(${TARGET_NAME} PRIVATE ${FS_LIB})
+target_link_libraries(${TARGET_NAME} PRIVATE ${DL_LIB})
