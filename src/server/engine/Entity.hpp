@@ -11,7 +11,7 @@
 #include <vector>
 #include <array>
 #include "Components.hpp"
-#include "ComponentTypeId.hpp"
+#include "ComponentId.hpp"
 
 constexpr std::size_t MAX_COMPONENTS = 256;
 
@@ -30,38 +30,38 @@ namespace ecs {
 		template<class T>
 		T &getComponent() {
 			static_assert(std::is_base_of<Component, T>(), "T is not a component");
-			if (!bit[ComponentTypeId<T>::getTypeId()])
+			if (!bit[ComponentId::getTypeId<T>()])
 				throw std::runtime_error("Entity has no T component");
-			return static_cast<T &>(*componentArray[ComponentTypeId<T>::getTypeId()]);
+			return static_cast<T &>(*componentArray[ComponentId::getTypeId<T>()]);
 		}
 
 		template<class T>
 		const T &getComponent() const {
 			static_assert(std::is_base_of<Component, T>(), "T is not a component");
-			if (!bit[ComponentTypeId<T>::getTypeId()])
+			if (!bit[ComponentId::getTypeId<T>()])
 				throw std::runtime_error("Entity has no T component");
-			return static_cast<T &>(*componentArray[ComponentTypeId<T>::getTypeId()]);
+			return static_cast<T &>(*componentArray[ComponentId::getTypeId<T>()]);
 		}
 
 		template<class T>
 		bool hasComponent() const {
 			static_assert(std::is_base_of<Component, T>(), "T is not a component");
-			return bit[ComponentTypeId<T>::getTypeId()];
+			return bit[ComponentId::getTypeId<T>()];
 		}
 
 		template <typename T, typename... Args>
 		void addComponent(Args&&... args) {
 			static_assert(std::is_base_of<Component, T>(), "T is not a component");
-			bit[ComponentTypeId<T>::getTypeId()] = true;
-			componentArray[ComponentTypeId<T>::getTypeId()] = std::unique_ptr<T>(
+			bit[ComponentId::getTypeId<T>()] = true;
+			componentArray[ComponentId::getTypeId<T>()] = std::unique_ptr<T>(
 				new T{std::forward<Args>(args)...});
 		}
 
 		template<class T>
 		void removeComponent() {
 			static_assert(std::is_base_of<Component, T>(), "T is not a component");
-			bit[ComponentTypeId<T>::getTypeId()] = false;
-			componentArray[ComponentTypeId<T>::getTypeId()].reset(nullptr);
+			bit[ComponentId::getTypeId<T>()] = false;
+			componentArray[ComponentId::getTypeId<T>()].reset(nullptr);
 		}
 
 	public:
@@ -71,4 +71,6 @@ namespace ecs {
 		static std::size_t nextId;
 		std::array<std::unique_ptr<Component>, MAX_COMPONENTS> componentArray;
 	};
+
+	inline std::size_t Entity::nextId = 0;
 }

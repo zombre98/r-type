@@ -4,16 +4,26 @@ set(CORE
         )
 
 set(ENGINE
+        engine/Entity.hpp
+        engine/ComponentId.hpp
         engine/systems/System.hpp
 		engine/systems/LuaSystem.cpp
         engine/systems/MovementSystem.cpp
         engine/Components.hpp
-        engine/Entity.cpp
         engine/GameContainer.cpp
-        engine/ComponentTypeId.hpp
+        )
+
+set(SERVER
+        Server.hpp
+        Server.cpp
+        ProtocolServer.cpp
+        ProtocolServer.hpp
+        ../network/protocol.hpp
+        address.hpp
         )
 
 set(SOURCES
         ${CORE}
         ${ENGINE}
+        ${SERVER}
         )
