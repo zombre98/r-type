@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <filesystem>
+
 #include "sol.hpp"
 #include "System.hpp"
 
@@ -24,6 +26,6 @@ namespace ecs {
 
 	sol::state _lua;
 	sol::function _luaUpdate;
-	std::string _fileName;
+	std::filesystem::path _scriptPath;
   };
 }
