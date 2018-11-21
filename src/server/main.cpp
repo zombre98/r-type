@@ -3,7 +3,7 @@
 #include "Server.hpp"
 #include "ProtocolServer.hpp"
 #include "LuaSystem.hpp"
-#include "Loader.hpp"
+#include "Watcher.hpp"
 
 void luaSystemTest() {
   //creating an entityVector with a default Velocity component
@@ -33,6 +33,9 @@ int main(int argc, char *argv[]) {
   load.loadLib("hello.so");
   auto hello = load.getFunction<void (*)()>("hello");
   hello();
+
+  lib::Watcher watcher("assets/");
+  watcher.run();
 
   boost::asio::io_context ioContext;
   net::ProtocolServer serv(ioContext, 8080);
