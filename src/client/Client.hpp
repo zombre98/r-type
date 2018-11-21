@@ -26,6 +26,7 @@ namespace net {
 		template<typename T>
 		void sendData(T data) {
 			static_assert(std::is_base_of<Package, T>(), "Data is not a base of Package");
+			std::cout << "Send Data" << std::endl;
 			boost::array<T, 1> dataToSend = {{data}};
 			_socket.send_to(ba::buffer(dataToSend, sizeof(T)), _senderEndpoint);
 		}

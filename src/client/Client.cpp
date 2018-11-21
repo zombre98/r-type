@@ -43,7 +43,11 @@ void net::Client::receive(const boost::system::error_code &error, std::size_t by
 	{
 		for (size_t i = 0; i < bytes_transferred; i++)
 			_buff[i] = _recvArr[i];
-		Header head = getDataFromBuff<Header>(_buff);
+		auto head = getDataFromBuff<Header>(_buff);
+		if (head.op == protocolRType::CONNECTION) {
+			auto p = getData<netPlayer>();
+			std::cout << "I'm connected with id : " << p.id << std::endl;
+		}
 		/*
 		 * You need to add the handle of all struct here
 		 */

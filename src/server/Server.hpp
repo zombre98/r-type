@@ -25,6 +25,7 @@ namespace net {
 		template<typename T>
 		T getDataFromBuff(char *buff) {
 			T *pData = reinterpret_cast<T *>(buff);
+			_bytesToRead -= sizeof(T);
 			return *pData;
 		}
 
@@ -33,7 +34,7 @@ namespace net {
 		unsigned short _port;
 		ba::ip::udp::endpoint _serverEndpoint;
 		ba::ip::udp::socket _socket;
-		std::size_t _bytesToRead;
+		std::size_t _bytesToRead{0};
 		char _buff[128];
 		std::unordered_set<Address> _setClient;
 		boost::array<char, 128> _recvArr{};
