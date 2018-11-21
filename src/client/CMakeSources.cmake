@@ -10,6 +10,7 @@ set(CLIENT
         events/EventManager.hpp
         ResourceManager.hpp
         ../network/protocol.hpp
+        ../server/engine/Components.hpp
         Client.hpp
         Client.cpp
         )

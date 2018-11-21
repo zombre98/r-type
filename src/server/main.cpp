@@ -5,7 +5,7 @@
 #include "LuaSystem.hpp"
 
 int main(int argc, char *argv[]) {
-  //creating an entityVector with a default Velocity component
+  /*//creating an entityVector with a default Velocity component
   ecs::entityVector v = std::make_shared<std::vector<ecs::entityPtr>>();
   v->push_back(std::make_unique<ecs::Entity>());
   (*v)[0]->addComponent<ecs::Velocity>(1.5f, 4.f);
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 
   if (argc == 2) {
 	std::cout << "Server started on port: " << argv[1] << std::endl;
-  }
+  }*/
   boost::asio::io_context ioContext;
   net::ProtocolServer serv(ioContext, 8080);
   serv.poll();

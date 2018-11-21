@@ -13,12 +13,14 @@ namespace ecs {
 	MovementSystem::MovementSystem(entityVector allEntities)
 			: System(allEntities)
 	{
+		std::cout << "Construct MovementSystem" << std::endl;
 	}
 
-	bool MovementSystem::_isValidPosition(float x, float y)
-	{
+	bool MovementSystem::_isValidPosition(float x, float y) {
 		auto entities = getEntities<Position>();
 
+		if (entities.empty())
+			return false;
 		for (auto &entitie : entities) {
 				auto &posE = entitie->getComponent<Position>();
 				auto posP = roundPos<int>(x, y);

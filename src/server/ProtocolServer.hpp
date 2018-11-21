@@ -8,6 +8,7 @@
 #include <boost/bind.hpp>
 #include <iostream>
 #include "Server.hpp"
+#include "GameContainer.hpp"
 #include "protocol.hpp"
 
 namespace net {
@@ -18,14 +19,12 @@ namespace net {
 		void poll();
 
 		template<typename T>
-		void handleSend(const boost::system::error_code &,
-		                std::size_t) {
+		void handleSend(const boost::system::error_code &, std::size_t) {
 
 		}
 
 		template<typename T>
-		void doReceive(boost::shared_ptr<boost::array<T, 1>>)
-		{
+		void doReceive(boost::shared_ptr<boost::array<T, 1>>) {
 		}
 
 		template<typename T>
@@ -46,5 +45,8 @@ namespace net {
 				sendData<T>(data);
 			}
 		}
+
+	private:
+		rtype::GameContainer _gContainer{};
 	};
 }
