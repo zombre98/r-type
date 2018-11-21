@@ -11,6 +11,8 @@ set(ENGINE
         engine/systems/MovementSystem.cpp
         engine/Components.hpp
         engine/GameContainer.cpp
+		engine/World.cpp
+		engine/World.hpp
         )
 
 set(SERVER

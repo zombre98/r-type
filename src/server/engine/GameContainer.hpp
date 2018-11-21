@@ -7,17 +7,24 @@
 
 #pragma once
 
-#include <stack>
+#include <list>
+#include "World.hpp"
+#include "System.hpp"
 
 namespace ids {
 	class GameContainer {
 	public:
-		GameContainer() = default;
+		GameContainer();
 		GameContainer(GameContainer &) = delete;
 		GameContainer &operator=(GameContainer &) = delete;
 
-		void start();
+		void runSystem();
 
 	private:
+		void _initSystem();
+
+	private:
+		std::list<std::unique_ptr<ecs::System>> _listSystem;
+		std::shared_ptr<ecs::World> _world;
 	};
 }
