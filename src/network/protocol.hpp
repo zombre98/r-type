@@ -4,9 +4,13 @@
 
 #pragma once
 
+#include "Components.hpp"
+
 namespace net {
 	enum class protocolRType {
 		PLAYER_POSITION,
+		CONNECTION,
+		INPUT,
 		ENEMIES_POSITION,
 		SHOOT,
 		LIFE_POINT,
@@ -18,20 +22,26 @@ namespace net {
 	};
 
 	struct Header {
-		int id;
+		Header() = default;
+		Header(std::size_t i, protocolRType o) : id(i), op(o) {}
+		std::size_t id;
 		protocolRType op;
 	};
 
 	struct Package {
 		Package() = default;
 		explicit Package(Header &head) : head(head) {}
+		Package(std::size_t id, protocolRType op) : head(id, op) {}
 		Header head;
 	};
 
-	struct Pos : Package {
+	struct Pos : Package, ecs::Position {
 		Pos() = default;
-		Pos(Header &head, int x, int y) : Package{head}, x{x}, y{y} {}
-		int x;
-		int y;
+		Pos(Header &head, int x, int y) : Package{head}, ecs::Position(x, y) {}
+	};
+
+	struct netPlayer : Package, ecs::Player {
+		netPlayer() = default;
+		netPlayer(std::size_t id, protocolRType op) : Package{id, op}, ecs::Player(id) {};
 	};
 }

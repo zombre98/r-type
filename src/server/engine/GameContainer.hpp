@@ -19,9 +19,11 @@ namespace rtype {
 		GameContainer &operator=(GameContainer &) = delete;
 
 		void runSystem();
+		std::shared_ptr<ecs::World> getWorld() const { return _world; }
 
 	private:
 		void _initSystem();
+
 
 	private:
 		std::list<std::unique_ptr<ecs::System>> _listSystem;

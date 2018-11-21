@@ -8,3 +8,10 @@ ecs::Entity &ecs::World::createEntity() {
 	entities->emplace_back(std::make_unique<Entity>());
 	return *entities->back();
 }
+
+void ecs::World::createPlayer() {
+	static std::size_t idPlayer = 0;
+	auto &ent = createEntity();
+
+	ent.addComponent<Player>(idPlayer);
+}

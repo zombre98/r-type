@@ -6,7 +6,6 @@
 */
 
 #include "MovementSystem.hpp"
-#include "LuaSystem.hpp"
 #include "GameContainer.hpp"
 
 rtype::GameContainer::GameContainer() : _world{std::make_shared<ecs::World>()} {

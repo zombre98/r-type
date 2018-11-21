@@ -15,6 +15,12 @@ namespace ecs {
 	struct Component {
 	};
 
+	struct Player : public Component {
+		explicit Player(std::size_t _id) : id{_id} {};
+		~Player() = default;
+		std::size_t id;
+	};
+
 	struct Velocity : public Component {
 		Velocity(float w, float v) : x(w), y(v) {
 		};

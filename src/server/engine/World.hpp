@@ -16,10 +16,10 @@ namespace ecs {
 		~World() = default;
 
 		Entity &createEntity();
+		void createPlayer();
 		entityVector getEntities() const noexcept { return entities; }
 
 	private:
-		entityVector entities;
-
+		entityVector entities{std::make_shared<std::vector<std::unique_ptr<Entity>>>()};
 	};
 }
