@@ -26,12 +26,11 @@ void lib::Watcher::_watch() {
     for (auto &p : std::filesystem::recursive_directory_iterator(_watchedFolder.string())) {
         if (_loadedNames.find(p.path().string()) != _loadedNames.end())
             continue;
-        std::cout << p << std::endl;
         _loadedNames.insert(p.path().string());
         try {
-            Loader tmp;
-            tmp.loadLib(p.path().string());
-            _loadedLibs.push_back(std::make_unique<Loader>(tmp));
+            loaderPtr tmp(new Loader);
+            tmp->loadLib(p.path().string());
+            _loadedLibs.push_back(std::move(tmp));
         } catch (const std::invalid_argument &e) {
             std::cerr << "Ignoring: " << e.what() << std::endl;
         }

@@ -11,6 +11,7 @@
 #include <vector>
 #include <memory>
 #include <filesystem>
+#include <iostream>
 
 #include "Loader.hpp"
 
@@ -26,9 +27,7 @@ namespace lib {
 
         void run();
 
-        const std::vector<loaderPtr> &getLoaders() {
-            // auto v = std::move(_loadedLibs);
-            // _loadedLibs.clear();
+        std::vector<loaderPtr> &getLoaders() {
             return (_loadedLibs);
         }
 

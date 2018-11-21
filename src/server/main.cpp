@@ -36,8 +36,9 @@ int main(int argc, char *argv[]) {
   watcher.run();
 
   std::this_thread::sleep_for(std::chrono::seconds(3));
-  auto &v = watcher.getLoaders();
-  // v[0]->getFunction<void (*)()>("hello")();
+  std::vector<lib::loaderPtr> &v = watcher.getLoaders();
+
+  v[0]->getFunction<void (*)()>("hello")();
 
   boost::asio::io_context ioContext;
   net::ProtocolServer serv(ioContext, 8080);
