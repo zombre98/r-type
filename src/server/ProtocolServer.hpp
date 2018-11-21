@@ -47,6 +47,8 @@ namespace net {
 		}
 
 	private:
+		void _handleNewClient();
+	private:
 		rtype::GameContainer _gContainer{};
 	};
 }

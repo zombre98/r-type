@@ -13,5 +13,5 @@ void ecs::World::createPlayer() {
 	static std::size_t idPlayer = 0;
 	auto &ent = createEntity();
 
-	ent.addComponent<Player>(idPlayer);
+	ent.addComponent<Player>(idPlayer++);
 }
