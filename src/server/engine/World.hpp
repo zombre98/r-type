@@ -16,7 +16,7 @@ namespace ecs {
 		~World() = default;
 
 		Entity &createEntity();
-		entityVector getEntities() const noexcept { return entities; };
+		entityVector getEntities() const noexcept { return entities; }
 
 	private:
 		entityVector entities;

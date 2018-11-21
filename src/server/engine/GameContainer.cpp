@@ -6,17 +6,18 @@
 */
 
 #include "MovementSystem.hpp"
+#include "LuaSystem.hpp"
 #include "GameContainer.hpp"
 
-ids::GameContainer::GameContainer() : _world{std::make_shared<ecs::World>()} {
+rtype::GameContainer::GameContainer() : _world{std::make_shared<ecs::World>()} {
 	_initSystem();
 }
 
-void ids::GameContainer::_initSystem() {
+void rtype::GameContainer::_initSystem() {
 	_listSystem.emplace_back(new ecs::MovementSystem(_world->getEntities()));
 }
 
-void ids::GameContainer::runSystem() {
+void rtype::GameContainer::runSystem() {
 	for (auto &it : _listSystem)
 		it->update(1);
 }

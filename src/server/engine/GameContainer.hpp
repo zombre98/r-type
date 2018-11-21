@@ -11,7 +11,7 @@
 #include "World.hpp"
 #include "System.hpp"
 
-namespace ids {
+namespace rtype {
 	class GameContainer {
 	public:
 		GameContainer();
