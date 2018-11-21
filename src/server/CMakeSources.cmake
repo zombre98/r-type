@@ -1,6 +1,5 @@
 set(CORE
         main.cpp
-        ../common/vec.hpp
         )
 
 set(ENGINE
