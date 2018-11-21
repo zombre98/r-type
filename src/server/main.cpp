@@ -23,19 +23,21 @@ void luaSystemTest() {
 			<< std::endl << std::endl << std::endl;
 }
 
+#include <chrono>
+#include <thread>
+
 int main(int argc, char *argv[]) {
   if (argc == 2)
 	std::cout << argv[1] << std::endl;
 
   luaSystemTest();
 
-  lib::Loader load;
-  load.loadLib("hello.so");
-  auto hello = load.getFunction<void (*)()>("hello");
-  hello();
-
-  lib::Watcher watcher("assets/");
+  lib::Watcher watcher("assets/libraries");
   watcher.run();
+
+  std::this_thread::sleep_for(std::chrono::seconds(3));
+  auto &v = watcher.getLoaders();
+  // v[0]->getFunction<void (*)()>("hello")();
 
   boost::asio::io_context ioContext;
   net::ProtocolServer serv(ioContext, 8080);

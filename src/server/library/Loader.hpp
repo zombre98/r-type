@@ -16,7 +16,8 @@ namespace lib {
     public:
         Loader() noexcept : _handle(nullptr) {};
         ~Loader() noexcept {
-            dlclose(_handle);
+            if (_handle)
+                dlclose(_handle);
         };
 
         void loadLib(const std::string &libName);

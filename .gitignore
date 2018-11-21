@@ -4,6 +4,8 @@ r-type_server
 # Prerequisites
 *.d
 
+vgcore.*
+
 # Compiled Object files
 *.slo
 *.lo

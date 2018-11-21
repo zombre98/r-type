@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <set>
 #include <vector>
 #include <memory>
 #include <filesystem>
@@ -25,12 +26,16 @@ namespace lib {
 
         void run();
 
-        std::vector<loaderPtr> getLoaders() {
-            return (std::move(_loadedLibs));
+        const std::vector<loaderPtr> &getLoaders() {
+            // auto v = std::move(_loadedLibs);
+            // _loadedLibs.clear();
+            return (_loadedLibs);
         }
 
     private:
-        std::vector<std::string> _loadedLibNames;
+        void _watch();
+
+        std::set<std::string> _loadedNames;
         std::vector<loaderPtr> _loadedLibs;
         std::filesystem::path _watchedFolder;
     };
