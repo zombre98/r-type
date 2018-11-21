@@ -36,12 +36,13 @@ void net::ProtocolServer::handleData() {
 void net::ProtocolServer::_handleNewClient() {
 	getDataFromBuff<netPlayer>(_buff);
 	_gContainer.getWorld()->createPlayer();
-	auto newPlayer = _gContainer.getWorld()->getEntities()->back()->getComponent<ecs::Player>();
+	auto newPlayer = _gContainer.getWorld()->getAllEntities()->back()->getComponent<ecs::Player>();
 	auto entities = _gContainer.getWorld()->getEntities();
 	netPlayer plr{newPlayer.id, protocolRType::CONNECTION};
 	sendDataToAll(plr);
-	for (auto &it : *entities) {
-		if (it->hasComponent<ecs::Player>() && it->getComponent<ecs::Player>().id != newPlayer.id) {
+	auto vec = _gContainer.getWorld()->getEntities<ecs::Player>();
+	for (auto &it : vec) {
+		if (it->getComponent<ecs::Player>().id != newPlayer.id) {
 			netPlayer oldPly{it->getComponent<ecs::Player>().id, protocolRType::CONNECTION};
 			sendDataToAll(oldPly);
 		}

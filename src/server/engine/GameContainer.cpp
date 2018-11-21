@@ -13,7 +13,7 @@ rtype::GameContainer::GameContainer() : _world{std::make_shared<ecs::World>()} {
 }
 
 void rtype::GameContainer::_initSystem() {
-	_listSystem.emplace_back(new ecs::MovementSystem(_world->getEntities()));
+	_listSystem.emplace_back(new ecs::MovementSystem(_world->getAllEntities()));
 }
 
 void rtype::GameContainer::runSystem() {
