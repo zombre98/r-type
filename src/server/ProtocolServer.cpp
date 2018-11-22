@@ -16,7 +16,6 @@ void net::ProtocolServer::poll() {
 		_ioContext.poll();
 		_gContainer.runSystem();
 		if (_bytesToRead) {
-			std::cout << "Bytes to read : " << _bytesToRead << std::endl;
 			handleData();
 		}
 	}

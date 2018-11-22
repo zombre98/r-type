@@ -15,3 +15,9 @@ void ecs::World::createPlayer() {
 
 	ent.addComponent<Player>(idPlayer++);
 }
+
+void ecs::World::createEnemies() {
+	auto &ent = createEntity();
+
+	ent.addComponent<Position>(static_cast<float>(std::rand()), static_cast<float>(std::rand()));
+}

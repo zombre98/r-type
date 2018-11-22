@@ -12,6 +12,8 @@ set(ENGINE
         engine/systems/LuaSystem.hpp
         engine/systems/MovementSystem.hpp
         engine/systems/MovementSystem.cpp
+		engine/systems/SpawnMonster.hpp
+		engine/systems/SpawnMonster.cpp
         engine/Components.hpp
         engine/GameContainer.hpp
         engine/GameContainer.cpp
