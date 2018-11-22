@@ -18,6 +18,7 @@ namespace ecs {
 
 		Entity &createEntity();
 		void createPlayer();
+		void createEnemies();
 		entityVector getAllEntities() const noexcept { return entities; }
 
 		template<typename... Types>

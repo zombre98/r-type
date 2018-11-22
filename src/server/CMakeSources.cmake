@@ -9,6 +9,8 @@ set(ENGINE
         engine/systems/System.hpp
 		engine/systems/LuaSystem.hpp
         engine/systems/MovementSystem.cpp
+		engine/systems/SpawnMonster.hpp
+		engine/systems/SpawnMonster.cpp
         engine/Components.hpp
         engine/GameContainer.cpp
 		engine/World.cpp

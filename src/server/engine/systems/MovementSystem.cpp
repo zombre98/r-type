@@ -13,7 +13,6 @@ namespace ecs {
 	MovementSystem::MovementSystem(entityVector allEntities)
 			: System(allEntities)
 	{
-		std::cout << "Construct MovementSystem" << std::endl;
 	}
 
 	bool MovementSystem::_isValidPosition(float x, float y) {

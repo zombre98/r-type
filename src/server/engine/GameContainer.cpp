@@ -7,6 +7,7 @@
 
 #include "MovementSystem.hpp"
 #include "GameContainer.hpp"
+#include "SpawnMonster.hpp"
 
 rtype::GameContainer::GameContainer() : _world{std::make_shared<ecs::World>()} {
 	_initSystem();
@@ -14,6 +15,7 @@ rtype::GameContainer::GameContainer() : _world{std::make_shared<ecs::World>()} {
 
 void rtype::GameContainer::_initSystem() {
 	_listSystem.emplace_back(new ecs::MovementSystem(_world->getAllEntities()));
+	_listSystem.emplace_back(new ecs::SpawnMonster(_world->getAllEntities(), _world, std::chrono::steady_clock::now()));
 }
 
 void rtype::GameContainer::runSystem() {
