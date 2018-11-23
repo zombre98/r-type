@@ -15,7 +15,6 @@ int main() {
 	std::string port("8080");
 	net::Client client(io_context, addr, port);
 	net::NetPlayer p{0, net::protocolRType::CONNECTION};
-	std::cout << "Size of NetPlayer : " << sizeof(net::NetPlayer) << std::endl;
 	client.sendData(p);
 	client.poll();
 	return 0;

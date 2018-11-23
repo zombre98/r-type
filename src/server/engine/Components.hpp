@@ -16,12 +16,14 @@ namespace ecs {
 	};
 
 	struct Player : public Component {
+		Player() = delete;
 		explicit Player(std::size_t _id) : id{_id} {};
 		~Player() = default;
 		std::size_t id;
 	};
 
 	struct Velocity : public Component {
+		Velocity() = delete;
 		Velocity(float w, float v) : x(w), y(v) {
 		};
 		~Velocity() = default;
@@ -30,6 +32,7 @@ namespace ecs {
 	};
 
 	struct Orientation : public Component {
+		Orientation() = delete;
 		explicit Orientation(float ori) : orientation(ori) {
 		};
 		~Orientation() = default;
@@ -45,12 +48,14 @@ namespace ecs {
 	};
 
 	struct LifePoint : public Component {
+		LifePoint() = delete;
 		LifePoint(int basicLifePoint) : lifePoint(basicLifePoint) {}
 		~LifePoint() = default;
 		int lifePoint;
 	};
 
 	struct Score : public Component {
+		Score() = delete;
 		Score(int sc) : score(sc) {}
 		~Score() = default;
 		int score;
