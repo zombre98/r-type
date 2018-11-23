@@ -8,5 +8,8 @@ ecs::RemoveSystem::RemoveSystem(ecs::entityVector allEntities) : System(allEntit
 }
 
 void ecs::RemoveSystem::update(double delta[[maybe_unused]]) {
+	auto entitiesWithLife = getEntities<ecs::LifePoint>();
 
+	for (auto &entity : entitiesWithLife) {
+	}
 }

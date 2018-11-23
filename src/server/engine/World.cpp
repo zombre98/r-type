@@ -9,6 +9,13 @@ ecs::Entity &ecs::World::createEntity() {
 	return *entities->back();
 }
 
+void ecs::World::eraseEntity(std::size_t const &id) {
+	auto entity = std::find_if(entities->begin(), entities->end(), [id] (const std::unique_ptr<Entity> &e) {
+		return e->id == id;
+	});
+	entities->erase(entity);
+}
+
 void ecs::World::createPlayer() {
 	static std::size_t idPlayer = 0;
 	auto &ent = createEntity();
@@ -25,3 +32,4 @@ void ecs::World::createEnemies() {
 	ent.addComponent<Position>(std::rand() % 100, std::rand() % 100);
 	ent.addComponent<LifePoint>(0);
 }
+
