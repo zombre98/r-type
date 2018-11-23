@@ -49,4 +49,10 @@ namespace ecs {
 		~LifePoint() = default;
 		int lifePoint;
 	};
+
+	struct Score : public Component {
+		Score(int sc) : score(sc) {}
+		~Score() = default;
+		int score;
+	};
 }
