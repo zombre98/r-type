@@ -48,6 +48,10 @@ void net::Client::receive(const boost::system::error_code &error, std::size_t by
 			auto p = getData<netPlayer>();
 			std::cout << "I'm connected with id : " << p.id << std::endl;
 		}
+		if (head.op == protocolRType::POSITION) {
+			auto pos = getData<Pos>();
+			std::cout << "Head : " << pos.head.id << " Receive Pos : X " << pos.x  << " Y " << pos.y << std::endl;
+		}
 		/*
 		 * You need to add the handle of all struct here
 		 */

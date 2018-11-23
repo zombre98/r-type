@@ -8,10 +8,9 @@
 
 namespace net {
 	enum class protocolRType {
-		PLAYER_POSITION,
 		CONNECTION,
 		INPUT,
-		ENEMIES_POSITION,
+		POSITION,
 		SHOOT,
 		LIFE_POINT,
 		DEAD,
@@ -37,7 +36,7 @@ namespace net {
 
 	struct Pos : Package, ecs::Position {
 		Pos() = default;
-		Pos(Header &head, int x, int y) : Package{head}, ecs::Position(x, y) {}
+		Pos(std::size_t _id, protocolRType op, int x, int y) : Package{_id, op}, ecs::Position(x, y) {}
 	};
 
 	struct netPlayer : Package, ecs::Player {

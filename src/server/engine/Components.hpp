@@ -37,10 +37,10 @@ namespace ecs {
 	};
 
 	struct Position : public Component {
-		Position(float d, float v) : x(d), y(v) {
+		Position(int d, int v) : x(d), y(v) {
 		};
 		~Position() = default;
-		float x;
-		float y;
+		int x;
+		int y;
 	};
 }

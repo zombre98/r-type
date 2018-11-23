@@ -18,12 +18,13 @@ void net::ProtocolServer::poll() {
 		if (_bytesToRead) {
 			handleData();
 		}
+		_sendAllPosition();
 	}
 }
 
 void net::ProtocolServer::handleData() {
 	auto *header = reinterpret_cast<Header *>(_buff);
-	if (header->op == protocolRType::PLAYER_POSITION) {
+	if (header->op == protocolRType::POSITION) {
 		auto position = getDataFromBuff<Pos>(_buff);
 		sendDataToAll<Pos>(position);
 	}
@@ -45,6 +46,15 @@ void net::ProtocolServer::_handleNewClient() {
 			netPlayer oldPly{it->getComponent<ecs::Player>().id, protocolRType::CONNECTION};
 			sendDataToAll(oldPly);
 		}
+	}
+}
+
+void net::ProtocolServer::_sendAllPosition() {
+	auto EntityWithPos = _gContainer.getWorld()->getEntities<ecs::Position>();
+	for (auto &ent : EntityWithPos) {
+		auto &entPos = ent->getComponent<ecs::Position>();
+		Pos pos{ent->id, protocolRType::POSITION, entPos.x, entPos.y};
+		sendDataToAll(pos);
 	}
 }
 
