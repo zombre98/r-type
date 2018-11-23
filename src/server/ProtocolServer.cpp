@@ -19,6 +19,7 @@ void net::ProtocolServer::poll() {
 			handleData();
 		}
 		_sendAllPosition();
+		_sendLifePoint();
 	}
 }
 
@@ -34,27 +35,35 @@ void net::ProtocolServer::handleData() {
 }
 
 void net::ProtocolServer::_handleNewClient() {
-	getDataFromBuff<netPlayer>(_buff);
+	getDataFromBuff<NetPlayer>(_buff);
 	_gContainer.getWorld()->createPlayer();
-	auto newPlayer = _gContainer.getWorld()->getAllEntities()->back()->getComponent<ecs::Player>();
-	auto entities = _gContainer.getWorld()->getEntities();
-	netPlayer plr{newPlayer.id, protocolRType::CONNECTION};
-	sendDataToAll(plr);
+	auto &entPlayer = _gContainer.getWorld()->getAllEntities()->back();
+	NetPlayer plr{entPlayer->id, protocolRType::CONNECTION};
+	sendDataTo(plr, _setClient.back());
 	auto vec = _gContainer.getWorld()->getEntities<ecs::Player>();
 	for (auto &it : vec) {
-		if (it->getComponent<ecs::Player>().id != newPlayer.id) {
-			netPlayer oldPly{it->getComponent<ecs::Player>().id, protocolRType::CONNECTION};
+		if (it->getComponent<ecs::Player>().id != entPlayer->id) {
+			NetPlayer oldPly{it->id, protocolRType::OlD_CONNECTION};
 			sendDataToAll(oldPly);
 		}
 	}
 }
 
 void net::ProtocolServer::_sendAllPosition() {
-	auto EntityWithPos = _gContainer.getWorld()->getEntities<ecs::Position>();
-	for (auto &ent : EntityWithPos) {
+	auto EntitiesWithPos = _gContainer.getWorld()->getEntities<ecs::Position>();
+	for (auto &ent : EntitiesWithPos) {
 		auto &entPos = ent->getComponent<ecs::Position>();
 		Pos pos{ent->id, protocolRType::POSITION, entPos.x, entPos.y};
 		sendDataToAll(pos);
+	}
+}
+
+void net::ProtocolServer::_sendLifePoint() {
+	auto EntitiesWithLifePoint = _gContainer.getWorld()->getEntities<ecs::LifePoint>();
+	for (auto &ent : EntitiesWithLifePoint) {
+		auto &entlife = ent->getComponent<ecs::LifePoint>();
+		Life life{ent->id, protocolRType::LIFE_POINT, entlife.lifePoint};
+		sendDataToAll(life);
 	}
 }
 

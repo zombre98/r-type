@@ -14,6 +14,8 @@ void ecs::World::createPlayer() {
 	auto &ent = createEntity();
 
 	ent.addComponent<Player>(idPlayer++);
+	ent.addComponent<LifePoint>(100);
+	ent.addComponent<Position>(std::rand() % 100, std::rand() % 100);
 }
 
 void ecs::World::createEnemies() {

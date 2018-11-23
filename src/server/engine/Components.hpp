@@ -43,4 +43,10 @@ namespace ecs {
 		int x;
 		int y;
 	};
+
+	struct LifePoint : public Component {
+		LifePoint(int basicLifePoint) : lifePoint(basicLifePoint) {}
+		~LifePoint() = default;
+		int lifePoint;
+	};
 }
