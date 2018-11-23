@@ -50,4 +50,9 @@ namespace net {
 		Life() = default;
 		Life(std::size_t id, protocolRType op, int life) : Package{id, op}, ecs::LifePoint(life) {}
 	};
+
+	struct Score : Package, ecs::Score {
+		Score() = default;
+		Score(std::size_t id, protocolRType op, int score) : Package{id, op}, ecs::Score{score} {}
+	};
 }

@@ -18,6 +18,7 @@ void net::ProtocolServer::poll() {
 		if (_bytesToRead) {
 			handleData();
 		}
+		_sendScore();
 		_sendAllPosition();
 		_sendLifePoint();
 	}
@@ -51,8 +52,8 @@ void net::ProtocolServer::_handleNewClient() {
 
 void net::ProtocolServer::_sendAllPosition() {
 	auto EntitiesWithPos = _gContainer.getWorld()->getEntities<ecs::Position>();
-	for (auto &ent : EntitiesWithPos) {
-		auto &entPos = ent->getComponent<ecs::Position>();
+	for (auto const &ent : EntitiesWithPos) {
+		auto const &entPos = ent->getComponent<ecs::Position>();
 		Pos pos{ent->id, protocolRType::POSITION, entPos.x, entPos.y};
 		sendDataToAll(pos);
 	}
@@ -60,10 +61,20 @@ void net::ProtocolServer::_sendAllPosition() {
 
 void net::ProtocolServer::_sendLifePoint() {
 	auto EntitiesWithLifePoint = _gContainer.getWorld()->getEntities<ecs::LifePoint>();
-	for (auto &ent : EntitiesWithLifePoint) {
-		auto &entlife = ent->getComponent<ecs::LifePoint>();
-		Life life{ent->id, protocolRType::LIFE_POINT, entlife.lifePoint};
+	for (auto const &ent : EntitiesWithLifePoint) {
+		auto const &entLife = ent->getComponent<ecs::LifePoint>();
+		Life life{ent->id, protocolRType::LIFE_POINT, entLife.lifePoint};
 		sendDataToAll(life);
 	}
+}
+
+void net::ProtocolServer::_sendScore() {
+	auto EntitiesWithScore =  _gContainer.getWorld()->getEntities<ecs::Score>();
+	for (auto const &ent : EntitiesWithScore) {
+		auto const &entScore = ent->getComponent<ecs::Score>();
+		Score score{ent->id, protocolRType::SCORE, entScore.score};
+		sendDataToAll(score);
+	}
+
 }
 
