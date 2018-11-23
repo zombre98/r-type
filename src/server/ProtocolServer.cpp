@@ -14,7 +14,6 @@ net::ProtocolServer::ProtocolServer(boost::asio::io_context &context, unsigned s
 void net::ProtocolServer::poll() {
 	while (!_ioContext.stopped()) {
 		_ioContext.poll();
-		_gContainer.runSystem();
 		if (_bytesToRead) {
 			handleData();
 		}
@@ -22,6 +21,7 @@ void net::ProtocolServer::poll() {
 		_sendScore();
 		_sendAllPosition();
 		_sendLifePoint();
+		_gContainer.runSystem();
 	}
 }
 
