@@ -30,29 +30,34 @@ namespace net {
 	};
 
 	struct Package {
-		Package() = default;
+		Package() = delete;
 		explicit Package(Header &head) : head(head) {}
 		Package(std::size_t id, protocolRType op) : head(id, op) {}
 		Header head;
 	};
 
 	struct Pos : Package, ecs::Position {
-		Pos() = default;
+		Pos() = delete;
 		Pos(std::size_t _id, protocolRType op, int x, int y) : Package{_id, op}, ecs::Position(x, y) {}
 	};
 
 	struct NetPlayer : Package, ecs::Player {
-		NetPlayer() = default;
+		NetPlayer() = delete;
 		NetPlayer(std::size_t id, protocolRType op) : Package{id, op}, ecs::Player(id) {}
 	};
 
 	struct Life : Package, ecs::LifePoint {
-		Life() = default;
+		Life() = delete;
 		Life(std::size_t id, protocolRType op, int life) : Package{id, op}, ecs::LifePoint(life) {}
 	};
 
 	struct Score : Package, ecs::Score {
-		Score() = default;
+		Score() = delete;
 		Score(std::size_t id, protocolRType op, int score) : Package{id, op}, ecs::Score{score} {}
+	};
+
+	struct Dead : Package, ecs::Position {
+		Dead() = delete;
+		Dead(std::size_t id, protocolRType op, int x, int y) : Package{id, op}, ecs::Position{x, y} {}
 	};
 }

@@ -46,7 +46,7 @@ void net::Client::receive(const boost::system::error_code &error, std::size_t by
 		auto head = getDataFromBuff<Header>(_buff);
 		if (head.op == protocolRType::CONNECTION) {
 			auto p = getData<NetPlayer>();
-			//std::cout << "I'm connected with id : " << p.head.id << std::endl;
+			std::cout << "I'm connected with id : " << p.head.id << std::endl;
 		}
 		if (head.op == protocolRType::OlD_CONNECTION) {
 			auto p = getData<NetPlayer>();
@@ -63,6 +63,10 @@ void net::Client::receive(const boost::system::error_code &error, std::size_t by
 		if (head.op == protocolRType::SCORE) {
 			auto score = getData<Score>();
 			//std::cout << "Score : " << score.score << std::endl;
+		}
+		if (head.op == protocolRType::DEAD) {
+			auto dead = getData<Dead>();
+			std::cout << "Dead enemies : " << dead.x <<" " << dead.y << std::endl;
 		}
 		/*
 		 * You need to add the handle of all struct here
