@@ -5,7 +5,7 @@
 #pragma once
 
 #include <string>
-#include <unordered_set>
+#include <vector>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
 #include "address.hpp"
@@ -36,7 +36,7 @@ namespace net {
 		ba::ip::udp::socket _socket;
 		std::size_t _bytesToRead{0};
 		char _buff[128];
-		std::unordered_set<Address> _setClient;
+		std::vector<Address> _setClient;
 		boost::array<char, 128> _recvArr{};
 	};
 }

@@ -28,6 +28,12 @@ namespace net {
 		}
 
 		template<typename T>
+		void sendDataTo(T data, Address const &addr) {
+			_serverEndpoint.port(addr.port);
+			sendData(data);
+		}
+
+		template<typename T>
 		void sendData(T data) {
 			static_assert(std::is_base_of<Package, T>(), "Data is not a base of Package");
 			boost::array<T, 1> newData = {{data}};
@@ -47,6 +53,7 @@ namespace net {
 		}
 
 	private:
+		void _sendLifePoint();
 		void _sendAllPosition();
 		void _handleNewClient();
 	private:

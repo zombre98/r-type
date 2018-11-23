@@ -27,7 +27,7 @@ void net::Server::startReceive() {
 					ba::placeholders::error, ba::placeholders::bytes_transferred));
 
 	if (_serverEndpoint.port() != _port)
-		_setClient.emplace(_serverEndpoint.address(), _serverEndpoint.port());
+		_setClient.emplace_back(_serverEndpoint.address(), _serverEndpoint.port());
 }
 
 void net::Server::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {

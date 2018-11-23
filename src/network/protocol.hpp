@@ -5,12 +5,14 @@
 #pragma once
 
 #include "Components.hpp"
+#include "Entity.hpp"
 
 namespace net {
 	enum class protocolRType {
 		CONNECTION,
-		INPUT,
+		OlD_CONNECTION,
 		POSITION,
+		INPUT,
 		SHOOT,
 		LIFE_POINT,
 		DEAD,
@@ -39,8 +41,13 @@ namespace net {
 		Pos(std::size_t _id, protocolRType op, int x, int y) : Package{_id, op}, ecs::Position(x, y) {}
 	};
 
-	struct netPlayer : Package, ecs::Player {
-		netPlayer() = default;
-		netPlayer(std::size_t id, protocolRType op) : Package{id, op}, ecs::Player(id) {};
+	struct NetPlayer : Package, ecs::Player {
+		NetPlayer() = default;
+		NetPlayer(std::size_t id, protocolRType op) : Package{id, op}, ecs::Player(id) {}
+	};
+
+	struct Life : Package, ecs::LifePoint {
+		Life() = default;
+		Life(std::size_t id, protocolRType op, int life) : Package{id, op}, ecs::LifePoint(life) {}
 	};
 }
