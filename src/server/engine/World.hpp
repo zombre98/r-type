@@ -17,6 +17,7 @@ namespace ecs {
 		~World() = default;
 
 		Entity &createEntity();
+		void eraseEntity(std::size_t const &id);
 		void createPlayer();
 		void createEnemies();
 		entityVector getAllEntities() const noexcept { return entities; }
