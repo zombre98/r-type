@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   lib::Watcher watcher("assets/libraries");
   watcher.run();
 
-  std::this_thread::sleep_for(std::chrono::seconds(3));
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   std::vector<lib::loaderPtr> &v = watcher.getLoaders();
 
   v[0]->getFunction<void (*)()>("hello")();
