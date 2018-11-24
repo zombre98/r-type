@@ -3,19 +3,19 @@
 //
 
 #include "App.hpp"
-#include "Client.hpp"
+#include "network/Client.hpp"
 
 int main() {
-	/*App app;
+	App app;
 	app.init();
-	app.run();
-	return 0;*/
-	boost::asio::io_context io_context;
+	app.runApp();
+	return 0;
+	/*boost::asio::io_context io_context;
 	std::string addr("127.0.0.1");
 	std::string port("8080");
 	net::Client client(io_context, addr, port);
 	net::NetPlayer p{0, net::protocolRType::CONNECTION};
 	client.sendData(p);
 	client.poll();
-	return 0;
+	return 0;*/
 }

@@ -9,7 +9,7 @@
 
 #include <functional>
 #include <unordered_map>
-#include "events/SfmlEvents.hpp"
+#include "events/SfmlEvent.hpp"
 #include "Scene.hpp"
 
 class GameScene final : public AScene, public Receiver {

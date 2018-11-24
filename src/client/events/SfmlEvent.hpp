@@ -10,11 +10,6 @@
 #include <SFML/Window/Event.hpp>
 #include "EventManager.hpp"
 
-class SfmlEvent : public BaseEvent {
-	public:
-	explicit SfmlEvent(sf::Event &event) noexcept : _event{event} {
-	}
-
-	public:
+struct SfmlEvent : BaseEvent {
 	sf::Event _event;
 };
