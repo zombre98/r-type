@@ -9,7 +9,7 @@
 
 #include <experimental/filesystem>
 #include "Scene.hpp"
-#include "events/SfmlEvents.hpp"
+#include "events/SfmlEvent.hpp"
 
 namespace fs = std::filesystem;
 

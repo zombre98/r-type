@@ -12,8 +12,8 @@ set(ENGINE
         engine/systems/LuaSystem.hpp
         engine/systems/MovementSystem.hpp
         engine/systems/MovementSystem.cpp
-		engine/systems/SpawnMonster.hpp
-		engine/systems/SpawnMonster.cpp
+        engine/systems/SpawnMonsterSystem.hpp
+        engine/systems/SpawnMonsterSystem.cpp
 		engine/systems/RemoveSystem.hpp
 		engine/systems/RemoveSystem.cpp
         engine/Components.hpp

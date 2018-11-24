@@ -12,14 +12,20 @@
 #include <boost/make_shared.hpp>
 #include <iostream>
 #include "protocol.hpp"
+#include "scenes/Scene.hpp"
+
+namespace ba = boost::asio;
+
+class SceneManager;
 
 namespace net {
-
-	namespace ba = boost::asio;
-
 	class Client {
 	public:
-		explicit Client(ba::io_context &context, std::string &address, std::string &port);
+		Client(ba::io_context &context, SceneManager &_sceneManager);
+		Client(ba::io_context &context, SceneManager &_sceneManager, const std::string &address,
+		       const std::string &port);
+
+		void connect(const std::string &address, const std::string &port);
 		Header getHeaderAndReadBuff();
 		void poll();
 
@@ -36,8 +42,8 @@ namespace net {
 			boost::array<T, 1> newData = {{data}};
 			auto dataToSend = boost::make_shared<boost::array<T, 1>>(newData);
 			_socket.async_send_to(ba::buffer(*dataToSend, sizeof(T)), _senderEndpoint,
-			                      [this, dataToSend](boost::system::error_code , std::size_t) {
-									afterSend(dataToSend);
+			                      [this, dataToSend](boost::system::error_code, std::size_t) {
+				                      afterSend(dataToSend);
 			                      });
 		}
 
@@ -52,7 +58,6 @@ namespace net {
 	private:
 		template<typename T>
 		void afterSend(boost::shared_ptr<boost::array<T, 1>> data) {
-
 		}
 
 		template<typename T>
@@ -65,8 +70,9 @@ namespace net {
 
 	private:
 		ba::io_context &_ioContext;
-		std::string &_address;
-		std::string &_port;
+		SceneManager &_sceneManager;
+		std::string _address;
+		std::string _port;
 		ba::ip::udp::resolver _resolver;
 		ba::ip::udp::endpoint _receiverEndpoint;
 		ba::ip::udp::endpoint _senderEndpoint;
