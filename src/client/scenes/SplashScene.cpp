@@ -37,7 +37,9 @@ void SplashScene::receive(const SfmlEvent &event) noexcept {
 		if (event._event.key.code == sf::Keyboard::Escape) {
 			_parent.getWindow().close();
 		} else if (event._event.key.code == sf::Keyboard::Space) {
-			_parent.changeScene(create<MenuScene>(_parent));
+			std::cout << "Splash Scene receive Space" << std::endl;
+			_parent.pushScene(create<MenuScene>(_parent));
+			std::cout << "SplashScene had create a MenuScene before them" << std::endl;
 		}
 	}
 }

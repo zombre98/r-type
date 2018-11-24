@@ -15,7 +15,7 @@
 class GameScene final : public AScene, public Receiver {
 	public:
 	explicit GameScene(SceneManager &parent) noexcept : AScene(parent,
-		fs::current_path().parent_path() / "assets" / "images" / "game") {
+		fs::current_path() / "assets" / "images" / "game") {
 	}
 
 	/*
