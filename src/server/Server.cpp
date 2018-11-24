@@ -25,7 +25,6 @@ void net::Server::startReceive() {
 			_serverEndpoint,
 			boost::bind(&Server::receive, this,
 					ba::placeholders::error, ba::placeholders::bytes_transferred));
-
 	if (_serverEndpoint.port() != _port)
 		_setClient.emplace_back(_serverEndpoint.address(), _serverEndpoint.port());
 }

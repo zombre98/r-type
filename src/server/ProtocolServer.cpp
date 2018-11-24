@@ -14,6 +14,7 @@ net::ProtocolServer::ProtocolServer(boost::asio::io_context &context, unsigned s
 void net::ProtocolServer::poll() {
 	while (!_ioContext.stopped()) {
 		_ioContext.poll();
+		_gContainer.runSystem();
 		if (_bytesToRead) {
 			handleData();
 		}
@@ -21,7 +22,6 @@ void net::ProtocolServer::poll() {
 		_sendScore();
 		_sendAllPosition();
 		_sendLifePoint();
-		_gContainer.runSystem();
 	}
 }
 
@@ -45,7 +45,7 @@ void net::ProtocolServer::_handleNewClient() {
 	auto vec = _gContainer.getWorld()->getEntities<ecs::Player>();
 	for (auto &it : vec) {
 		if (it->getComponent<ecs::Player>().id != entPlayer->id) {
-			NetPlayer oldPly{it->id, protocolRType::OlD_CONNECTION};
+			NetPlayer oldPly{it->id, protocolRType::OLD_CONNECTION};
 			sendDataToAll(oldPly);
 		}
 	}

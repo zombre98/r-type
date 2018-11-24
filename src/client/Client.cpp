@@ -48,7 +48,7 @@ void net::Client::receive(const boost::system::error_code &error, std::size_t by
 			auto p = getData<NetPlayer>();
 			std::cout << "I'm connected with id : " << p.head.id << std::endl;
 		}
-		if (head.op == protocolRType::OlD_CONNECTION) {
+		if (head.op == protocolRType::OLD_CONNECTION) {
 			auto p = getData<NetPlayer>();
 			//std::cout << "Other Player id : " << p.head.id << std::endl;
 		}

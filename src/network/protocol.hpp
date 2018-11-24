@@ -10,7 +10,7 @@
 namespace net {
 	enum class protocolRType {
 		CONNECTION,
-		OlD_CONNECTION,
+		OLD_CONNECTION,
 		POSITION,
 		INPUT,
 		SHOOT,
