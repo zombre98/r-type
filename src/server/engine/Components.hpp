@@ -12,29 +12,36 @@
 
 namespace ecs {
 
-	struct Component {
-	};
+    struct Component {
+    };
 
-	struct Velocity : public Component {
-		Velocity(float w, float v) : x(w), y(v) {
-		};
-		~Velocity() = default;
-		float x;
-		float y;
-	};
+    struct Velocity : public Component {
+        Velocity(float w, float v) : x(w), y(v) {
+        };
+        ~Velocity() = default;
+        float x;
+        float y;
+    };
 
-	struct Orientation : public Component {
-		explicit Orientation(float ori) : orientation(ori) {
-		};
-		~Orientation() = default;
-		float orientation;
-	};
+    struct Orientation : public Component {
+        explicit Orientation(float ori) : orientation(ori) {
+        };
+        ~Orientation() = default;
+        float orientation;
+    };
 
-	struct Position : public Component {
-		Position(float d, float v) : x(d), y(v) {
-		};
-		~Position() = default;
-		float x;
-		float y;
-	};
+    struct Position : public Component {
+        Position(float d, float v) : x(d), y(v) {
+        };
+        ~Position() = default;
+        float x;
+        float y;
+    };
+
+    struct Input : public Component {
+        Input() = default;
+        ~Input() = default;
+        bool up, down, left, right, shoot;
+    };
+
 }

@@ -32,7 +32,7 @@ namespace ecs {
 	void MovementSystem::update(double delta[[maybe_unused]]) {
 		auto entities = getEntities<Position, Velocity>();
 
-		for (auto e : entities) {
+		for (auto &e : entities) {
 			auto &position = e->getComponent<Position>();
 			auto &velocity = e->getComponent<Velocity>();
 			if (velocity.x == 0.0f && velocity.y == 0.0f) {
