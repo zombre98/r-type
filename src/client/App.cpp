@@ -18,8 +18,12 @@ void App::runApp() {
 
 	while (isOpen()) {
 		sf::Event sfEvent{};
-		while (pollEvent(sfEvent) || poll()) {
+		while (pollEvent(sfEvent)) {
 			_sceneMgr.emit(sfEvent);
+		}
+		if (poll()) {
+			auto head = _client.getHeaderAndReadBuff();
+			std::cout << "Header : " << head.id << std::endl;
 		}
 		clear();
 		auto timeSinceLastFrame = deltaClock.getElapsedTime().asSeconds();
