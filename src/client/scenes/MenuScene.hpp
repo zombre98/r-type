@@ -16,7 +16,7 @@ namespace fs = std::experimental::filesystem;
 class MenuScene final : public AScene, public Receiver {
 	public:
 	explicit MenuScene(SceneManager &parent) noexcept : AScene(parent,
-		fs::current_path().parent_path() / "assets" / "images" / "menu") {
+		fs::current_path() / "assets" / "images" / "menu") {
 	}
 
 	/*

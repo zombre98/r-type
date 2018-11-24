@@ -12,7 +12,7 @@
 
 class App : public sf::RenderWindow, public ba::io_context {
 	public:
-	explicit App() : sf::RenderWindow(sf::VideoMode(1920, 1080), "R-Type", sf::Style::Close | sf::Style::Fullscreen),
+	explicit App() : sf::RenderWindow(sf::VideoMode::getDesktopMode(), "R-Type", sf::Style::Close | sf::Style::Fullscreen),
 		_sceneMgr(*this, _client),
 		_client{*this, _sceneMgr} {
 	}
