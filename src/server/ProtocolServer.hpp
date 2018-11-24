@@ -29,6 +29,7 @@ namespace net {
 
 		template<typename T>
 		void sendDataTo(T data, Address const &addr) {
+			_serverEndpoint.address(addr.address);
 			_serverEndpoint.port(addr.port);
 			sendData(data);
 		}
@@ -47,6 +48,7 @@ namespace net {
 		template<typename T>
 		void sendDataToAll(T data) {
 			for (auto &it : _setClient) {
+				_serverEndpoint.address(it.address);
 				_serverEndpoint.port(it.port);
 				sendData<T>(data);
 			}
