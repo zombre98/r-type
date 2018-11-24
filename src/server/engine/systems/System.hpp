@@ -34,7 +34,8 @@ namespace ecs {
 			}
 			return _entities;
 		}
-		private:
+
+	private:
 		template<class... Types>
 		bool passFilter(const std::unique_ptr<Entity> &entity[[maybe_unused]],
 			TypeList<Types...> tl[[maybe_unused]]) {

@@ -6,13 +6,17 @@ add_executable(${TARGET_NAME} ${SOURCES} ${COMMON})
 
 set_target_properties(${TARGET_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/common)
+target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/server/library)
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/server/engine)
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/server/engine/systems)
+
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/network)
 
 SET(LUA_LIB lua)
 SET(FS_LIB stdc++fs)
+SET(DL_LIB dl)
 
 target_link_libraries(${TARGET_NAME} PRIVATE ${BOOST_LIBS})
 target_link_libraries(${TARGET_NAME} PRIVATE ${LUA_LIB})
 target_link_libraries(${TARGET_NAME} PRIVATE ${FS_LIB})
+target_link_libraries(${TARGET_NAME} PRIVATE ${DL_LIB})

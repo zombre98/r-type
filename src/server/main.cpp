@@ -3,8 +3,9 @@
 #include "Server.hpp"
 #include "ProtocolServer.hpp"
 #include "LuaSystem.hpp"
+#include "Watcher.hpp"
 
-int main(int argc, char *argv[]) {
+void luaSystemTest() {
   //creating an entityVector with a default Velocity component
   ecs::entityVector v = std::make_shared<std::vector<ecs::entityPtr>>();
   v->push_back(std::make_unique<ecs::Entity>());
@@ -18,11 +19,27 @@ int main(int argc, char *argv[]) {
   //updating the system with a custom delta
   testSystem.update(102);
 
-  std::cout << "Checking velocity x changed (should be 5.6):" << (*v)[0]->getComponent<ecs::Velocity>().x << std::endl;
+  std::cout << "Checking velocity x changed (should be 5.6):" << (*v)[0]->getComponent<ecs::Velocity>().x
+			<< std::endl << std::endl << std::endl;
+}
 
-  if (argc == 2) {
-	std::cout << "Server started on port: " << argv[1] << std::endl;
-  }
+#include <chrono>
+#include <thread>
+
+int main(int argc, char *argv[]) {
+  if (argc == 2)
+	std::cout << argv[1] << std::endl;
+
+  luaSystemTest();
+
+  lib::Watcher watcher("assets/libraries");
+  watcher.run();
+
+  std::this_thread::sleep_for(std::chrono::seconds(1));
+  std::vector<lib::loaderPtr> &v = watcher.getLoaders();
+
+  v[0]->getFunction<void (*)()>("hello")();
+
   boost::asio::io_context ioContext;
   net::ProtocolServer serv(ioContext, 8080);
   serv.poll();
