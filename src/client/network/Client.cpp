@@ -33,13 +33,13 @@ net::Client::Client(ba::io_context &context, SceneManager &_sceneManager, const 
 void net::Client::connect(const std::string &address, const std::string &port) {
 	_address = address;
 	_port = port;
-	_senderEndpoint = *_resolver.resolve(ba::ip::udp::v4(), address, port).begin();
+	_senderEndpoint = *_resolver.resolve(ba::ip::udp::v4(), _address, _port).begin();
 	_socket.open(ba::ip::udp::v4());
 	std::cout << "Called connect on socket" << std::endl;
 }
 
 net::Header net::Client::getHeaderAndReadBuff() {
-	boost::array<char, 128> recvArr{};
+	boost::array<char, READ_SIZE> recvArr{};
 	_bytesReceived = _socket.receive_from(ba::buffer(recvArr), _receiverEndpoint);
 	for (size_t i = 0; i < _bytesReceived; i++)
 		_buff[i] = recvArr[i];
@@ -97,5 +97,14 @@ void net::Client::poll() {
 	asyncReceive();
 	while (!_ioContext.stopped()) {
 		_ioContext.poll();
+	}
+}
+
+void net::Client::pollOnce() {
+	asyncReceive();
+	std::cout << "Poll once" << std::endl;
+	if (!_ioContext.stopped()) {
+		std::cout << "Poll one" << std::endl;
+		_ioContext.poll_one();
 	}
 }

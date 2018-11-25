@@ -19,6 +19,7 @@ void GameScene::enter() noexcept {
 
 void GameScene::update(float timeSinceLastFrame) noexcept {
 	displayGame(timeSinceLastFrame);
+	_parent.getClient().pollOnce();
 }
 
 void GameScene::displayGame(float timeSinceLastFrame[[maybe_unused]]) noexcept {

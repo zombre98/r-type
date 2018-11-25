@@ -33,6 +33,7 @@ void net::ProtocolServer::handleData() {
 	}
 	if (header->op == protocolRType::CONNECTION) {
 		_handleNewClient();
+		std::cout << "Handle New connection" << std::endl;
 	}
 }
 
