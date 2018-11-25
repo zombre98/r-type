@@ -4,6 +4,10 @@ r-type_server
 # Prerequisites
 *.d
 
+.gdb_history
+
+vgcore.*
+
 # Compiled Object files
 *.slo
 *.lo
