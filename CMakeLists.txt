@@ -16,5 +16,5 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(lib/sol2)
 
-add_subdirectory(lib/SFML)
+# add_subdirectory(lib/SFML)
 add_subdirectory(src)
