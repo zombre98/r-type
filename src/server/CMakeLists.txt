@@ -10,11 +10,10 @@ target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/server
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/server/engine/systems)
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/network)
 
-set(LUA_LIB lua)
-
-if (WIN32)
+if (MSVC)
+	add_compile_definitions(_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
 else ()
 	target_link_libraries(${TARGET_NAME} PRIVATE stdc++fs)
 endif ()
 
-target_link_libraries(${TARGET_NAME} PRIVATE ${CONAN_LIBS} ${LUA_LIB})
+target_link_libraries(${TARGET_NAME} PRIVATE ${CONAN_LIBS})
