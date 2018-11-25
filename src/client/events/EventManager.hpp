@@ -43,11 +43,6 @@ class ClassTypeId {
 };
 
 /*
- * static attribute must be implemented
- */
-inline ClassTypeId::TypeId ClassTypeId::_nextTypeId = 0;
-
-/*
  * CallBack Wrapper
  */
 class BaseCallbackWrapper {

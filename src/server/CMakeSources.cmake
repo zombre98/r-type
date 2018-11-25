@@ -5,11 +5,15 @@ set(CORE
 
 set(ENGINE
         engine/Entity.hpp
+        engine/Entity.cpp
         engine/ComponentId.hpp
+        engine/ComponentId.cpp
         engine/systems/System.hpp
 		engine/systems/LuaSystem.hpp
+        engine/systems/MovementSystem.hpp
         engine/systems/MovementSystem.cpp
         engine/Components.hpp
+        engine/GameContainer.hpp
         engine/GameContainer.cpp
         )
 
