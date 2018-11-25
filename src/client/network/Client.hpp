@@ -59,7 +59,7 @@ namespace net {
 
 	private:
 		template<typename T>
-		void afterSend(boost::shared_ptr<boost::array<T, 1>> data) {
+		void afterSend(boost::shared_ptr<boost::array<T, 1>>) {
 		}
 
 		template<typename T>

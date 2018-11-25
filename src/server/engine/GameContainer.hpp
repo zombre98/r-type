@@ -12,6 +12,7 @@
 #include "System.hpp"
 
 namespace rtype {
+	using systemPtr = std::unique_ptr<ecs::System>;
 	class GameContainer {
 	public:
 		GameContainer();
@@ -26,7 +27,7 @@ namespace rtype {
 
 
 	private:
-		std::list<std::unique_ptr<ecs::System>> _listSystem;
+		std::list<systemPtr> _listSystem;
 		std::shared_ptr<ecs::World> _world;
 	};
 }
