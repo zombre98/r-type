@@ -108,11 +108,11 @@ class ResourceManager {
 		for (auto &it : fs::recursive_directory_iterator(_resourceDirectoryPath)) {
 			if (it.status().type() != fs::file_type::directory) {
 				if (it.path().filename() == filename) {
-					return _texturesRegistry.load(std::move(filename.stem().string()), it.path().string());
+					return _texturesRegistry.load(std::move(filename.stem()), it.path());
 				}
 			}
 		}
-		return _texturesRegistry.load(std::move(filename.stem().string()), filename.string());
+		return _texturesRegistry.load(std::move(filename.stem()), filename);
 	}
 
 	void loadAllTexturesInDirectory(const fs::path &filename) {
@@ -120,7 +120,7 @@ class ResourceManager {
 			if (it.status().type() == fs::file_type::directory && it.path().filename() == filename) {
 				for (auto &sub : fs::recursive_directory_iterator(it.path())) {
 					if (sub.status().type() != fs::file_type::directory)
-						loadTexture(sub.path().filename().string());
+						loadTexture(sub.path().filename());
 				}
 				return;
 			}
@@ -144,13 +144,13 @@ class ResourceManager {
 				for (const auto &sub : fs::directory_iterator(it.path())) {
 					loadTexture(sub.path().filename());
 					const fs::path &id = sub.path();
-					_animations[filename.string()].getAnimations().insert(
-						id.filename().replace_extension("").string());
+					_animations[filename].getAnimations().insert(
+						id.filename().replace_extension(""));
 				}
 				break;
 			}
 		}
-		return _animations[filename.string()];
+		return _animations[filename];
 	}
 
 	AnimationState &getAnimation(const std::string &id) noexcept {
@@ -161,11 +161,11 @@ class ResourceManager {
 		for (auto &it : fs::recursive_directory_iterator(_resourceDirectoryPath)) {
 			if (it.status().type() != fs::file_type::directory) {
 				if (it.path().filename() == filename) {
-					return _fontsRegistry.load(std::move(filename.stem().string()), it.path().string());
+					return _fontsRegistry.load(std::move(filename.stem()), it.path());
 				}
 			}
 		}
-		return _fontsRegistry.load(std::move(filename.stem().string()), filename.string());
+		return _fontsRegistry.load(std::move(filename.stem()), filename);
 	}
 
 	sf::Font getFont(const std::string &id) {
