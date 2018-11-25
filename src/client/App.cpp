@@ -22,8 +22,7 @@ void App::runApp() {
 			_sceneMgr.emit(sfEvent);
 		}
 		if (poll()) {
-			auto head = _client.getHeaderAndReadBuff();
-			std::cout << "Header : " << head.id << std::endl;
+			_client.asyncReceive();
 		}
 		clear();
 		auto timeSinceLastFrame = deltaClock.getElapsedTime().asSeconds();

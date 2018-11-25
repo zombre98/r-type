@@ -29,6 +29,7 @@ namespace net {
 
 		template<typename T>
 		void sendDataTo(T data, Address const &addr) {
+			std::cout << "Send data to client" << std::endl;
 			_serverEndpoint.address(addr.address);
 			_serverEndpoint.port(addr.port);
 			sendData(data);

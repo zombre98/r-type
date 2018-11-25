@@ -28,9 +28,11 @@ namespace net {
 		void connect(const std::string &address, const std::string &port);
 		Header getHeaderAndReadBuff();
 		void poll();
+		void pollOnce();
 
 		template<typename T>
 		void sendData(T data) {
+			std::cout << "Send some data" << std::endl;
 			static_assert(std::is_base_of<Package, T>(), "Data is not a base of Package");
 			boost::array<T, 1> dataToSend = {{data}};
 			_socket.send_to(ba::buffer(dataToSend, sizeof(T)), _senderEndpoint);
@@ -77,8 +79,9 @@ namespace net {
 		ba::ip::udp::endpoint _receiverEndpoint;
 		ba::ip::udp::endpoint _senderEndpoint;
 		ba::ip::udp::socket _socket;
-		char _buff[128];
-		boost::array<char, 128> _recvArr{};
+		static int constexpr READ_SIZE = 128;
+		char _buff[READ_SIZE];
+		boost::array<char, READ_SIZE> _recvArr{};
 		std::size_t _bytesReceived;
 	};
 }
