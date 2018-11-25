@@ -13,13 +13,13 @@
 class App : public sf::RenderWindow, public ba::io_context {
 	public:
 	explicit App() : sf::RenderWindow(sf::VideoMode::getDesktopMode(), "R-Type", sf::Style::Close | sf::Style::Fullscreen),
-		_sceneMgr(*this, _client),
-		_client{*this, _sceneMgr} {
+	                 _client{*this, _sceneMgr},
+	                 _sceneMgr(*this, _client) {
 	}
 
 	void init();
 	void runApp();
 	private:
-	SceneManager _sceneMgr;
 	net::Client _client;
+	SceneManager _sceneMgr;
 };

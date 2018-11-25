@@ -101,10 +101,10 @@ void net::Client::poll() {
 }
 
 void net::Client::pollOnce() {
-	asyncReceive();
 	std::cout << "Poll once" << std::endl;
+	asyncReceive();
 	if (!_ioContext.stopped()) {
-		std::cout << "Poll one" << std::endl;
+		std::cout << "IO context is not stopped" << std::endl;
 		_ioContext.poll_one();
 	}
 }

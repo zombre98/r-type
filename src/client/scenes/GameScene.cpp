@@ -8,13 +8,8 @@
 #include "GameScene.hpp"
 
 void GameScene::enter() noexcept {
-	std::cout << "Start of GameScene" << std::endl;
 	_evtMgr.subscribe<SfmlEvent>(*this);
 	_resourceMgr.loadTexture("background.png");
-	std::cout << "End of GameScene" << std::endl;
-	_parent.getClient().connect("127.0.0.1", "8080");
-	net::NetPlayer p{0, net::protocolRType::CONNECTION};
-	_parent.getClient().sendData(p);
 }
 
 void GameScene::update(float timeSinceLastFrame) noexcept {
