@@ -29,6 +29,7 @@ namespace net {
 		Header getHeaderAndReadBuff();
 		void poll();
 		void pollOnce();
+		void restart() { _ioContext.restart(); }
 
 		template<typename T>
 		void sendData(T data) {
@@ -70,8 +71,9 @@ namespace net {
 
 		void receive(const boost::system::error_code &error, std::size_t bytes_transferre);
 
-	private:
+	public:
 		ba::io_context &_ioContext;
+	private:
 		SceneManager &_sceneManager;
 		std::string _address;
 		std::string _port;
