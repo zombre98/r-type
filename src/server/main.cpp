@@ -1,6 +1,3 @@
-#include <iostream>
-#include "protocol.hpp"
-#include "Server.hpp"
 #include "ProtocolServer.hpp"
 
 int main(int argc, char *argv[]) {
