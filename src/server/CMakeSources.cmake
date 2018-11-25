@@ -8,6 +8,7 @@ set(ENGINE
   engine/ComponentId.hpp
   engine/systems/System.hpp
   engine/systems/LuaSystem.hpp
+  engine/systems/InputSystem.cpp
   engine/systems/MovementSystem.cpp
   engine/Components.hpp
   engine/GameContainer.cpp
