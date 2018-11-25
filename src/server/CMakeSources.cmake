@@ -1,7 +1,7 @@
 set(CORE
-        main.cpp
-        ../common/vec.hpp
-        )
+  main.cpp
+  ../common/vec.hpp
+  )
 
 set(ENGINE
         engine/Entity.hpp
@@ -26,8 +26,14 @@ set(SERVER
         address.cpp
         )
 
+set(LIBRARY
+        library/Watcher.cpp
+        library/Loader.cpp
+        )
+
 set(SOURCES
         ${CORE}
         ${ENGINE}
         ${SERVER}
+        ${LIBRARY}
         )

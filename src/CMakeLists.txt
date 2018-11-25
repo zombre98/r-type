@@ -4,5 +4,7 @@ else ()
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wfatal-errors")
 endif ()
 
+include(CMakeSources.cmake)
+
 add_subdirectory(client)
 add_subdirectory(server)
