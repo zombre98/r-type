@@ -17,7 +17,6 @@ class MenuScene final : public AScene, public Receiver {
 	public:
 	explicit MenuScene(SceneManager &parent) noexcept : AScene(parent,
 		fs::current_path() / "assets" / "images" / "menu") {
-		std::cout << "Create Menu Scene" << std::endl;
 	}
 
 	/*

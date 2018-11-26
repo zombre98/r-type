@@ -4,7 +4,7 @@
 
 #include "RemoveSystem.hpp"
 
-ecs::RemoveSystem::RemoveSystem(ecs::entityVector allEntities, ecs::World &world) :
+ecs::RemoveSystem::RemoveSystem(ecs::entityVector allEntities, std::shared_ptr<ecs::World> world) :
 System(allEntities),  _world{world} {
 }
 
@@ -13,7 +13,7 @@ void ecs::RemoveSystem::update(double delta[[maybe_unused]]) {
 
 	for (auto &entity : entitiesWithLife) {
 		if (entity->getComponent<ecs::LifePoint>().lifePoint <= 0) {
-			_world.eraseEntity(entity->id);
+			_world->eraseEntity(entity->id);
 		}
 	}
 }

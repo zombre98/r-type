@@ -32,8 +32,8 @@ void net::ProtocolServer::handleData() {
 		sendDataToAll<Pos>(position);
 	}
 	if (header->op == protocolRType::CONNECTION) {
-		_handleNewClient();
 		std::cout << "Handle New connection" << std::endl;
+		_handleNewClient();
 	}
 }
 
@@ -56,6 +56,7 @@ void net::ProtocolServer::_sendAllPosition() {
 	auto EntitiesWithPos = _gContainer.getWorld()->getEntities<ecs::Position>();
 	for (auto const &ent : EntitiesWithPos) {
 		auto const &entPos = ent->getComponent<ecs::Position>();
+		std::cout << "Enemy pos {" << entPos.x << ", " << entPos.y <<  "}" << std::endl;
 		Pos pos{ent->id, protocolRType::POSITION, entPos.x, entPos.y};
 		sendDataToAll(pos);
 	}
