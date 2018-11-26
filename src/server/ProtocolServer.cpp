@@ -26,7 +26,7 @@ void net::ProtocolServer::poll() {
 }
 
 void net::ProtocolServer::handleData() {
-	auto *header = reinterpret_cast<Header *>(_buff);
+	auto header = reinterpret_cast<Header *>(_buff);
 	if (header->op == protocolRType::POSITION) {
 		auto position = getDataFromBuff<Pos>(_buff);
 		sendDataToAll<Pos>(position);
