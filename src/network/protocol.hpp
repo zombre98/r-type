@@ -13,7 +13,6 @@ namespace net {
 		OLD_CONNECTION,
 		POSITION,
 		INPUT,
-		SHOOT,
 		LIFE_POINT,
 		DEAD,
 		SCORE,

@@ -18,10 +18,8 @@ namespace ecs {
 	bool MovementSystem::_isValidPosition(float x, float y) {
 		auto entities = getEntities<Position>();
 
-		if (entities.empty())
-			return false;
-		for (auto &entitie : entities) {
-				auto &posE = entitie->getComponent<Position>();
+		for (auto &entity : entities) {
+				auto &posE = entity->getComponent<Position>();
 				auto posP = roundPos<int>(x, y);
 				auto posRounded = roundPos<int>(posE.x, posE.y);
 				if (posP == posRounded)
@@ -33,9 +31,9 @@ namespace ecs {
 	void MovementSystem::update(double delta[[maybe_unused]]) {
 		auto entities = getEntities<Position, Velocity>();
 
-		for (auto e : entities) {
-			auto &position = e->getComponent<Position>();
-			auto &velocity = e->getComponent<Velocity>();
+		for (auto &entity : entities) {
+			auto &position = entity->getComponent<Position>();
+			auto &velocity = entity->getComponent<Velocity>();
 			if (velocity.x == 0.0f && velocity.y == 0.0f) {
 				continue;
 			}
