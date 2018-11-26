@@ -53,8 +53,9 @@ void net::ProtocolServer::_handleNewClient() {
 }
 
 void net::ProtocolServer::_sendAllPosition() {
-	auto EntitiesWithPos = _gContainer.getWorld()->getEntities<ecs::Position>();
+	auto const &EntitiesWithPos = _gContainer.getWorld()->getEntities<ecs::Position>();
 	for (auto const &ent : EntitiesWithPos) {
+		std::cout << "Id : " << ent->id << std::endl;
 		auto const &entPos = ent->getComponent<ecs::Position>();
 		std::cout << "Enemy pos {" << entPos.x << ", " << entPos.y <<  "}" << std::endl;
 		Pos pos{ent->id, protocolRType::POSITION, entPos.x, entPos.y};
@@ -63,7 +64,7 @@ void net::ProtocolServer::_sendAllPosition() {
 }
 
 void net::ProtocolServer::_sendLifePoint() {
-	auto EntitiesWithLifePoint = _gContainer.getWorld()->getEntities<ecs::LifePoint>();
+	auto const &EntitiesWithLifePoint = _gContainer.getWorld()->getEntities<ecs::LifePoint>();
 	for (auto const &ent : EntitiesWithLifePoint) {
 		auto const &compLife = ent->getComponent<ecs::LifePoint>();
 		Life life{ent->id, protocolRType::LIFE_POINT, compLife.lifePoint};
@@ -72,7 +73,7 @@ void net::ProtocolServer::_sendLifePoint() {
 }
 
 void net::ProtocolServer::_sendScore() {
-	auto EntitiesWithScore =  _gContainer.getWorld()->getEntities<ecs::Score>();
+	auto const &EntitiesWithScore =  _gContainer.getWorld()->getEntities<ecs::Score>();
 	for (auto const &ent : EntitiesWithScore) {
 		auto const &compScore = ent->getComponent<ecs::Score>();
 		Score score{ent->id, protocolRType::SCORE, compScore.score};
@@ -81,7 +82,7 @@ void net::ProtocolServer::_sendScore() {
 }
 
 void net::ProtocolServer::_sendDeadEntities() {
-	auto EntityWithLifePoint = _gContainer.getWorld()->getEntities<ecs::LifePoint, ecs::Position>();
+	auto const &EntityWithLifePoint = _gContainer.getWorld()->getEntities<ecs::LifePoint, ecs::Position>();
 	for (auto const &ent : EntityWithLifePoint) {
 		auto const &compLife = ent->getComponent<ecs::LifePoint>();
 		auto const &compPos = ent->getComponent<ecs::Position>();
