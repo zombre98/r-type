@@ -18,6 +18,7 @@ void SplashScene::enter() noexcept {
 	std::for_each(_texts.begin(), _texts.end(), [](auto &tc) {
 		tc.t.setPosition(tc.pos);
 	});
+	std::cout << "In SplashScene : " << _parent.getClient()._ioContext.stopped() << std::endl;
 }
 
 void SplashScene::exit() noexcept {
@@ -37,9 +38,7 @@ void SplashScene::receive(const SfmlEvent &event) noexcept {
 		if (event._event.key.code == sf::Keyboard::Escape) {
 			_parent.getWindow().close();
 		} else if (event._event.key.code == sf::Keyboard::Space) {
-			std::cout << "Splash Scene receive Space" << std::endl;
 			_parent.pushScene(create<MenuScene>(_parent));
-			std::cout << "SplashScene had create a MenuScene before them" << std::endl;
 		}
 	}
 }

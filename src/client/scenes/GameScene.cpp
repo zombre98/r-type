@@ -14,6 +14,7 @@ void GameScene::enter() noexcept {
 
 void GameScene::update(float timeSinceLastFrame) noexcept {
 	displayGame(timeSinceLastFrame);
+	boost::asio::make_work_guard(_parent.getClient()._ioContext);
 	_parent.getClient().pollOnce();
 }
 

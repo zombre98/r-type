@@ -21,9 +21,6 @@ void App::runApp() {
 		while (pollEvent(sfEvent)) {
 			_sceneMgr.emit(sfEvent);
 		}
-		if (poll()) {
-			_client.asyncReceive();
-		}
 		clear();
 		auto timeSinceLastFrame = deltaClock.getElapsedTime().asSeconds();
 		_sceneMgr.update(timeSinceLastFrame);

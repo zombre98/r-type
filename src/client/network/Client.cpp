@@ -30,6 +30,7 @@ void net::Client::connect(const std::string &address, const std::string &port) {
 	_address = address;
 	_port = port;
 	_senderEndpoint = *_resolver.resolve(ba::ip::udp::v4(), _address, _port).begin();
+//	_receiverEndpoint = *_resolver.resolve(ba::ip::udp::v4(), _address, _port).begin();
 	_socket.open(ba::ip::udp::v4());
 	std::cout << "Called connect on socket" << std::endl;
 }
@@ -47,9 +48,10 @@ net::Header net::Client::getHeaderAndReadBuff() {
 	return returnHeader;
 }
 
-void net::Client::  asyncReceive() {
+void net::Client::asyncReceive() {
 	_socket.async_receive_from(ba::buffer(_recvArr), _receiverEndpoint,
 	                           boost::bind(&Client::receive, this, ba::placeholders::error, ba::placeholders::bytes_transferred));
+//	std::cout << "Sender Endpoint : "<<  _receiverEndpoint.address() << " port : " << _receiverEndpoint.port() << std::endl;
 }
 
 void net::Client::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {
@@ -66,22 +68,22 @@ void net::Client::receive(const boost::system::error_code &error, std::size_t by
 			}
 			case protocolRType::OLD_CONNECTION : {
 				auto p = getData<NetPlayer>();
-				// std::cout << "Other Player id : " << p.head.id << std::endl;
+				std::cout << "Other Player id : " << p.head.id << std::endl;
 				break;
 			}
 			case protocolRType::POSITION : {
 				auto pos = getData<Pos>();
-				// std::cout << "Head : " << pos.head.id << " Receive Pos : X " << pos.x  << " Y " << pos.y << std::endl;
+				std::cout << "Head : " << pos.head.id << " Receive Pos : X " << pos.x  << " Y " << pos.y << std::endl;
 				break;
 			}
 			case protocolRType::LIFE_POINT : {
 				auto life = getData<Life>();
-				// std::cout << "Id : " << life.head.id << " LifePoint = " << life.lifePoint << std::endl;
+				std::cout << "Id : " << life.head.id << " LifePoint = " << life.lifePoint << std::endl;
 				break;
 			}
 			case protocolRType::SCORE : {
 				auto score = getData<Score>();
-				// std::cout << "Score : " << score.score << std::endl;
+				std::cout << "Score : " << score.score << std::endl;
 				break;
 			}
 			case protocolRType::DEAD : {

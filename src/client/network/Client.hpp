@@ -73,7 +73,7 @@ namespace net {
 
 	public:
 		ba::io_context &_ioContext;
-	private:
+//	private:
 		SceneManager &_sceneManager;
 		std::string _address;
 		std::string _port;
