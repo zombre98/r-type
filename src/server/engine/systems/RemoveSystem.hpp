@@ -10,11 +10,11 @@
 namespace ecs {
 	class RemoveSystem : public System {
 	public:
-		explicit RemoveSystem(entityVector entities, std::shared_ptr<ecs::World> world);
+		explicit RemoveSystem(entityVector entities, ecs::World &world);
 
 		void update(double delta) override;
 
 	private:
-		std::shared_ptr<ecs::World> _world;
+		ecs::World &_world;
 	};
 };
