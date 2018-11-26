@@ -2,6 +2,7 @@
 // Created by Thomas Burgaud on 21/11/2018.
 //
 
+#include <iostream>
 #include "World.hpp"
 
 ecs::Entity &ecs::World::createEntity() {
@@ -30,6 +31,6 @@ void ecs::World::createEnemies() {
 	auto &ent = createEntity();
 
 	ent.addComponent<Position>(std::rand() % 100, std::rand() % 100);
-	ent.addComponent<LifePoint>(0);
+	ent.addComponent<LifePoint>(10);
 }
 
