@@ -8,7 +8,6 @@
 #pragma once
 
 #include <utility>
-#include <iostream>
 #include <algorithm>
 #include "Entity.hpp"
 
