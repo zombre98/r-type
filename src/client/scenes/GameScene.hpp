@@ -23,12 +23,8 @@ class GameScene final : public AScene, public Receiver {
 		auto h = _parent.getClient().getHeaderAndReadBuff();
 		if (h.op == net::protocolRType::CONNECTION) {
 			auto c =  _parent.getClient().getData<net::NetPlayer>();
-			std::cout << "Coucou : " << c.id << std::endl;
 		}
-
 		_parent.getClient().asyncReceive();
-		std::cout << "Receiver Address : " << _parent.getClient()._receiverEndpoint.address() << " port : " << _parent.getClient()._receiverEndpoint.port() << std::endl;
-		std::cout << "Sender Endpoint : "<<  _parent.getClient()._senderEndpoint.address() << " port : " << _parent.getClient()._senderEndpoint.port() << std::endl;
 		//auto  h = _parent.getClient().getHeaderAndReadBuff();
 		//std::cout << "Header " << h.id << " " << static_cast<int>(h.op) << std::endl;
 	}
