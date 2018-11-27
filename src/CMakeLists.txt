@@ -1,7 +1,7 @@
 if (WIN32)
-    set(CMAKE_CXX_FLAGS "/W4 /permissive /EHsc")
+    string(APPEND CMAKE_CXX_FLAGS "/W4 /permissive /EHsc /std:c++17")
 else ()
-    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wfatal-errors")
+    string(APPEND CMAKE_CXX_FLAGS "-Wall -Wextra -Wfatal-errors")
 endif ()
 
 include(CMakeSources.cmake)
