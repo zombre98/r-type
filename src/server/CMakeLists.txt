@@ -14,9 +14,9 @@ target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/networ
 
 if (MSVC)
 	add_compile_definitions(_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
-  # TODO(armandmgt) Define a macro to remove code related to library loading
+	# TODO(armandmgt) Define a macro to remove code related to library loading
 else ()
 	target_link_libraries(${TARGET_NAME} PRIVATE stdc++fs dl)
 endif ()
 
-target_link_libraries(${TARGET_NAME} PRIVATE ${CONAN_LIBS})
+target_link_libraries(${TARGET_NAME} PRIVATE ${CONAN_LIBS} lua)

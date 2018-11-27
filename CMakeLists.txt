@@ -9,11 +9,14 @@ endif()
 
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
-conan_cmake_run(CONANFILE conanfile.txt
-                BASIC_SETUP)
+if(NOT EXISTS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/conanbuildinfo.cmake)
+    conan_cmake_run(CONANFILE conanfile.txt
+                    BASIC_SETUP)
+endif()
 
 set(CMAKE_CXX_STANDARD 17)
 
 include_directories(lib/sol2)
 
+add_subdirectory(lib/lua)
 add_subdirectory(src)
