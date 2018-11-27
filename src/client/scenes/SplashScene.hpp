@@ -11,7 +11,7 @@
 #include "Scene.hpp"
 #include "events/SfmlEvents.hpp"
 
-namespace fs = std::experimental::filesystem;
+namespace fs = std::filesystem;
 
 class SplashScene final : public AScene, public Receiver {
 	public:

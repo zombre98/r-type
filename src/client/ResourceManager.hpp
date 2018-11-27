@@ -10,16 +10,16 @@
 #include <utility>
 #include <iostream>
 #include <unordered_map>
-#include <experimental/filesystem>
+#include <filesystem>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
-namespace fs = std::experimental::filesystem;
+namespace fs = std::filesystem;
 
 template<typename Resource>
 class ResourceHolder {
 	public:
-	explicit ResourceHolder() noexcept = default;
+	explicit ResourceHolder() = default;
 
 	template<typename ...Args>
 	Resource &load(const std::string &id, Args &&...args) {
@@ -144,13 +144,13 @@ class ResourceManager {
 				for (const auto &sub : fs::directory_iterator(it.path())) {
 					loadTexture(sub.path().filename());
 					const fs::path &id = sub.path();
-					_animations[filename.string()].getAnimations().insert(
+					_animations[filename].getAnimations().insert(
 						id.filename().replace_extension(""));
 				}
 				break;
 			}
 		}
-		return _animations[filename.string()];
+		return _animations[filename];
 	}
 
 	AnimationState &getAnimation(const std::string &id) noexcept {

@@ -26,8 +26,6 @@ namespace net {
 		std::size_t id;
 		static std::size_t _nextId;
 	};
-
-	inline std::size_t Address::_nextId = 0;
 }
 
 namespace std

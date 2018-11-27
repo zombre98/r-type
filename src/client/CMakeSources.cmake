@@ -6,7 +6,7 @@ set(CLIENT
         App.cpp
         scenes/Scene.cpp
         events/SfmlEvents.hpp
-        events/EventManager.hpp
+        events/EventManager.cpp
         ResourceManager.hpp
         ../network/protocol.hpp
         Client.hpp
