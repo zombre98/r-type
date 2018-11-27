@@ -95,7 +95,7 @@ class ResourceManager {
 	using FontsRegistry = ResourceHolder<sf::Font>;
 
 	explicit ResourceManager(
-		fs::path resourceDirectoryPath = (fs::current_path().parent_path() / "assets")) noexcept
+		fs::path resourceDirectoryPath = (fs::current_path() / "assets")) noexcept
 		: _resourceDirectoryPath{std::move(resourceDirectoryPath)} {
 	}
 

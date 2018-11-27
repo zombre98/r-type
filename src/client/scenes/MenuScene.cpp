@@ -12,7 +12,7 @@ void MenuScene::enter() noexcept {
 	_evtMgr.subscribe<SfmlEvent>(*this);
 	_resourceMgr.loadTexture("play_background.png");
 	const auto &font = _resourceMgr.loadFont(
-		fs::current_path().parent_path() / "assets" / "font" / "prototype.ttf");
+		fs::current_path() / "assets" / "font" / "prototype.ttf");
 	_texts = {{sf::Text{"R-Type", font, 72}, {840, 450}}, {sf::Text{"Press SPACE to play", font}, {810, 650}}};
 	std::for_each(_texts.begin(), _texts.end(), [](auto &tc) {
 		tc.t.setPosition(tc.pos);

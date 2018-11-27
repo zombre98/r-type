@@ -12,16 +12,14 @@ void App::init() {
 	_sceneMgr.pushScene(AScene::create<SplashScene>(_sceneMgr));
 }
 
-void App::run() {
-	/*
-	 * App Init
-	 */
+void App::runApp() {
 	setFramerateLimit(60);
 	sf::Clock deltaClock;
+
 	while (isOpen()) {
-		sf::Event event{};
-		while (pollEvent(event)) {
-			_sceneMgr.event(event);
+		sf::Event sfEvent{};
+		while (pollEvent(sfEvent)) {
+			_sceneMgr.emit(sfEvent);
 		}
 		clear();
 		auto timeSinceLastFrame = deltaClock.getElapsedTime().asSeconds();

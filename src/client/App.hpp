@@ -8,15 +8,18 @@
 #pragma once
 
 #include "scenes/Scene.hpp"
+#include "network/Client.hpp"
 
-class App : public sf::RenderWindow {
+class App : public sf::RenderWindow, public ba::io_context {
 	public:
-	explicit App() : sf::RenderWindow(sf::VideoMode(1920, 1080), "R-Type",
-		sf::Style::Close | sf::Style::Fullscreen), _sceneMgr(*this) {
+	explicit App() : sf::RenderWindow(sf::VideoMode::getDesktopMode(), "R-Type", sf::Style::Close | sf::Style::Fullscreen),
+	                 _client{*this, _sceneMgr},
+	                 _sceneMgr(*this, _client) {
 	}
 
 	void init();
-	void run();
+	void runApp();
 	private:
+	net::Client _client;
 	SceneManager _sceneMgr;
 };

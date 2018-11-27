@@ -9,13 +9,21 @@
 
 #include <functional>
 #include <unordered_map>
-#include "events/SfmlEvents.hpp"
+#include "events/SfmlEvent.hpp"
 #include "Scene.hpp"
 
 class GameScene final : public AScene, public Receiver {
 	public:
 	explicit GameScene(SceneManager &parent) noexcept : AScene(parent,
-		fs::current_path().parent_path() / "assets" / "images" / "game") {
+		fs::current_path() / "assets" / "images" / "game") {
+		_parent.getClient().connect("127.0.0.1", "8080");
+		net::NetPlayer p{0, net::protocolRType::CONNECTION};
+		_parent.getClient().asyncSendData(p);
+		auto h = _parent.getClient().getHeaderAndReadBuff();
+		if (h.op == net::protocolRType::CONNECTION) {
+			auto c =  _parent.getClient().getData<net::NetPlayer>();
+		}
+		_parent.getClient().asyncReceive();
 	}
 
 	/*
