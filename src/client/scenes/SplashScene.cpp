@@ -18,7 +18,6 @@ void SplashScene::enter() noexcept {
 	std::for_each(_texts.begin(), _texts.end(), [](auto &tc) {
 		tc.t.setPosition(tc.pos);
 	});
-	std::cout << "In SplashScene : " << _parent.getClient()._ioContext.stopped() << std::endl;
 }
 
 void SplashScene::exit() noexcept {

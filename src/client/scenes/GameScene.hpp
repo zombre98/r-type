@@ -17,7 +17,6 @@ class GameScene final : public AScene, public Receiver {
 	explicit GameScene(SceneManager &parent) noexcept : AScene(parent,
 		fs::current_path() / "assets" / "images" / "game") {
 		_parent.getClient().connect("127.0.0.1", "8080");
-		std::cout << "1 : "<< _parent.getClient()._ioContext.stopped() << std::endl;
 		net::NetPlayer p{0, net::protocolRType::CONNECTION};
 		_parent.getClient().asyncSendData(p);
 		auto h = _parent.getClient().getHeaderAndReadBuff();
