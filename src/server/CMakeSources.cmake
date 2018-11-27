@@ -1,7 +1,6 @@
 set(CORE
-  		main.cpp
-  		../common/vec.hpp
-  		)
+  main.cpp
+  )
 
 set(ENGINE
         engine/Entity.hpp
@@ -19,9 +18,9 @@ set(ENGINE
         engine/Components.hpp
         engine/GameContainer.hpp
         engine/GameContainer.cpp
-		engine/World.cpp
+        engine/World.cpp
 		engine/World.hpp
-        )
+ 		)
 
 set(SERVER
   		Server.hpp
@@ -38,8 +37,8 @@ set(LIBRARY
   		)
 
 set(SOURCES
-        ${CORE}
-        ${ENGINE}
-        ${SERVER}
-        ${LIBRARY}
-        )
+  		${CORE}
+  		${ENGINE}
+  		${LIBRARY}
+  		${SERVER}
+  		)
