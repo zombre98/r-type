@@ -71,9 +71,8 @@ namespace net {
 
 		void receive(const boost::system::error_code &error, std::size_t bytes_transferre);
 
-	public:
+	private:
 		ba::io_context &_ioContext;
-//	private:
 		SceneManager &_sceneManager;
 		std::string _address;
 		std::string _port;

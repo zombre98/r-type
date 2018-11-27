@@ -30,7 +30,6 @@ void net::Client::connect(const std::string &address, const std::string &port) {
 	_address = address;
 	_port = port;
 	_senderEndpoint = *_resolver.resolve(ba::ip::udp::v4(), _address, _port).begin();
-//	_receiverEndpoint = *_resolver.resolve(ba::ip::udp::v4(), _address, _port).begin();
 	_socket.open(ba::ip::udp::v4());
 	std::cout << "Called connect on socket" << std::endl;
 }
@@ -51,7 +50,6 @@ net::Header net::Client::getHeaderAndReadBuff() {
 void net::Client::asyncReceive() {
 	_socket.async_receive_from(ba::buffer(_recvArr), _receiverEndpoint,
 	                           boost::bind(&Client::receive, this, ba::placeholders::error, ba::placeholders::bytes_transferred));
-//	std::cout << "Sender Endpoint : "<<  _receiverEndpoint.address() << " port : " << _receiverEndpoint.port() << std::endl;
 }
 
 void net::Client::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {
