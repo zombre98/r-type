@@ -25,8 +25,6 @@ class GameScene final : public AScene, public Receiver {
 			auto c =  _parent.getClient().getData<net::NetPlayer>();
 		}
 		_parent.getClient().asyncReceive();
-		//auto  h = _parent.getClient().getHeaderAndReadBuff();
-		//std::cout << "Header " << h.id << " " << static_cast<int>(h.op) << std::endl;
 	}
 
 	/*
