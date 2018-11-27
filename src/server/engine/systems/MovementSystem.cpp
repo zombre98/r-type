@@ -15,12 +15,11 @@ namespace ecs {
 	{
 	}
 
-	bool MovementSystem::_isValidPosition(float x, float y)
-	{
+	bool MovementSystem::_isValidPosition(float x, float y) {
 		auto entities = getEntities<Position>();
 
-		for (auto &entitie : entities) {
-				auto &posE = entitie->getComponent<Position>();
+		for (auto &entity : entities) {
+				auto &posE = entity->getComponent<Position>();
 				auto posP = roundPos<int>(x, y);
 				auto posRounded = roundPos<int>(posE.x, posE.y);
 				if (posP == posRounded)

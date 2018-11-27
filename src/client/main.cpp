@@ -3,10 +3,11 @@
 //
 
 #include "App.hpp"
+#include "network/Client.hpp"
 
 int main() {
 	App app;
 	app.init();
-	app.run();
+	app.runApp();
 	return 0;
 }

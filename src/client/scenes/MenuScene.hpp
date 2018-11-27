@@ -9,14 +9,14 @@
 
 #include <experimental/filesystem>
 #include "Scene.hpp"
-#include "events/SfmlEvents.hpp"
+#include "events/SfmlEvent.hpp"
 
 namespace fs = std::filesystem;
 
 class MenuScene final : public AScene, public Receiver {
 	public:
 	explicit MenuScene(SceneManager &parent) noexcept : AScene(parent,
-		fs::current_path().parent_path() / "assets" / "images" / "menu") {
+		fs::current_path() / "assets" / "images" / "menu") {
 	}
 
 	/*

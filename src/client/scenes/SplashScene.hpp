@@ -9,14 +9,14 @@
 
 #include <experimental/filesystem>
 #include "Scene.hpp"
-#include "events/SfmlEvents.hpp"
+#include "events/SfmlEvent.hpp"
 
 namespace fs = std::filesystem;
 
 class SplashScene final : public AScene, public Receiver {
 	public:
 	explicit SplashScene(SceneManager &parent) noexcept : AScene(parent,
-		fs::current_path().parent_path() / "assets" / "images" / "splash") {
+		fs::current_path() / "assets" / "images" / "splash") {
 	}
 
 	/*

@@ -12,7 +12,7 @@
 namespace ecs {
 	class MovementSystem : public System {
 	public:
-		MovementSystem(entityVector);
+		explicit MovementSystem(entityVector);
 
 		void update(double delta) override;
 	private:

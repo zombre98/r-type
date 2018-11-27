@@ -13,7 +13,7 @@
 namespace ecs {
     class InputSystem : public System {
     public:
-        InputSystem(entityVector);
+        InputSystem(entityVector, std::shared_ptr<World>);
 
         void update(double delta) override final;
 

@@ -1,0 +1,139 @@
+Network Working Group                                         Anatole J.
+Request for Comments: 8522                            Harvard University
+BCP: 42                                                         Nov 2018
+Category: Best Current Practice
+
+
+                         UDP game protocol
+
+Copyright Notice
+
+   Copyright (C) ArAnaMas Society (2018).  All Rights Reserved.
+
+Table of Contents
+
+   1.   Introduction . . . . . . . . . . . . . . . . . . . . . . . . 1
+   2.   Protocol . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+   3.   Server . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+   4.   Client . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+   5.   Connection Protocol  . . . . . . . . . . . . . . . . . . . . 2
+   6.   Server side  . . . . . . . . . . . . . . . . . . . . . . . . 3
+   7.   Client side  . . . . . . . . . . . . . . . . . . . . . . . . 4
+   8.   Acknowledgments  . . . . . . . . . . . . . . . . . . . . . . 5
+
+
+
+Anatole                  Best Current Practice                  [Page 1]
+
+RFC 8522                   UDP game protocol                    Nov 2018
+
+1. INTRODUCTION
+   
+   The objectives of r-type are 1) to make a funny game 2) to 
+   define a udp protocol that can be used for any game
+   During this file we will see how the protocol is defined between
+   the server and the client.
+
+
+2. PROTOCOL
+
+   The goal of this protocol is to describe the protocol between 
+   the server and the client side. All of the protocol will use binary
+   encryption. 
+   
+
+Anatole                  Best Current Practice                  [Page 2]
+
+RFC 8522                   UDP game protocol                    Nov 2018
+
+
+3. Server. The server is here to be able to handle new connections,
+   disconections, and player inputs. He is supposed to manage which
+   player is sending what, the ennemies  positions, the life, shoots,
+   score and also managed all the on-screen deaths.
+
+4. Client. The client will manage all the player inputs, which includes
+   the shots, and all the possible directions (up, down, left, right).
+
+5. Connection Protocol. What whill be used in order to send data from
+   the Server to the Client, and from the Client to the Server. The
+   Connection Protocol uses a UDP Protocol.
+
+
+Anatole                  Best Current Practice                  [Page 3]
+
+RFC 8522                   UDP game protocol                    Nov 2018
+
+
+6. Server side.
+   MUST implement the described table below
+   MUST NOT forget anything
+   MAY implement other structures and headers
+   NetPlayer : Struct containing connection info and connected id
+   +-------------------------------------------------------------------+
+   |   Header     |    Structure        |     Description              |
+   |--------------+---------------------+------------------------------|
+   |   id, 0      |    NetPlayer        |    New connection            |
+   |--------------+---------------------+------------------------------|
+   |   id, 1      |    NetPlayer        |    Old connection            |
+   |--------------+---------------------+------------------------------|
+   |   id, 2      |    pos_x, pos_y     |    Position                  |
+   |--------------+---------------------+------------------------------|
+   |   id, 4      |    life_point       |    Entity HP                 |
+   |--------------+---------------------+------------------------------|
+   |   id, 5      |    pos_x, pos_y     | Is the entity dead plus pos. |
+   |--------------+---------------------+------------------------------|
+   |   id, 6      |    score            |      Id with score           |
+   |--------------+---------------------+------------------------------|
+   |   id, 7      |    stage_id         |  Stage id w/ the sprites id  |
+   |--------------+---------------------+------------------------------|
+   |   id, 8      |    stage_id,        |                              |
+   |              |    [sprites an]     |   Return sprites sheet       |
+   |--------------+---------------------+------------------------------|
+   |   id, 9      |    stage_id,        |                              |
+   |              |    bool(win/lose)   |   stage id and the win bool  |
+   |--------------+---------------------+------------------------------|
+
+
+
+Anatole                  Best Current Practice                  [Page 4]
+
+RFC 8522                   UDP game protocol                  March 2018
+
+7. Client side.
+   MUST implement everything below
+   MUST NOT forget anything
+   MAY implement other strutures and headers
+   +-------------------------------------------------------------------+
+   |   Header     |    Structure     |           Description           |
+   |--------------+------------------+---------------------------------|
+   |   id, 0      |                  |            Connection           |
+   |--------------+------------------+---------------------------------|
+   |   id, 2      |                  |                                 |
+   |--------------+------------------+---------------------------------|
+   |   id, 3      |   vel, power     |    Player shooting              |
+   |--------------+------------------+---------------------------------|
+   |   id, 4      |   vel            |    Describes a shot with the    |
+   |              |                  |    emiter's id and its velocity |
+   |--------------+------------------+---------------------------------|
+   |   id, 5      |   velocity       |    Player going up              |
+   |--------------+------------------+---------------------------------|
+   |   id, 6      |   velocity       |    Player going down            |
+   |--------------+------------------+---------------------------------|
+   |   id, 7      |   velocity       |    Player going left            |
+   |--------------+------------------+---------------------------------|
+   |   id, 8      |   velocity       |    Player going right           |
+   +--------------+------------------+---------------------------------+
+
+
+
+Anatole                  Best Current Practice                  [Page 5]
+
+RFC 8522                   UDP game protocol                  March 2018
+
+
+8. Acknowledgments
+
+   The definitions and Protocol described in this RFC were described by
+   a small group which worked on the RType project. Thanks to Anatole,
+   Armand and Thomas.
