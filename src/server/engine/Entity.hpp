@@ -71,6 +71,4 @@ namespace ecs {
 		static std::size_t nextId;
 		std::array<std::unique_ptr<Component>, MAX_COMPONENTS> componentArray;
 	};
-
-	inline std::size_t Entity::nextId = 0;
 }

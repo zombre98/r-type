@@ -5,8 +5,8 @@ set(CORE
 set(CLIENT
         App.cpp
         scenes/Scene.cpp
-        events/SfmlEvent.hpp
-        events/EventManager.hpp
+        events/SfmlEvents.hpp
+        events/EventManager.cpp
         ResourceManager.hpp
         ../network/protocol.hpp
         ../server/engine/Components.hpp
