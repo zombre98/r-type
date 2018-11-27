@@ -27,6 +27,8 @@ set(SERVER
   		Server.cpp
   		ProtocolServer.cpp
   		ProtocolServer.hpp
+		address.hpp
+		address.cpp
   		../network/protocol.hpp
   		address.hpp
   		)

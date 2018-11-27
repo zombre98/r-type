@@ -10,6 +10,7 @@ set(CLIENT
         scenes/Scene.cpp
         events/SfmlEvent.hpp
         events/EventManager.hpp
+        events/EventManager.cpp
         ResourceManager.hpp
         ../network/protocol.hpp
         ../server/engine/Components.hpp
