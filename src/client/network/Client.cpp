@@ -61,27 +61,27 @@ void net::Client::receive(const boost::system::error_code &error, std::size_t by
 		switch (head.op) {
 			case protocolRType::CONNECTION : {
 				auto p = getData<NetPlayer>();
-				std::cout << "I'm connected with id : " << p.head.id << std::endl;
+//				std::cout << "I'm connected with id : " << p.head.id << std::endl;
 				break;
 			}
 			case protocolRType::OLD_CONNECTION : {
 				auto p = getData<NetPlayer>();
-				std::cout << "Other Player id : " << p.head.id << std::endl;
+//				std::cout << "Other Player id : " << p.head.id << std::endl;
 				break;
 			}
 			case protocolRType::POSITION : {
 				auto pos = getData<Pos>();
-				std::cout << "Head : " << pos.head.id << " Receive Pos : X " << pos.x  << " Y " << pos.y << std::endl;
+//				std::cout << "Head : " << pos.head.id << " Receive Pos : X " << pos.x  << " Y " << pos.y << std::endl;
 				break;
 			}
 			case protocolRType::LIFE_POINT : {
 				auto life = getData<Life>();
-				std::cout << "Id : " << life.head.id << " LifePoint = " << life.lifePoint << std::endl;
+//				std::cout << "Id : " << life.head.id << " LifePoint = " << life.lifePoint << std::endl;
 				break;
 			}
 			case protocolRType::SCORE : {
 				auto score = getData<Score>();
-				std::cout << "Score : " << score.score << std::endl;
+//				std::cout << "Score : " << score.score << std::endl;
 				break;
 			}
 			case protocolRType::DEAD : {

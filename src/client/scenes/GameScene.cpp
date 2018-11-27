@@ -26,6 +26,7 @@ void GameScene::exit() noexcept {
 }
 
 void GameScene::receive(const SfmlEvent &event) noexcept {
+	std::cout << "Receive : " << static_cast<int>(event._event.key.code) << std::endl;
 	if (event._event.type == sf::Event::KeyPressed &&
 		event._event.key.code == sf::Keyboard::Escape)
 		_parent.getWindow().close();
