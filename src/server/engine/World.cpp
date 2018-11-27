@@ -34,3 +34,9 @@ void ecs::World::createEnemies() {
 	ent.addComponent<LifePoint>(10);
 }
 
+void ecs::World::createShot(const Position &pos) {
+    auto &ent = createEntity();
+
+    ent.addComponent<Position>(pos.x, pos.y);
+    ent.addComponent<Velocity>(0.f, 0.3f);
+}
