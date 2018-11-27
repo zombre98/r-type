@@ -12,11 +12,11 @@ target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/server
 
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/network)
 
-SET(LUA_LIB lua)
-SET(FS_LIB stdc++fs)
-SET(DL_LIB dl)
+if (MSVC)
+	add_compile_definitions(_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
+  # TODO(armandmgt) Define a macro to remove code related to library loading
+else ()
+	target_link_libraries(${TARGET_NAME} PRIVATE stdc++fs dl)
+endif ()
 
-target_link_libraries(${TARGET_NAME} PRIVATE ${BOOST_LIBS})
-target_link_libraries(${TARGET_NAME} PRIVATE ${LUA_LIB})
-target_link_libraries(${TARGET_NAME} PRIVATE ${FS_LIB})
-target_link_libraries(${TARGET_NAME} PRIVATE ${DL_LIB})
+target_link_libraries(${TARGET_NAME} PRIVATE ${CONAN_LIBS})
