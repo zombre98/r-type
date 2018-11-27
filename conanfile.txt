@@ -1,9 +1,16 @@
 [requires]
-# sfml/2.5.0@bincrafters/stable
+sfml/2.5.1@bincrafters/stable
+boost_asio/1.67.0@bincrafters/stable
+lua/5.3.4@zimmerk/stable
 
 [options]
-# sfml:window = True
-# sfml:graphics = True
+sfml:window = True
+sfml:graphics = True
 
 [generators]
 cmake
+
+[imports]
+bin, *.dll -> ./bin # Copies all dll files from packages bin folder to my "bin" folder
+lib, *.dylib* -> ./bin # Copies all dylib files from packages lib folder to my "bin" folder
+lib, *.so* -> ./bin # Copies all dylib files from packages lib folder to my "bin" folder

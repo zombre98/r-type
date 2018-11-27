@@ -20,5 +20,3 @@ class ComponentId {
 	private:
 	static std::atomic<TypeId> _nextId;
 };
-
-inline std::atomic<TypeId> ComponentId::_nextId{0};

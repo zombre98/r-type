@@ -4,33 +4,37 @@ set(CORE
   )
 
 set(ENGINE
+  engine/systems/InputSystem.cpp
   engine/Entity.hpp
+  engine/Entity.cpp
   engine/ComponentId.hpp
+  engine/ComponentId.cpp
   engine/systems/System.hpp
   engine/systems/LuaSystem.hpp
-  engine/systems/InputSystem.cpp
+  engine/systems/MovementSystem.hpp
   engine/systems/MovementSystem.cpp
   engine/Components.hpp
+  engine/GameContainer.hpp
   engine/GameContainer.cpp
   )
 
 set(SERVER
-  Server.hpp
-  Server.cpp
-  ProtocolServer.cpp
-  ProtocolServer.hpp
-  ../network/protocol.hpp
-  address.hpp
-  )
+        Server.hpp
+        Server.cpp
+        ProtocolServer.cpp
+        ProtocolServer.hpp
+        ../network/protocol.hpp
+        address.cpp
+        )
 
 set(LIBRARY
-  library/Watcher.cpp
-  library/Loader.cpp
-  )
+        library/Watcher.cpp
+        library/Loader.cpp
+        )
 
 set(SOURCES
-  ${CORE}
-  ${ENGINE}
-  ${LIBRARY}
-  ${SERVER}
-  )
+        ${CORE}
+        ${ENGINE}
+        ${SERVER}
+        ${LIBRARY}
+        )
