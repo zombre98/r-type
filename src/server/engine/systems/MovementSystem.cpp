@@ -5,25 +5,23 @@
 ** MovementSystem
 */
 
-#include <iostream>
 #include "vec.hpp"
 #include "MovementSystem.hpp"
 
 namespace ecs {
-	MovementSystem::MovementSystem(entityVector allEntities)
-			: System(allEntities)
-	{
+	MovementSystem::MovementSystem(entityVector allEntities) :
+		System(allEntities) {
 	}
 
 	bool MovementSystem::_isValidPosition(float x, float y) {
 		auto entities = getEntities<Position>();
 
 		for (auto &entity : entities) {
-				auto &posE = entity->getComponent<Position>();
-				auto posP = roundPos<int>(x, y);
-				auto posRounded = roundPos<int>(posE.x, posE.y);
-				if (posP == posRounded)
-					return false;
+			auto &posE = entity->getComponent<Position>();
+			auto posP = roundPos<int>(x, y);
+			auto posRounded = roundPos<int>(posE.x, posE.y);
+			if (posP == posRounded)
+				return false;
 		}
 		return true;
 	}
@@ -34,15 +32,16 @@ namespace ecs {
 		for (auto &e : entities) {
 			auto &position = e->getComponent<Position>();
 			auto &velocity = e->getComponent<Velocity>();
-			if (velocity.x == 0.0f && velocity.y == 0.0f) {
+			if (velocity.x == 0 && velocity.y == 0) {
 				continue;
 			}
-			if (_isValidPosition(position.x + velocity.x, position.y))
+			//			if (_isValidPosition(position.x + velocity.x, position.y))
 				position.x += velocity.x;
-			if (_isValidPosition(position.x, position.y + velocity.y))
+			//			if (_isValidPosition(position.x, position.y + velocity.y))
 				position.y += velocity.y;
 			velocity.x = 0;
 			velocity.y = 0;
+			position.updated = true;
 		}
 	}
 };
