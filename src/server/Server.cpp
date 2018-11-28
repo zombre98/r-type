@@ -33,9 +33,11 @@ void net::Server::startReceive() {
 void net::Server::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {
 	if (!error || error == ba::error::message_size)
 	{
-		_bytesToRead = bytes_transferred;
+		_bytesToRead += bytes_transferred;
+		_buff.emplace();
+		std::cout << _bytesToRead << " = " << sizeof(NetPlayer) << std::endl;
 		for (size_t i = 0; i < bytes_transferred; i++)
-			_buff[i] = _recvArr[i];
+			_buff.back()[i] = _recvArr[i];
 		startReceive();
 	}
 }

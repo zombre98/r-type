@@ -116,15 +116,16 @@ class ResourceManager {
 	}
 
 	void loadAllTexturesInDirectory(const fs::path &filename) {
-		for (auto &it : fs::recursive_directory_iterator(_resourceDirectoryPath)) {
-			if (it.status().type() == fs::file_type::directory && it.path().filename() == filename) {
-				for (auto &sub : fs::recursive_directory_iterator(it.path())) {
-					if (sub.status().type() != fs::file_type::directory)
+//		for (auto &it : fs::recursive_directory_iterator(_resourceDirectoryPath)) {
+//			if (it.status().type() == fs::file_type::directory && it.path().filename() == filename) {
+				for (auto &sub : fs::recursive_directory_iterator(_resourceDirectoryPath / filename)) {
+					if (sub.status().type() != fs::file_type::directory) {
 						loadTexture(sub.path().filename());
+					}
 				}
-				return;
-			}
-		}
+//				return;
+//			}
+//		}
 	}
 
 	sf::Texture &getTexture(const std::string &id) noexcept {

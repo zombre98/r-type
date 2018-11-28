@@ -9,7 +9,10 @@
 
 void GameScene::enter() noexcept {
 	_evtMgr.subscribe<SfmlEvent>(*this);
+	_evtMgr.subscribe<net::NetPlayer>(*this);
+	_evtMgr.subscribe<net::Pos>(*this);
 	_resourceMgr.loadTexture("background.png");
+	_resourceMgr.loadAllTexturesInDirectory("");
 }
 
 void GameScene::update(float timeSinceLastFrame) noexcept {
@@ -20,14 +23,26 @@ void GameScene::update(float timeSinceLastFrame) noexcept {
 void GameScene::displayGame(float timeSinceLastFrame[[maybe_unused]]) noexcept {
 	auto &window = _parent.getWindow();
 	window.draw(sf::Sprite{_resourceMgr.getTexture("background")});
+	for (auto &it : _sprites) {
+		window.draw(it.second);
+	}
 }
 
 void GameScene::exit() noexcept {
 }
 
 void GameScene::receive(const SfmlEvent &event) noexcept {
-	std::cout << "Receive : " << static_cast<int>(event._event.key.code) << std::endl;
 	if (event._event.type == sf::Event::KeyPressed &&
 		event._event.key.code == sf::Keyboard::Escape)
 		_parent.getWindow().close();
+}
+
+void GameScene::receive(const net::NetPlayer &player) {
+	std::cout << "Creation of a New Player" << std::endl;
+	_sprites.emplace(player.head.id, _resourceMgr.getTexture("r-typesheet42"));
+}
+
+void GameScene::receive(const net::Pos &pos) {
+	std::cout << pos.head.id << " Pos : " << pos.x << " " << pos.y << std::endl;
+	_sprites.at(pos.head.id).setPosition(pos.x, pos.y);
 }

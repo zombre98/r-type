@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <queue>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
 #include "address.hpp"
@@ -35,8 +36,8 @@ namespace net {
 		ba::ip::udp::endpoint _serverEndpoint;
 		ba::ip::udp::socket _socket;
 		std::size_t _bytesToRead{0};
-		char _buff[128];
 		std::vector<Address> _setClient;
 		boost::array<char, 128> _recvArr{};
+		std::queue<char[128]> _buff;
 	};
 }
