@@ -26,19 +26,22 @@ void net::ProtocolServer::poll() {
 }
 
 void net::ProtocolServer::handleData() {
-	auto header = reinterpret_cast<Header *>(_buff);
-	if (header->op == protocolRType::POSITION) {
-		auto position = getDataFromBuff<Pos>(_buff);
-		sendDataToAll<Pos>(position);
-	}
+	auto header = reinterpret_cast<Header *>(_buff.front());
+	std::cout << "I have : " << _bytesToRead << " bytes to read" << std::endl;
+	std::cout << static_cast<int>(header->op) << std::endl;
 	if (header->op == protocolRType::CONNECTION) {
 		std::cout << "Handle New connection" << std::endl;
 		_handleNewClient();
 	}
+	if (header->op == protocolRType::POSITION) {
+		auto position = getDataFromBuff<Pos>(_buff.front());
+		sendDataToAll<Pos>(position);
+	}
 }
 
 void net::ProtocolServer::_handleNewClient() {
-	getDataFromBuff<NetPlayer>(_buff);
+	std::cout << "Handle New Client" << std::endl;
+	getDataFromBuff<NetPlayer>(_buff.front());
 	_gContainer.getWorld()->createPlayer();
 	auto &entPlayer = _gContainer.getWorld()->getAllEntities()->back();
 	NetPlayer plr{entPlayer->id, protocolRType::CONNECTION};
@@ -55,9 +58,7 @@ void net::ProtocolServer::_handleNewClient() {
 void net::ProtocolServer::_sendAllPosition() {
 	auto const &EntitiesWithPos = _gContainer.getWorld()->getEntities<ecs::Position>();
 	for (auto const &ent : EntitiesWithPos) {
-		std::cout << "Id : " << ent->id << std::endl;
 		auto const &entPos = ent->getComponent<ecs::Position>();
-		std::cout << "Enemy pos {" << entPos.x << ", " << entPos.y <<  "}" << std::endl;
 		Pos pos{ent->id, protocolRType::POSITION, entPos.x, entPos.y};
 		sendDataToAll(pos);
 	}

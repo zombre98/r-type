@@ -36,11 +36,11 @@ void net::Client::connect(const std::string &address, const std::string &port) {
 
 net::Header net::Client::getHeaderAndReadBuff() {
 	boost::array<char, READ_SIZE> recvArr{};
-	_bytesReceived = _socket.receive_from(ba::buffer(recvArr), _receiverEndpoint);
-	for (size_t i = 0; i < _bytesReceived; i++)
+	std::size_t bReceived = _socket.receive_from(ba::buffer(recvArr), _receiverEndpoint);
+	for (size_t i = 0; i < bReceived; i++)
 		_buff[i] = recvArr[i];
 	Header returnHeader{};
-	if (_bytesReceived) {
+	if (bReceived) {
 		auto header = reinterpret_cast<Header *>(_buff);
 		returnHeader = *header;
 	}
@@ -61,27 +61,29 @@ void net::Client::receive(const boost::system::error_code &error, std::size_t by
 		switch (head.op) {
 			case protocolRType::CONNECTION : {
 				auto p = getData<NetPlayer>();
-				std::cout << "I'm connected with id : " << p.head.id << std::endl;
+				std::cout << "Receive Connection " << std::endl;
+				_sceneManager.emit(p);
 				break;
 			}
-			case protocolRType::OLD_CONNECTION : {
-				auto p = getData<NetPlayer>();
-				std::cout << "Other Player id : " << p.head.id << std::endl;
-				break;
-			}
+//			case protocolRType::OLD_CONNECTION : {
+//				auto p = getData<NetPlayer>();
+//				_sceneManager.emit(p);
+//				break;
+//			}
 			case protocolRType::POSITION : {
 				auto pos = getData<Pos>();
-				std::cout << "Head : " << pos.head.id << " Receive Pos : X " << pos.x  << " Y " << pos.y << std::endl;
+				std::cout << "Receive Pos" << std::endl;
+				_sceneManager.emit(pos);
 				break;
 			}
 			case protocolRType::LIFE_POINT : {
 				auto life = getData<Life>();
-				std::cout << "Id : " << life.head.id << " LifePoint = " << life.lifePoint << std::endl;
+//				std::cout << "Id : " << life.head.id << " LifePoint = " << life.lifePoint << std::endl;
 				break;
 			}
 			case protocolRType::SCORE : {
 				auto score = getData<Score>();
-				std::cout << "Score : " << score.score << std::endl;
+//				std::cout << "Score : " << score.score << std::endl;
 				break;
 			}
 			case protocolRType::DEAD : {

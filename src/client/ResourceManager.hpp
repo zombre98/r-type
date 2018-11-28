@@ -105,10 +105,10 @@ class ResourceManager {
 	 * If the texture is in _resourceDirectoryPath(default = "assets/")
 	 */
 	sf::Texture &loadTexture(const fs::path &filename) {
-		for (auto &it : fs::recursive_directory_iterator(_resourceDirectoryPath)) {
+		for (const auto &it : fs::recursive_directory_iterator(_resourceDirectoryPath)) {
 			if (it.status().type() != fs::file_type::directory) {
 				if (it.path().filename() == filename) {
-					return _texturesRegistry.load(std::move(filename.stem()), it.path());
+					return _texturesRegistry.load(filename.stem(), it.path());
 				}
 			}
 		}
@@ -116,13 +116,10 @@ class ResourceManager {
 	}
 
 	void loadAllTexturesInDirectory(const fs::path &filename) {
-		for (auto &it : fs::recursive_directory_iterator(_resourceDirectoryPath)) {
-			if (it.status().type() == fs::file_type::directory && it.path().filename() == filename) {
-				for (auto &sub : fs::recursive_directory_iterator(it.path())) {
-					if (sub.status().type() != fs::file_type::directory)
-						loadTexture(sub.path().filename());
-				}
-				return;
+		for (const auto &sub : fs::recursive_directory_iterator(_resourceDirectoryPath / filename)) {
+			if (sub.status().type() != fs::file_type::directory) {
+				_texturesRegistry.load(sub.path().parent_path().filename() / sub.path().stem(),
+					sub.path());
 			}
 		}
 	}
@@ -143,9 +140,8 @@ class ResourceManager {
 			if (it.status().type() == fs::file_type::directory && it.path().filename() == filename) {
 				for (const auto &sub : fs::directory_iterator(it.path())) {
 					loadTexture(sub.path().filename());
-					const fs::path &id = sub.path();
 					_animations[filename].getAnimations().insert(
-						id.filename().replace_extension(""));
+						sub.path().parent_path().filename() / sub.path().stem());
 				}
 				break;
 			}

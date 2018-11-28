@@ -6,9 +6,11 @@
 
 #include "Components.hpp"
 #include "Entity.hpp"
+#include "events/EventManager.hpp"
 
 namespace net {
 	enum class protocolRType {
+		NO_OP,
 		CONNECTION,
 		OLD_CONNECTION,
 		POSITION,
@@ -21,7 +23,7 @@ namespace net {
 		STAGE_IS_WIN
 	};
 
-	struct Header {
+	struct Header : BaseEvent {
 		Header() = default;
 		Header(std::size_t i, protocolRType o) : id(i), op(o) {}
 		std::size_t id;
@@ -35,12 +37,12 @@ namespace net {
 		Header head;
 	};
 
-	struct Pos : Package, ecs::Position {
+	struct Pos : Package, ecs::Position, BaseEvent {
 		Pos() = delete;
 		Pos(std::size_t _id, protocolRType op, int x, int y) : Package{_id, op}, ecs::Position(x, y) {}
 	};
 
-	struct NetPlayer : Package, ecs::Player {
+	struct NetPlayer : Package, ecs::Player, BaseEvent {
 		NetPlayer() = delete;
 		NetPlayer(std::size_t id, protocolRType op) : Package{id, op}, ecs::Player(id) {}
 	};

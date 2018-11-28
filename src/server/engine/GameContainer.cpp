@@ -17,7 +17,7 @@ rtype::GameContainer::GameContainer() : _world{std::make_shared<ecs::World>()} {
 void rtype::GameContainer::_initSystem() {
 	_listSystem.emplace_back(new ecs::MovementSystem(_world->getAllEntities()));
 	_listSystem.emplace_back(new ecs::RemoveSystem(_world->getAllEntities(), _world));
-	_listSystem.emplace_back(new ecs::SpawnMonsterSystem(_world->getAllEntities(), _world, std::chrono::steady_clock::now()));
+//	_listSystem.emplace_back(new ecs::SpawnMonsterSystem(_world->getAllEntities(), _world, std::chrono::steady_clock::now()));
 }
 
 void rtype::GameContainer::runSystem() {
