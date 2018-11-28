@@ -20,7 +20,7 @@ namespace ecs {
         void eraseEntity(std::size_t const &id);
         void createPlayer();
         void createEnemies();
-        void createShot(const Position &pos);
+        void createAllyShot(const Position &pos);
         entityVector getAllEntities() const noexcept { return entities; }
 
         template<typename... Types>

@@ -26,7 +26,7 @@ void ecs::InputSystem::update(double delta[[maybe_unused]]) {
         velocity.y += static_cast<float>(input.down) / 10;
 
         if (input.shoot)
-            _world->createShot(Position(pos.x + 10, pos.y));
+            _world->createAllyShot(Position(pos.x + 10, pos.y));
 
         input.left = input.right = input.up = input.down = input.shoot = false;
     }

@@ -67,4 +67,22 @@ namespace ecs {
         bool up, down, left, right, shoot;
     };
 
+    struct Damage : public Component {
+        Damage() = delete;
+        Damage(int d) : damage(d) {}
+        ~Damage() = default;
+        int damage;
+    };
+
+    struct ShotType : public Component {
+        enum class Shot {
+            ALLY,
+            ENNEMY,
+        };
+
+        ShotType() = delete;
+        ShotType(Shot t) : type(t) {}
+        ~ShotType() = default;
+        Shot type;
+    };
 }
