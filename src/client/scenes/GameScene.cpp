@@ -82,7 +82,7 @@ void GameScene::_displayBg(sf::RenderWindow &window) {
                             _bg.getPosition().y);
     window.draw(bgExtension);
 
-    if (timeSpan.count() < 1.f / 1)
+    if (timeSpan.count() < 1.f / BG_FPS)
         return;
 
     t1 = std::chrono::steady_clock::now();
