@@ -34,3 +34,11 @@ void ecs::World::createEnemies() {
 	ent.addComponent<LifePoint>(10);
 }
 
+void ecs::World::createAllyShot(const Position &pos) {
+    auto &ent = createEntity();
+
+    ent.addComponent<Position>(pos.x, pos.y);
+    ent.addComponent<Velocity>(0.f, 0.3f);
+    ent.addComponent<Damage>(30);
+    ent.addComponent<ShotType>(ShotType::Shot::ALLY);
+}

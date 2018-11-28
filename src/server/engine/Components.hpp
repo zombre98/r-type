@@ -12,52 +12,77 @@
 
 namespace ecs {
 
-	struct Component {
-	};
+    struct Component {
+    };
 
-	struct Player : public Component {
-		Player() = delete;
-		explicit Player(std::size_t _id) : id{_id} {};
-		~Player() = default;
-		std::size_t id;
-	};
+    struct Player : public Component {
+        Player() = delete;
+        explicit Player(std::size_t _id) : id{_id} {};
+        ~Player() = default;
+        std::size_t id;
+    };
 
-	struct Velocity : public Component {
-		Velocity() = delete;
-		Velocity(float w, float v) : x(w), y(v) {
-		};
-		~Velocity() = default;
-		float x;
-		float y;
-	};
+    struct Velocity : public Component {
+        Velocity() = delete;
+        Velocity(float w, float v) : x(w), y(v) {
+        };
+        ~Velocity() = default;
+        float x;
+        float y;
+    };
 
-	struct Orientation : public Component {
-		Orientation() = delete;
-		explicit Orientation(float ori) : orientation(ori) {
-		};
-		~Orientation() = default;
-		float orientation;
-	};
+    struct Orientation : public Component {
+        Orientation() = delete;
+        explicit Orientation(float ori) : orientation(ori) {
+        };
+        ~Orientation() = default;
+        float orientation;
+    };
 
-	struct Position : public Component {
-		Position(int d, int v) : x(d), y(v) {
-		};
-		~Position() = default;
-		int x;
-		int y;
-	};
+    struct Position : public Component {
+        Position(int d, int v) : x(d), y(v) {
+        };
+        ~Position() = default;
+        int x;
+        int y;
+    };
 
-	struct LifePoint : public Component {
-		LifePoint() = delete;
-		LifePoint(int basicLifePoint) : lifePoint(basicLifePoint) {}
-		~LifePoint() = default;
-		int lifePoint;
-	};
+    struct LifePoint : public Component {
+        LifePoint() = delete;
+        LifePoint(int basicLifePoint) : lifePoint(basicLifePoint) {}
+        ~LifePoint() = default;
+        int lifePoint;
+    };
 
-	struct Score : public Component {
-		Score() = delete;
-		Score(int sc) : score(sc) {}
-		~Score() = default;
-		int score;
-	};
+    struct Score : public Component {
+        Score() = delete;
+        Score(int sc) : score(sc) {}
+        ~Score() = default;
+        int score;
+    };
+
+    struct Input : public Component {
+        Input() = default;
+        ~Input() = default;
+        bool up, down, left, right, shoot;
+    };
+
+    struct Damage : public Component {
+        Damage() = delete;
+        Damage(int d) : damage(d) {}
+        ~Damage() = default;
+        int damage;
+    };
+
+    struct ShotType : public Component {
+        enum class Shot {
+            ALLY,
+            ENNEMY,
+        };
+
+        ShotType() = delete;
+        ShotType(Shot t) : type(t) {}
+        ~ShotType() = default;
+        Shot type;
+    };
 }

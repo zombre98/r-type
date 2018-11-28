@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2018
-** cpp_indie_studio
+** rtype
 ** File description:
 ** MovementSystem
 */
