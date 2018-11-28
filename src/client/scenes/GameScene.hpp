@@ -43,4 +43,8 @@ class GameScene final : public AScene, public Receiver {
 	std::unordered_map<std::size_t, sf::Sprite> _sprites{};
 	bool _started{false};
 	bool _running{true};
+
+    sf::Sprite _bg;
+
+    void _displayBg(sf::RenderWindow &);
 };
