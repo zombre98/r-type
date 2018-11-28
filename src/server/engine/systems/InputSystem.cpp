@@ -7,7 +7,8 @@
 
 #include "InputSystem.hpp"
 
-ecs::InputSystem::InputSystem(entityVector allEntities, std::shared_ptr<ecs::World> world)
+ecs::InputSystem::InputSystem(entityVector allEntities,
+                              std::shared_ptr<ecs::World> world)
     : System(allEntities), _world(world)
 {}
 
