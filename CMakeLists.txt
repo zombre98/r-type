@@ -12,7 +12,7 @@ include(${CMAKE_BINARY_DIR}/conan-${CONAN_CMAKE_VER}.cmake)
 
 if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo.cmake)
     set(CONAN_EXPORTED)
-    set(CMAKE_BUILD_TYPE Release)
+    set(CMAKE_BUILD_TYPE Debug)
 endif()
 
 conan_cmake_run(CONANFILE conanfile.txt

@@ -19,5 +19,7 @@ namespace ecs {
 
     private:
         std::shared_ptr<ecs::World> _world;
+	    void updateVelocity(Entity *e, const Input &inputComp);
+	    void doShoot(Entity *e, const Input &inputComp);
     };
 }

@@ -18,12 +18,13 @@ void App::runApp() {
 
 	while (isOpen()) {
 		sf::Event sfEvent{};
-		while (pollEvent(sfEvent)) {
+		while (pollEvent(sfEvent))
 			_sceneMgr.emit(sfEvent);
-		}
+		_client.poll();
 		clear();
 		auto timeSinceLastFrame = deltaClock.getElapsedTime().asSeconds();
 		_sceneMgr.update(timeSinceLastFrame);
+		deltaClock.restart();
 		display();
 	}
 }
