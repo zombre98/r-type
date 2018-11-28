@@ -17,7 +17,6 @@ void GameScene::enter() noexcept {
 
 void GameScene::update(float timeSinceLastFrame) noexcept {
 	displayGame(timeSinceLastFrame);
-	std::cout << "updated window" << std::endl;
 }
 
 void GameScene::displayGame(float timeSinceLastFrame[[maybe_unused]]) noexcept {
@@ -63,6 +62,5 @@ void GameScene::receive(const net::NetPlayer &player) {
 }
 
 void GameScene::receive(const net::Pos &pos) {
-	std::cout << "Pos called with pos x" << pos.x << " y" << pos.y << std::endl;
 	_sprites.at(pos.head.id).setPosition(pos.x, pos.y);
 }

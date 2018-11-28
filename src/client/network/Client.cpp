@@ -48,7 +48,6 @@ void net::Client::asyncReceive() {
 
 void net::Client::receive(const boost::system::error_code &error, std::size_t bytes_transferred[[maybe_unused]]) {
 	if (!error || error == ba::error::message_size) {
-		std::cout << "Received a message asynchronously" << std::endl;
 		_buff.push(_recvArr);
 	}
 	asyncReceive();

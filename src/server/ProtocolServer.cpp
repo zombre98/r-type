@@ -51,7 +51,6 @@ void net::ProtocolServer::_handleNewClient() {
 	getData<NetPlayer>();
 	auto &entPlayer = _gContainer.getWorld()->createPlayer();
 	_clients.emplace(entPlayer.id, _targetEndpoint);
-	std::cout << "sending to " << _targetEndpoint.address() << ":" << _targetEndpoint.port() << std::endl;
 	NetPlayer plr{entPlayer.id, opCode::CONNECTION};
 	sendDataTo(_targetEndpoint, plr);
 	auto vec = _gContainer.getWorld()->getEntities<ecs::Player>();
@@ -73,18 +72,22 @@ void net::ProtocolServer::_handleInput() {
 void net::ProtocolServer::_sendAllPosition() {
 	auto const &EntitiesWithPos = _gContainer.getWorld()->getEntities<ecs::Position>();
 	for (auto const &ent : EntitiesWithPos) {
-		auto const &compPos = ent->getComponent<ecs::Position>();
-		if (compPos.updated)
+		auto &compPos = ent->getComponent<ecs::Position>();
+		if (compPos.updated) {
 			sendDataToAll(Pos{ent->id, opCode::POSITION, compPos.x, compPos.y});
+			compPos.updated = false;
+		}
 	}
 }
 
 void net::ProtocolServer::_sendLifePoint() {
 	auto const &EntitiesWithLifePoint = _gContainer.getWorld()->getEntities<ecs::LifePoint>();
 	for (auto const &ent : EntitiesWithLifePoint) {
-		auto const &compLife = ent->getComponent<ecs::LifePoint>();
-		if (compLife.updated)
+		auto &compLife = ent->getComponent<ecs::LifePoint>();
+		if (compLife.updated) {
 			sendDataToAll(Life{ent->id, compLife.lifePoint});
+			compLife.updated = false;
+		}
 	}
 }
 

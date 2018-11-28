@@ -14,7 +14,7 @@
 namespace ecs {
 
     struct Component {
-	    bool updated{false};
+	    bool updated{true};
     };
 
     struct Player : public Component {

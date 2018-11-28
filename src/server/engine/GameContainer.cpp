@@ -28,7 +28,6 @@ void rtype::GameContainer::runSystem() {
 
 	auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(
 		std::chrono::steady_clock::now() - last).count();
-	std::cout << "last run took " << delta << " milliseconds" << std::endl;
 	for (auto &it : _listSystem)
 		it->update(delta);
 	last = std::chrono::steady_clock::now();
