@@ -39,7 +39,7 @@ void GameScene::receive(const SfmlEvent &event) noexcept {
 
 void GameScene::receive(const net::NetPlayer &player) {
 	std::cout << "Creation of a New Player" << std::endl;
-	_sprites.emplace(player.head.id, _resourceMgr.getTexture("r-typesheet42"));
+	_sprites.emplace(player.head.id, _resourceMgr.getTexture("frame00"));
 }
 
 void GameScene::receive(const net::Pos &pos) {
