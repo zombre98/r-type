@@ -23,7 +23,7 @@ namespace net {
 		STAGE_IS_WIN
 	};
 
-	struct Header : BaseEvent {
+	struct Header {
 		Header() = default;
 
 		Header(std::size_t i, opCode o) :

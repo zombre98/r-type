@@ -28,19 +28,11 @@ namespace net {
 		}
 
 		template<typename T>
-		void sendDataTo(T data, Address const &addr) {
-			//			std::cout << "Send data to client" << std::endl;
-			_serverEndpoint.address(addr.address);
-			_serverEndpoint.port(addr.port);
-			sendData(data);
-		}
-
-		template<typename T>
-		void sendData(T data) {
+		void sendDataTo(ba::ip::udp::endpoint const &addr, T data) {
 			static_assert(std::is_base_of<Package, T>(), "Data is not a base of Package");
 			boost::array<T, 1> newData = {{data}};
 			auto dataToSend = boost::make_shared<boost::array<T, 1>>(newData);
-			_socket.async_send_to(ba::buffer(*dataToSend, sizeof(T)), _serverEndpoint,
+			_socket.async_send_to(ba::buffer(*dataToSend, sizeof(T)), addr,
 			                   [this, dataToSend](boost::system::error_code , std::size_t) {
 				                   doReceive(dataToSend);
 			                   });
@@ -48,10 +40,8 @@ namespace net {
 
 		template<typename T>
 		void sendDataToAll(T data) {
-			for (auto &it : _setClient) {
-				_serverEndpoint.address(it.address);
-				_serverEndpoint.port(it.port);
-				sendData<T>(data);
+			for (auto &it : _clients) {
+				sendDataTo<T>(it.second, data);
 			}
 		}
 

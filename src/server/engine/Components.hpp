@@ -14,6 +14,7 @@
 namespace ecs {
 
     struct Component {
+	    bool updated{false};
     };
 
     struct Player : public Component {
@@ -25,11 +26,14 @@ namespace ecs {
 
     struct Velocity : public Component {
         Velocity() = delete;
-        Velocity(float w, float v) : x(w), y(v) {
+
+	    Velocity(int w, int v) :
+		    x(w),
+		    y(v) {
         };
         ~Velocity() = default;
-        float x;
-        float y;
+	    int x;
+	    int y;
     };
 
     struct Orientation : public Component {

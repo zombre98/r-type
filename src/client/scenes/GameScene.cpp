@@ -17,12 +17,12 @@ void GameScene::enter() noexcept {
 
 void GameScene::update(float timeSinceLastFrame) noexcept {
 	displayGame(timeSinceLastFrame);
-	_parent.getClient().pollOnce();
+	std::cout << "updated window" << std::endl;
 }
 
 void GameScene::displayGame(float timeSinceLastFrame[[maybe_unused]]) noexcept {
 	auto &window = _parent.getWindow();
-	window.draw(sf::Sprite{_resourceMgr.getTexture("background")});
+	//	window.draw(sf::Sprite{_resourceMgr.getTexture("background")});
 	for (auto &it : _sprites) {
 		window.draw(it.second);
 	}
@@ -63,6 +63,6 @@ void GameScene::receive(const net::NetPlayer &player) {
 }
 
 void GameScene::receive(const net::Pos &pos) {
-	//	std::cout << pos.head.id << " Pos : " << pos.x << " " << pos.y << std::endl;
+	std::cout << "Pos called with pos x" << pos.x << " y" << pos.y << std::endl;
 	_sprites.at(pos.head.id).setPosition(pos.x, pos.y);
 }

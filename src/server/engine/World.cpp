@@ -17,7 +17,7 @@ void ecs::World::eraseEntity(std::size_t const &id) {
 	entities->erase(entity);
 }
 
-void ecs::World::createPlayer() {
+ecs::Entity &ecs::World::createPlayer() {
 	static std::size_t idPlayer = 0;
 	auto &ent = createEntity();
 
@@ -25,9 +25,10 @@ void ecs::World::createPlayer() {
 	ent.addComponent<Player>(idPlayer++);
 	ent.addComponent<LifePoint>(100);
 	ent.addComponent<Position>(std::rand() % 1000, std::rand() % 1000);
-	ent.addComponent<Velocity>(0.f, 0.f);
+	ent.addComponent<Velocity>(0, 0);
 	ent.addComponent<Score>(0);
 	ent.addComponent<Input>();
+	return ent;
 }
 
 void ecs::World::createEnemies() {
@@ -42,7 +43,7 @@ void ecs::World::createAllyShot(const Position &pos) {
     auto &ent = createEntity();
 
     ent.addComponent<Position>(pos.x, pos.y);
-    ent.addComponent<Velocity>(0.f, 0.3f);
+	ent.addComponent<Velocity>(0, 3);
     ent.addComponent<Damage>(30);
     ent.addComponent<ShotType>(ShotType::Shot::ALLY);
 }

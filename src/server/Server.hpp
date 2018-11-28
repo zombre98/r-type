@@ -23,9 +23,8 @@ namespace net {
 		void receive(const boost::system::error_code &error, std::size_t bytes_transferred);
 
 		template<typename T>
-		T getDataFromBuff() {
+		T getData() {
 			T *pData = reinterpret_cast<T *>(_buff.front().elems);
-			_buff.pop();
 			return *pData;
 		}
 
@@ -35,8 +34,9 @@ namespace net {
 		ba::io_context &_ioContext;
 		unsigned short _port;
 		ba::ip::udp::endpoint _serverEndpoint;
+		ba::ip::udp::endpoint _targetEndpoint;
 		ba::ip::udp::socket _socket;
-		std::vector<Address> _setClient;
+		std::map<size_t, ba::ip::udp::endpoint> _clients;
 		message _recvArr{};
 		std::queue<message> _buff;
 	};
