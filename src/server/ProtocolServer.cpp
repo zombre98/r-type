@@ -50,13 +50,16 @@ void net::ProtocolServer::handleData() {
 void net::ProtocolServer::_handleNewClient() {
 	getData<NetPlayer>();
 	auto &entPlayer = _gContainer.getWorld()->createPlayer();
+	auto playerId = entPlayer.getComponent<ecs::Player>().id;
 	_clients.emplace(entPlayer.id, _targetEndpoint);
-	NetPlayer plr{entPlayer.id, opCode::CONNECTION};
+	NetPlayer plr{entPlayer.id, opCode::CONNECTION, playerId};
 	sendDataTo(_targetEndpoint, plr);
+	sendDataToAllExcept(_targetEndpoint, NetPlayer{entPlayer.id, opCode::NEW_CONNECTION, playerId});
 	auto vec = _gContainer.getWorld()->getEntities<ecs::Player>();
 	for (auto &it : vec) {
-		if (it->getComponent<ecs::Player>().id != entPlayer.id) {
-			NetPlayer oldPly{it->id, opCode::OLD_CONNECTION};
+		auto othId = it->getComponent<ecs::Player>().id;
+		if (othId != entPlayer.id) {
+			NetPlayer oldPly{it->id, opCode::OLD_CONNECTION, othId};
 			sendDataToAll(oldPly);
 		}
 	}

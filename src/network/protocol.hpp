@@ -12,6 +12,7 @@ namespace net {
 	enum class opCode {
 		NO_OP,
 		CONNECTION,
+		NEW_CONNECTION,
 		OLD_CONNECTION,
 		POSITION,
 		INPUT,
@@ -56,9 +57,9 @@ namespace net {
 	struct NetPlayer : Package, ecs::Player, BaseEvent {
 		NetPlayer() = delete;
 
-		NetPlayer(std::size_t id, opCode op) :
+		NetPlayer(std::size_t id, opCode op, size_t playerId) :
 			Package{id, op},
-			ecs::Player(id) {
+			ecs::Player(playerId) {
 		}
 	};
 

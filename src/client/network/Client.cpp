@@ -24,7 +24,7 @@ net::Client::Client(ba::io_context &context, SceneManager &_sceneManager, const 
 	_senderEndpoint{*_resolver.resolve(ba::ip::udp::v4(), address, port).begin()},
 	_socket{_ioContext} {
 	_socket.open(ba::ip::udp::v4());
-	sendData(NetPlayer{0, opCode::CONNECTION});
+	sendData(NetPlayer{0, opCode::CONNECTION, 0});
 }
 
 void net::Client::connect(const std::string &address, const std::string &port) {
@@ -32,7 +32,7 @@ void net::Client::connect(const std::string &address, const std::string &port) {
 	_port = port;
 	_senderEndpoint = *_resolver.resolve(ba::ip::udp::v4(), _address, _port).begin();
 	_socket.open(ba::ip::udp::v4());
-	sendData(NetPlayer{0, opCode::CONNECTION});
+	sendData(NetPlayer{0, opCode::CONNECTION, 0});
 	std::cout << "Called connect" << std::endl;
 	auto bytesRead = _socket.receive_from(ba::buffer(_recvArr), _receiverEndpoint);
 	if (bytesRead)
@@ -72,9 +72,9 @@ void net::Client::handleMessage() {
 		_sceneManager.emit(p);
 		break;
 	}
+	case opCode::NEW_CONNECTION :
 	case opCode::OLD_CONNECTION : {
-		auto p = getData<NetPlayer>();
-		_sceneManager.emit(p);
+		_sceneManager.emit(getData<NetPlayer>());
 		break;
 	}
 	case opCode::POSITION : {

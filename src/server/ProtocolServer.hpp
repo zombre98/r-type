@@ -45,6 +45,14 @@ namespace net {
 			}
 		}
 
+		template<typename T>
+		void sendDataToAllExcept(ba::ip::udp::endpoint const &addr, T data) {
+			for (auto &it : _clients) {
+				if (it.second != addr)
+					sendDataTo<T>(it.second, data);
+			}
+		}
+
 	private:
 		void _sendScore();
 		void _sendDeadEntities();
