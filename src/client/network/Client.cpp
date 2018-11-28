@@ -31,7 +31,7 @@ void net::Client::connect(const std::string &address, const std::string &port) {
 	_port = port;
 	_senderEndpoint = *_resolver.resolve(ba::ip::udp::v4(), _address, _port).begin();
 	_socket.open(ba::ip::udp::v4());
-	std::cout << "Called connect on socket" << std::endl;
+	//	std::cout << "Called connect on socket" << std::endl;
 }
 
 net::Header net::Client::getHeaderAndReadBuff() {
@@ -59,34 +59,35 @@ void net::Client::receive(const boost::system::error_code &error, std::size_t by
 			_buff[i] = _recvArr[i];
 		auto head = getDataFromBuff<Header>(_buff);
 		switch (head.op) {
-			case protocolRType::CONNECTION : {
+		case opCode::CONNECTION : {
 				auto p = getData<NetPlayer>();
-				std::cout << "Receive Connection " << std::endl;
+			//				std::cout << "Receive Connection " << std::endl;
+			_me = p.head.id;
 				_sceneManager.emit(p);
 				break;
 			}
-//			case protocolRType::OLD_CONNECTION : {
+			//			case opCode::OLD_CONNECTION : {
 //				auto p = getData<NetPlayer>();
 //				_sceneManager.emit(p);
 //				break;
 //			}
-			case protocolRType::POSITION : {
+		case opCode::POSITION : {
 				auto pos = getData<Pos>();
-				std::cout << "Receive Pos" << std::endl;
+			//				std::cout << "Receive Pos" << std::endl;
 				_sceneManager.emit(pos);
 				break;
 			}
-			case protocolRType::LIFE_POINT : {
+		case opCode::LIFE_POINT : {
 				auto life = getData<Life>();
 //				std::cout << "Id : " << life.head.id << " LifePoint = " << life.lifePoint << std::endl;
 				break;
 			}
-			case protocolRType::SCORE : {
+		case opCode::SCORE : {
 				auto score = getData<Score>();
 //				std::cout << "Score : " << score.score << std::endl;
 				break;
 			}
-			case protocolRType::DEAD : {
+		case opCode::DEAD : {
 				auto dead = getData<Dead>();
 				break;
 			}

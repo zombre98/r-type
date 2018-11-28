@@ -21,17 +21,19 @@ void ecs::World::createPlayer() {
 	static std::size_t idPlayer = 0;
 	auto &ent = createEntity();
 
-	std::cout << "[" << ent.id << "]" << " : New Player" << std::endl;
+	//	std::cout << "[" << ent.id << "]" << " : New Player" << std::endl;
 	ent.addComponent<Player>(idPlayer++);
 	ent.addComponent<LifePoint>(100);
 	ent.addComponent<Position>(std::rand() % 1000, std::rand() % 1000);
+	ent.addComponent<Velocity>(0.f, 0.f);
 	ent.addComponent<Score>(0);
+	ent.addComponent<Input>();
 }
 
 void ecs::World::createEnemies() {
 	auto &ent = createEntity();
 
-	std::cout << "[" << ent.id << "]" << " : New enemy" << std::endl;
+	//	std::cout << "[" << ent.id << "]" << " : New enemy" << std::endl;
 	ent.addComponent<Position>(std::rand() % 100, std::rand() % 100);
 	ent.addComponent<LifePoint>(10);
 }

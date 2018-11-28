@@ -5,6 +5,7 @@
 #pragma once
 
 #include <memory>
+#include <optional>
 #include "System.hpp"
 #include "Entity.hpp"
 
@@ -22,6 +23,15 @@ namespace ecs {
         void createEnemies();
         void createAllyShot(const Position &pos);
         entityVector getAllEntities() const noexcept { return entities; }
+
+	    std::optional<Entity *> getEntity(entityId id) const {
+		    auto it = std::find_if(entities->cbegin(), entities->cend(), [id](const entityPtr &e) {
+			    return e->id == id;
+		    });
+		    if (it != entities->cend())
+			    return it->get();
+		    return std::nullopt;
+	    }
 
         template<typename... Types>
         std::vector<Entity *> getEntities() {

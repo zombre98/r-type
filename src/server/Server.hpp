@@ -22,22 +22,22 @@ namespace net {
 		void startReceive();
 		void receive(const boost::system::error_code &error, std::size_t bytes_transferred);
 
-
 		template<typename T>
-		T getDataFromBuff(char *buff) {
-			T *pData = reinterpret_cast<T *>(buff);
-			_bytesToRead -= sizeof(T);
+		T getDataFromBuff() {
+			T *pData = reinterpret_cast<T *>(_buff.front().elems);
+			_buff.pop();
 			return *pData;
 		}
 
 	protected:
+		using message = boost::array<char, 128>;
+
 		ba::io_context &_ioContext;
 		unsigned short _port;
 		ba::ip::udp::endpoint _serverEndpoint;
 		ba::ip::udp::socket _socket;
-		std::size_t _bytesToRead{0};
 		std::vector<Address> _setClient;
-		boost::array<char, 128> _recvArr{};
-		std::queue<char[128]> _buff;
+		message _recvArr{};
+		std::queue<message> _buff;
 	};
 }

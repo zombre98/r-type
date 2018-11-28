@@ -18,8 +18,8 @@ class GameScene final : public AScene, public Receiver {
 	explicit GameScene(SceneManager &parent) noexcept : AScene(parent,
 		fs::current_path() / "assets" / "images" / "game") {
 		_parent.getClient().connect("127.0.0.1", "8080");
-		std::cout << static_cast<int>(net::protocolRType::CONNECTION) << std::endl;
-		net::NetPlayer p{0, net::protocolRType::CONNECTION};
+		//		std::cout << static_cast<int>(net::opCode::CONNECTION) << std::endl;
+		net::NetPlayer p{0, net::opCode::CONNECTION};
 		_parent.getClient().sendData(p);
 	}
 

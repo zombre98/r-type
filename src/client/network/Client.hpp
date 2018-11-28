@@ -34,6 +34,8 @@ namespace net {
 		template<typename T>
 		void sendData(T data) {
 			static_assert(std::is_base_of<Package, T>(), "Data is not a base of Package");
+			std::cout << "Sending data" << std::endl;
+			data.head.id = _me;
 			boost::array<T, 1> dataToSend = {{data}};
 			_socket.send_to(ba::buffer(dataToSend, sizeof(T)), _senderEndpoint);
 		}
@@ -41,6 +43,7 @@ namespace net {
 		template<typename T>
 		void asyncSendData(T data) {
 			static_assert(std::is_base_of<Package, T>(), "Data is not a base of Package");
+			data.head.id = _me;
 			boost::array<T, 1> newData = {{data}};
 			auto dataToSend = boost::make_shared<boost::array<T, 1>>(newData);
 			_socket.async_send_to(ba::buffer(*dataToSend, sizeof(T)), _senderEndpoint,
@@ -83,5 +86,6 @@ namespace net {
 		char _buff[READ_SIZE];
 		boost::array<char, READ_SIZE> _recvArr{};
 		//std::size_t _bytesReceived;
+		size_t _me;
 	};
 }

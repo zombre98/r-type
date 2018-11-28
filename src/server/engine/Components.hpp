@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <chrono>
+#include <bitset>
 
 namespace ecs {
 
@@ -49,27 +50,49 @@ namespace ecs {
 
     struct LifePoint : public Component {
         LifePoint() = delete;
-        LifePoint(int basicLifePoint) : lifePoint(basicLifePoint) {}
+
+	    explicit LifePoint(int basicLifePoint) :
+		    lifePoint(basicLifePoint) {
+	    }
         ~LifePoint() = default;
         int lifePoint;
     };
 
     struct Score : public Component {
         Score() = delete;
-        Score(int sc) : score(sc) {}
+
+	    explicit Score(int sc) :
+		    score(sc) {
+	    }
         ~Score() = default;
         int score;
     };
 
     struct Input : public Component {
-        Input() = default;
-        ~Input() = default;
-        bool up, down, left, right, shoot;
+	    enum Action : std::size_t {
+		    Left,
+		    Right,
+		    Up,
+		    Down,
+		    Shoot,
+		    Count
+	    };
+
+	    Input() = default;
+
+	    explicit Input(Action a) {
+		    input.set(a, true);
+	    };
+	    ~Input() = default;
+	    std::bitset<Count> input;
     };
 
     struct Damage : public Component {
         Damage() = delete;
-        Damage(int d) : damage(d) {}
+
+	    explicit Damage(int d) :
+		    damage(d) {
+	    }
         ~Damage() = default;
         int damage;
     };
@@ -81,7 +104,10 @@ namespace ecs {
         };
 
         ShotType() = delete;
-        ShotType(Shot t) : type(t) {}
+
+	    explicit ShotType(Shot t) :
+		    type(t) {
+	    }
         ~ShotType() = default;
         Shot type;
     };
