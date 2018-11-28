@@ -73,11 +73,11 @@ void net::Client::handleMessage() {
 		_sceneManager.emit(p);
 		break;
 	}
-		//		case opCode::OLD_CONNECTION : {
-		//			auto p = getData<NetPlayer>();
-		//			_sceneManager.emit(p);
-		//			break;
-		//		}
+	case opCode::OLD_CONNECTION : {
+		auto p = getData<NetPlayer>();
+		_sceneManager.emit(p);
+		break;
+	}
 	case opCode::POSITION : {
 		auto pos = getData<Pos>();
 		std::cout << "Receive Pos of size " << sizeof(Pos) << std::endl;
