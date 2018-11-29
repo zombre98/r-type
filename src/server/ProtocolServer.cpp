@@ -19,6 +19,7 @@ void net::ProtocolServer::poll() {
 		_gContainer.runSystem();
 		//		_sendDeadEntities();
 		//		_sendScore();
+		_sendNewShoot();
 		_sendAllEnemies();
 		_sendAllPosition();
 		//		_sendLifePoint();
@@ -122,6 +123,18 @@ void net::ProtocolServer::_sendAllEnemies() {
 			EnemyType eType = {ent->id, compEnemyType.type};
 			sendDataToAll(eType);
 			compEnemyType.updated = false;
+		}
+	}
+}
+
+void net::ProtocolServer::_sendNewShoot() {
+	auto const &EntitiesWithShootType =  _gContainer.getWorld()->getEntities<ecs::ShotType>();
+	for (auto const &ent : EntitiesWithShootType) {
+		auto &compShot = ent->getComponent<ecs::ShotType>();
+		if (compShot.updated) {
+			ShotType shot{ent->id, compShot.type};
+			sendDataToAll(shot);
+			compShot.updated = false;
 		}
 	}
 }
