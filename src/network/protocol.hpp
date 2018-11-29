@@ -14,6 +14,8 @@ namespace net {
 		CONNECTION,
 		NEW_CONNECTION,
 		OLD_CONNECTION,
+		NEW_ENEMY,
+		NEW_SHOT,
 		POSITION,
 		INPUT,
 		LIFE_POINT,
@@ -28,20 +30,23 @@ namespace net {
 		Header() = default;
 
 		Header(std::size_t i, opCode o) :
-			id(i),
-			op(o) {
+				id(i),
+				op(o) {
 		}
+
 		std::size_t id;
 		opCode op;
 	};
 
 	struct Package {
 		Package() = delete;
+
 		explicit Package(Header &head) : head(head) {}
 
 		Package(std::size_t id, opCode op) :
-			head(id, op) {
+				head(id, op) {
 		}
+
 		Header head;
 	};
 
@@ -49,8 +54,8 @@ namespace net {
 		Pos() = delete;
 
 		Pos(std::size_t _id, opCode op, int x, int y) :
-			Package{_id, op},
-			ecs::Position(x, y) {
+				Package{_id, op},
+				ecs::Position(x, y) {
 		}
 	};
 
@@ -58,8 +63,8 @@ namespace net {
 		NetPlayer() = delete;
 
 		NetPlayer(std::size_t id, opCode op, size_t playerId) :
-			Package{id, op},
-			ecs::Player(playerId) {
+				Package{id, op},
+				ecs::Player(playerId) {
 		}
 	};
 
@@ -67,8 +72,8 @@ namespace net {
 		Life() = delete;
 
 		Life(std::size_t id, int life) :
-			Package{id, opCode::LIFE_POINT},
-			ecs::LifePoint(life) {
+				Package{id, opCode::LIFE_POINT},
+				ecs::LifePoint(life) {
 		}
 	};
 
@@ -76,8 +81,8 @@ namespace net {
 		Score() = delete;
 
 		Score(std::size_t id, int score) :
-			Package{id, opCode::SCORE},
-			ecs::Score{score} {
+				Package{id, opCode::SCORE},
+				ecs::Score{score} {
 		}
 	};
 
@@ -85,8 +90,8 @@ namespace net {
 		Dead() = delete;
 
 		Dead(std::size_t id, int x, int y) :
-			Package{id, opCode::POSITION},
-			ecs::Position{x, y} {
+				Package{id, opCode::POSITION},
+				ecs::Position{x, y} {
 		}
 	};
 
@@ -94,10 +99,22 @@ namespace net {
 		Input() = delete;
 
 		Input(size_t id, ecs::Input::Action a) :
-			Package{id, opCode::INPUT},
-			action{a} {
+				Package{id, opCode::INPUT},
+				action{a} {
 		}
 
 		ecs::Input::Action action;
+	};
+
+	struct EnemyType : Package, ecs::EnemyType, BaseEvent {
+		EnemyType() = delete;
+
+		EnemyType(std::size_t id, ecs::EnemyType::Enemy t) : Package{id, opCode::NEW_ENEMY}, ecs::EnemyType{t} {}
+	};
+
+	struct ShotType : Package, ecs::ShotType, BaseEvent {
+		ShotType() = delete;
+
+		ShotType(std::size_t id, ecs::ShotType::Shot s) : Package{id, opCode::NEW_SHOT}, ecs::ShotType{s} {}
 	};
 }

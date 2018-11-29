@@ -101,8 +101,19 @@ namespace ecs {
         int damage;
     };
 
+	struct EnemyType : public Component {
+		enum class Enemy : std::size_t {
+			CLASSIC
+		};
+
+		EnemyType() = delete;
+		EnemyType(Enemy t) : type(t) {}
+		~EnemyType() = default;
+		Enemy type;
+	};
+
     struct ShotType : public Component {
-        enum class Shot {
+        enum class Shot : std::size_t {
             ALLY,
             ENEMY,
         };
