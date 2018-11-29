@@ -79,7 +79,6 @@ void net::Client::handleMessage() {
 	}
 	case opCode::POSITION : {
 		auto pos = getData<Pos>();
-		std::cout << "Receive Pos of size " << sizeof(Pos) << std::endl;
 		_sceneManager.emit(pos);
 		break;
 	}
@@ -95,6 +94,11 @@ void net::Client::handleMessage() {
 	}
 	case opCode::DEAD : {
 		auto dead = getData<Dead>();
+		break;
+	}
+	case opCode::NEW_ENEMY : {
+		auto enemy = getData<EnemyType>();
+		_sceneManager.emit(enemy);
 		break;
 	}
 	default:

@@ -14,6 +14,8 @@ set(ENGINE
   engine/systems/MovementSystem.cpp
   engine/systems/SpawnMonsterSystem.hpp
   engine/systems/SpawnMonsterSystem.cpp
+  engine/systems/EnemiesMovementSystem.hpp
+  engine/systems/EnemiesMovementSystem.cpp
   engine/systems/RemoveSystem.hpp
   engine/systems/RemoveSystem.cpp
   engine/Components.hpp
