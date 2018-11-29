@@ -14,62 +14,83 @@ net::ProtocolServer::ProtocolServer(boost::asio::io_context &context, unsigned s
 void net::ProtocolServer::poll() {
 	while (!_ioContext.stopped()) {
 		_ioContext.poll();
-		_gContainer.runSystem();
-		if (_bytesToRead) {
+		while (!_buff.empty())
 			handleData();
-		}
-		_sendDeadEntities();
-		_sendScore();
+		_gContainer.runSystem();
+		//		_sendDeadEntities();
+		//		_sendScore();
 		_sendAllPosition();
-		_sendLifePoint();
+		//		_sendLifePoint();
 	}
 }
 
 void net::ProtocolServer::handleData() {
-	auto header = reinterpret_cast<Header *>(_buff.front());
-	std::cout << "I have : " << _bytesToRead << " bytes to read" << std::endl;
-	std::cout << static_cast<int>(header->op) << std::endl;
-	if (header->op == protocolRType::CONNECTION) {
-		std::cout << "Handle New connection" << std::endl;
+	auto header = getData<Header>();
+	switch (header.op) {
+	case opCode::CONNECTION:
+		std::cout << "Received new connection" << std::endl;
 		_handleNewClient();
-	}
-	if (header->op == protocolRType::POSITION) {
-		auto position = getDataFromBuff<Pos>(_buff.front());
+		break;
+	case opCode::POSITION: {
+		auto position = getData<Pos>();
 		sendDataToAll<Pos>(position);
+		break;
 	}
+	case opCode::INPUT: {
+		std::cout << "Received INPUT" << std::endl;
+		_handleInput();
+		break;
+	}
+	default:
+		break;
+	}
+	_buff.pop();
 }
 
 void net::ProtocolServer::_handleNewClient() {
-	std::cout << "Handle New Client" << std::endl;
-	getDataFromBuff<NetPlayer>(_buff.front());
-	_gContainer.getWorld()->createPlayer();
-	auto &entPlayer = _gContainer.getWorld()->getAllEntities()->back();
-	NetPlayer plr{entPlayer->id, protocolRType::CONNECTION};
-	sendDataTo(plr, _setClient.back());
+	getData<NetPlayer>();
+	auto &entPlayer = _gContainer.getWorld()->createPlayer();
+	auto playerId = entPlayer.getComponent<ecs::Player>().id;
+	_clients.emplace(entPlayer.id, _targetEndpoint);
+	NetPlayer plr{entPlayer.id, opCode::CONNECTION, playerId};
+	sendDataTo(_targetEndpoint, plr);
+	sendDataToAllExcept(_targetEndpoint, NetPlayer{entPlayer.id, opCode::NEW_CONNECTION, playerId});
 	auto vec = _gContainer.getWorld()->getEntities<ecs::Player>();
 	for (auto &it : vec) {
-		if (it->getComponent<ecs::Player>().id != entPlayer->id) {
-			NetPlayer oldPly{it->id, protocolRType::OLD_CONNECTION};
+		auto othId = it->getComponent<ecs::Player>().id;
+		if (othId != entPlayer.id) {
+			NetPlayer oldPly{it->id, opCode::OLD_CONNECTION, othId};
 			sendDataToAll(oldPly);
 		}
+	}
+}
+
+void net::ProtocolServer::_handleInput() {
+	auto pkg = getData<Input>();
+	if (auto entity = _gContainer.getWorld()->getEntity(pkg.head.id)) {
+		(*entity)->getComponent<ecs::Input>().input[pkg.action] = true;
 	}
 }
 
 void net::ProtocolServer::_sendAllPosition() {
 	auto const &EntitiesWithPos = _gContainer.getWorld()->getEntities<ecs::Position>();
 	for (auto const &ent : EntitiesWithPos) {
-		auto const &entPos = ent->getComponent<ecs::Position>();
-		Pos pos{ent->id, protocolRType::POSITION, entPos.x, entPos.y};
-		sendDataToAll(pos);
+		auto &compPos = ent->getComponent<ecs::Position>();
+		if (compPos.updated) {
+			sendDataToAll(Pos{ent->id, opCode::POSITION, compPos.x, compPos.y});
+			compPos.updated = false;
+		}
 	}
 }
 
 void net::ProtocolServer::_sendLifePoint() {
 	auto const &EntitiesWithLifePoint = _gContainer.getWorld()->getEntities<ecs::LifePoint>();
 	for (auto const &ent : EntitiesWithLifePoint) {
-		auto const &compLife = ent->getComponent<ecs::LifePoint>();
-		Life life{ent->id, protocolRType::LIFE_POINT, compLife.lifePoint};
-		sendDataToAll(life);
+		auto &compLife = ent->getComponent<ecs::LifePoint>();
+		if (compLife.updated) {
+			sendDataToAll(Life{ent->id, compLife.lifePoint});
+			compLife.updated = false;
+		}
 	}
 }
 
@@ -77,7 +98,7 @@ void net::ProtocolServer::_sendScore() {
 	auto const &EntitiesWithScore =  _gContainer.getWorld()->getEntities<ecs::Score>();
 	for (auto const &ent : EntitiesWithScore) {
 		auto const &compScore = ent->getComponent<ecs::Score>();
-		Score score{ent->id, protocolRType::SCORE, compScore.score};
+		Score score{ent->id, compScore.score};
 		sendDataToAll(score);
 	}
 }
@@ -88,7 +109,7 @@ void net::ProtocolServer::_sendDeadEntities() {
 		auto const &compLife = ent->getComponent<ecs::LifePoint>();
 		auto const &compPos = ent->getComponent<ecs::Position>();
 		if (compLife.lifePoint <= 0) {
-			Dead dead{ent->id, protocolRType::DEAD, compPos.x, compPos.y};
+			Dead dead{ent->id, compPos.x, compPos.y};
 			sendDataToAll(dead);
 		}
 	}

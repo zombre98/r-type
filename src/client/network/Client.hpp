@@ -11,6 +11,7 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 #include <iostream>
+#include <queue>
 #include "protocol.hpp"
 #include "scenes/Scene.hpp"
 
@@ -26,14 +27,15 @@ namespace net {
 		       const std::string &port);
 
 		void connect(const std::string &address, const std::string &port);
-		Header getHeaderAndReadBuff();
 		void poll();
-		void pollOnce();
+
 		void restart() { _ioContext.restart(); }
 
 		template<typename T>
 		void sendData(T data) {
 			static_assert(std::is_base_of<Package, T>(), "Data is not a base of Package");
+			//			std::cout << "Sending data" << std::endl;
+			data.head.id = _me;
 			boost::array<T, 1> dataToSend = {{data}};
 			_socket.send_to(ba::buffer(dataToSend, sizeof(T)), _senderEndpoint);
 		}
@@ -41,6 +43,7 @@ namespace net {
 		template<typename T>
 		void asyncSendData(T data) {
 			static_assert(std::is_base_of<Package, T>(), "Data is not a base of Package");
+			data.head.id = _me;
 			boost::array<T, 1> newData = {{data}};
 			auto dataToSend = boost::make_shared<boost::array<T, 1>>(newData);
 			_socket.async_send_to(ba::buffer(*dataToSend, sizeof(T)), _senderEndpoint,
@@ -51,7 +54,7 @@ namespace net {
 
 		template<typename T>
 		T getData() {
-			T *pData = reinterpret_cast<T *>(_buff);
+			T *pData = reinterpret_cast<T *>(_buff.front().elems);
 			return *pData;
 		}
 
@@ -62,15 +65,12 @@ namespace net {
 		void afterSend(boost::shared_ptr<boost::array<T, 1>>) {
 		}
 
-		template<typename T>
-		T getDataFromBuff(char *buff) {
-			T *pData = reinterpret_cast<T *>(buff);
-			return *pData;
-		}
-
-		void receive(const boost::system::error_code &error, std::size_t bytes_transferre);
+		void receive(const boost::system::error_code &error, std::size_t bytes_transferred);
+		void handleMessage();
 
 	private:
+		using message = boost::array<char, 128>;
+
 		ba::io_context &_ioContext;
 		SceneManager &_sceneManager;
 		std::string _address;
@@ -79,9 +79,9 @@ namespace net {
 		ba::ip::udp::endpoint _receiverEndpoint;
 		ba::ip::udp::endpoint _senderEndpoint;
 		ba::ip::udp::socket _socket;
-		static int constexpr READ_SIZE = 128;
-		char _buff[READ_SIZE];
-		boost::array<char, READ_SIZE> _recvArr{};
-		//std::size_t _bytesReceived;
+		message _recvArr{};
+		std::queue<message> _buff;
+		size_t _me;
+		bool _connected{false};
 	};
 }

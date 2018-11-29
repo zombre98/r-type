@@ -6,24 +6,25 @@
 #include "Client.hpp"
 
 net::Client::Client(ba::io_context &context, SceneManager &_sceneManager) :
-		_ioContext{context},
-		_sceneManager{_sceneManager},
-		_address{},
-		_port{},
-		_resolver{_ioContext},
-		_socket{_ioContext} {
+	_ioContext{context},
+	_sceneManager{_sceneManager},
+	_address{},
+	_port{},
+	_resolver{_ioContext},
+	_socket{_ioContext} {
 }
 
 net::Client::Client(ba::io_context &context, SceneManager &_sceneManager, const std::string &address,
-                    const std::string &port) :
-		_ioContext{context},
-		_sceneManager{_sceneManager},
-		_address{address},
-		_port{port},
-		_resolver{_ioContext},
-		_senderEndpoint{*_resolver.resolve(ba::ip::udp::v4(), address, port).begin()},
-		_socket{_ioContext} {
+	const std::string &port) :
+	_ioContext{context},
+	_sceneManager{_sceneManager},
+	_address{address},
+	_port{port},
+	_resolver{_ioContext},
+	_senderEndpoint{*_resolver.resolve(ba::ip::udp::v4(), address, port).begin()},
+	_socket{_ioContext} {
 	_socket.open(ba::ip::udp::v4());
+	sendData(NetPlayer{0, opCode::CONNECTION, 0});
 }
 
 void net::Client::connect(const std::string &address, const std::string &port) {
@@ -31,85 +32,73 @@ void net::Client::connect(const std::string &address, const std::string &port) {
 	_port = port;
 	_senderEndpoint = *_resolver.resolve(ba::ip::udp::v4(), _address, _port).begin();
 	_socket.open(ba::ip::udp::v4());
-	std::cout << "Called connect on socket" << std::endl;
-}
-
-net::Header net::Client::getHeaderAndReadBuff() {
-	boost::array<char, READ_SIZE> recvArr{};
-	std::size_t bReceived = _socket.receive_from(ba::buffer(recvArr), _receiverEndpoint);
-	for (size_t i = 0; i < bReceived; i++)
-		_buff[i] = recvArr[i];
-	Header returnHeader{};
-	if (bReceived) {
-		auto header = reinterpret_cast<Header *>(_buff);
-		returnHeader = *header;
-	}
-	return returnHeader;
+	sendData(NetPlayer{0, opCode::CONNECTION, 0});
+	std::cout << "Called connect" << std::endl;
+	auto bytesRead = _socket.receive_from(ba::buffer(_recvArr), _receiverEndpoint);
+	if (bytesRead)
+		_buff.push(_recvArr);
+	_connected = true;
+	asyncReceive();
 }
 
 void net::Client::asyncReceive() {
 	_socket.async_receive_from(ba::buffer(_recvArr), _receiverEndpoint,
-	                           boost::bind(&Client::receive, this, ba::placeholders::error, ba::placeholders::bytes_transferred));
+		boost::bind(&Client::receive, this, ba::placeholders::error, ba::placeholders::bytes_transferred));
 }
 
-void net::Client::receive(const boost::system::error_code &error, std::size_t bytes_transferred) {
-	if (!error || error == ba::error::message_size)
-	{
-		for (size_t i = 0; i < bytes_transferred; i++)
-			_buff[i] = _recvArr[i];
-		auto head = getDataFromBuff<Header>(_buff);
-		switch (head.op) {
-			case protocolRType::CONNECTION : {
-				auto p = getData<NetPlayer>();
-				std::cout << "Receive Connection " << std::endl;
-				_sceneManager.emit(p);
-				break;
-			}
-//			case protocolRType::OLD_CONNECTION : {
-//				auto p = getData<NetPlayer>();
-//				_sceneManager.emit(p);
-//				break;
-//			}
-			case protocolRType::POSITION : {
-				auto pos = getData<Pos>();
-				std::cout << "Receive Pos" << std::endl;
-				_sceneManager.emit(pos);
-				break;
-			}
-			case protocolRType::LIFE_POINT : {
-				auto life = getData<Life>();
-//				std::cout << "Id : " << life.head.id << " LifePoint = " << life.lifePoint << std::endl;
-				break;
-			}
-			case protocolRType::SCORE : {
-				auto score = getData<Score>();
-//				std::cout << "Score : " << score.score << std::endl;
-				break;
-			}
-			case protocolRType::DEAD : {
-				auto dead = getData<Dead>();
-				break;
-			}
-			default:
-				break;
-		}
-		/*
-		 * You need to add the handle of all struct here
-		 */
-		asyncReceive();
+void net::Client::receive(const boost::system::error_code &error, std::size_t bytes_transferred[[maybe_unused]]) {
+	if (!error || error == ba::error::message_size) {
+		_buff.push(_recvArr);
 	}
+	asyncReceive();
 }
 
 void net::Client::poll() {
-	asyncReceive();
-	while (!_ioContext.stopped()) {
-		_ioContext.poll();
+	if (!_connected)
+		return;
+	_ioContext.poll();
+	while (!_buff.empty()) {
+		handleMessage();
 	}
 }
 
-void net::Client::pollOnce() {
-	asyncReceive();
-	if (!_ioContext.stopped()) {
-		_ioContext.poll_one();
+void net::Client::handleMessage() {
+	auto head = getData<Header>();
+	switch (head.op) {
+	case opCode::CONNECTION : {
+		auto p = getData<NetPlayer>();
+		std::cout << "Connection success" << std::endl;
+		_me = p.head.id;
+		_sceneManager.emit(p);
+		break;
 	}
+	case opCode::NEW_CONNECTION :
+	case opCode::OLD_CONNECTION : {
+		_sceneManager.emit(getData<NetPlayer>());
+		break;
+	}
+	case opCode::POSITION : {
+		auto pos = getData<Pos>();
+		std::cout << "Receive Pos of size " << sizeof(Pos) << std::endl;
+		_sceneManager.emit(pos);
+		break;
+	}
+	case opCode::LIFE_POINT : {
+		auto life = getData<Life>();
+		//			std::cout << "Id : " << life.head.id << " LifePoint = " << life.lifePoint << std::endl;
+		break;
+	}
+	case opCode::SCORE : {
+		auto score = getData<Score>();
+		//			std::cout << "Score : " << score.score << std::endl;
+		break;
+	}
+	case opCode::DEAD : {
+		auto dead = getData<Dead>();
+		break;
+	}
+	default:
+		break;
+	}
+	_buff.pop();
 }

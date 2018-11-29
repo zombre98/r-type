@@ -9,9 +9,10 @@
 #include "events/EventManager.hpp"
 
 namespace net {
-	enum class protocolRType {
+	enum class opCode {
 		NO_OP,
 		CONNECTION,
+		NEW_CONNECTION,
 		OLD_CONNECTION,
 		POSITION,
 		INPUT,
@@ -23,42 +24,80 @@ namespace net {
 		STAGE_IS_WIN
 	};
 
-	struct Header : BaseEvent {
+	struct Header {
 		Header() = default;
-		Header(std::size_t i, protocolRType o) : id(i), op(o) {}
+
+		Header(std::size_t i, opCode o) :
+			id(i),
+			op(o) {
+		}
 		std::size_t id;
-		protocolRType op;
+		opCode op;
 	};
 
 	struct Package {
 		Package() = delete;
 		explicit Package(Header &head) : head(head) {}
-		Package(std::size_t id, protocolRType op) : head(id, op) {}
+
+		Package(std::size_t id, opCode op) :
+			head(id, op) {
+		}
 		Header head;
 	};
 
 	struct Pos : Package, ecs::Position, BaseEvent {
 		Pos() = delete;
-		Pos(std::size_t _id, protocolRType op, int x, int y) : Package{_id, op}, ecs::Position(x, y) {}
+
+		Pos(std::size_t _id, opCode op, int x, int y) :
+			Package{_id, op},
+			ecs::Position(x, y) {
+		}
 	};
 
 	struct NetPlayer : Package, ecs::Player, BaseEvent {
 		NetPlayer() = delete;
-		NetPlayer(std::size_t id, protocolRType op) : Package{id, op}, ecs::Player(id) {}
+
+		NetPlayer(std::size_t id, opCode op, size_t playerId) :
+			Package{id, op},
+			ecs::Player(playerId) {
+		}
 	};
 
 	struct Life : Package, ecs::LifePoint {
 		Life() = delete;
-		Life(std::size_t id, protocolRType op, int life) : Package{id, op}, ecs::LifePoint(life) {}
+
+		Life(std::size_t id, int life) :
+			Package{id, opCode::LIFE_POINT},
+			ecs::LifePoint(life) {
+		}
 	};
 
 	struct Score : Package, ecs::Score {
 		Score() = delete;
-		Score(std::size_t id, protocolRType op, int score) : Package{id, op}, ecs::Score{score} {}
+
+		Score(std::size_t id, int score) :
+			Package{id, opCode::SCORE},
+			ecs::Score{score} {
+		}
 	};
 
 	struct Dead : Package, ecs::Position {
 		Dead() = delete;
-		Dead(std::size_t id, protocolRType op, int x, int y) : Package{id, op}, ecs::Position{x, y} {}
+
+		Dead(std::size_t id, int x, int y) :
+			Package{id, opCode::POSITION},
+			ecs::Position{x, y} {
+		}
+	};
+
+	struct Input : Package {
+		Input() = delete;
+
+		Input(size_t id, ecs::Input::Action a) :
+			Package{id, opCode::INPUT},
+			action{a} {
+		}
+
+		ecs::Input::Action action;
 	};
 }
