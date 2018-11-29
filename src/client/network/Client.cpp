@@ -101,6 +101,10 @@ void net::Client::handleMessage() {
 		_sceneManager.emit(enemy);
 		break;
 	}
+	case opCode::NEW_SHOT : {
+		auto shot = getData<ShotType>();
+		_sceneManager.emit(shot);
+	}
 	default:
 		break;
 	}

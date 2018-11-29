@@ -61,6 +61,7 @@ namespace net {
 		void _handleNewClient();
 		void _sendAllEnemies();
 		void _handleInput();
+		void _sendNewShoot();
 	private:
 		rtype::GameContainer _gContainer{};
 	};

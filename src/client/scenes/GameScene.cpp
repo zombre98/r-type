@@ -12,6 +12,7 @@ void GameScene::enter() noexcept {
 	_evtMgr.subscribe<net::NetPlayer>(*this);
 	_evtMgr.subscribe<net::Pos>(*this);
 	_evtMgr.subscribe<net::EnemyType>(*this);
+	_evtMgr.subscribe<net::ShotType>(*this);
 	_resourceMgr.loadTexture("background.png");
         _bg.setTexture(_resourceMgr.getTexture("background"));
         _bg.scale(static_cast<float>(_parent.getWindow().getSize().x) /
@@ -84,6 +85,11 @@ void GameScene::receive(const net::EnemyType &eType) {
 		_sprites.emplace(eType.head.id, _resourceMgr.getTexture("enemy1/frame00"));
 		_sprites[eType.head.id].setPosition(-300, -300);
 	}
+}
+
+void GameScene::receive(const net::ShotType &sType) {
+	_sprites.emplace(sType.head.id, _resourceMgr.getTexture("shoot" + std::to_string(
+			static_cast<int>(sType.type)) + "/frame0"));
 }
 
 void GameScene::_displayBg(sf::RenderWindow &window) {

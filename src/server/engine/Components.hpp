@@ -102,7 +102,7 @@ namespace ecs {
     };
 
 	struct EnemyType : public Component {
-		enum class Enemy {
+		enum class Enemy : std::size_t {
 			CLASSIC
 		};
 
@@ -113,7 +113,7 @@ namespace ecs {
 	};
 
     struct ShotType : public Component {
-        enum class Shot {
+        enum class Shot : std::size_t {
             ALLY,
             ENEMY,
         };
