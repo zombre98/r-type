@@ -101,6 +101,17 @@ namespace ecs {
         int damage;
     };
 
+	struct EnemyType : public Component {
+		enum class Enemy {
+			CLASSIC
+		};
+
+		EnemyType() = delete;
+		EnemyType(Enemy t) : type(t) {}
+		~EnemyType() = default;
+		Enemy type;
+	};
+
     struct ShotType : public Component {
         enum class Shot {
             ALLY,

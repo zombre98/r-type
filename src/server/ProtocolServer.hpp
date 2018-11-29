@@ -59,6 +59,7 @@ namespace net {
 		void _sendLifePoint();
 		void _sendAllPosition();
 		void _handleNewClient();
+		void _sendAllEnemies();
 		void _handleInput();
 	private:
 		rtype::GameContainer _gContainer{};

@@ -19,6 +19,7 @@ void net::ProtocolServer::poll() {
 		_gContainer.runSystem();
 		//		_sendDeadEntities();
 		//		_sendScore();
+		_sendAllEnemies();
 		_sendAllPosition();
 		//		_sendLifePoint();
 	}
@@ -28,7 +29,6 @@ void net::ProtocolServer::handleData() {
 	auto header = getData<Header>();
 	switch (header.op) {
 	case opCode::CONNECTION:
-		std::cout << "Received new connection" << std::endl;
 		_handleNewClient();
 		break;
 	case opCode::POSITION: {
@@ -37,7 +37,6 @@ void net::ProtocolServer::handleData() {
 		break;
 	}
 	case opCode::INPUT: {
-		std::cout << "Received INPUT" << std::endl;
 		_handleInput();
 		break;
 	}
@@ -111,6 +110,18 @@ void net::ProtocolServer::_sendDeadEntities() {
 		if (compLife.lifePoint <= 0) {
 			Dead dead{ent->id, compPos.x, compPos.y};
 			sendDataToAll(dead);
+		}
+	}
+}
+
+void net::ProtocolServer::_sendAllEnemies() {
+	auto const &EntitiesWithEnemies =  _gContainer.getWorld()->getEntities<ecs::EnemyType>();
+	for (auto const &ent : EntitiesWithEnemies) {
+		auto &compEnemyType = ent->getComponent<ecs::EnemyType>();
+		if (compEnemyType.updated) {
+			EnemyType eType = {ent->id, compEnemyType.type};
+			sendDataToAll(eType);
+			compEnemyType.updated = false;
 		}
 	}
 }

@@ -36,6 +36,7 @@ class GameScene final : public AScene, public Receiver {
 	void receive(const SfmlEvent &event) noexcept;
 	void receive(const net::NetPlayer &player);
 	void receive(const net::Pos &pos);
+	void receive(const net::EnemyType &eType);
 	private:
 	void displayGame(float timeSinceLastFrame) noexcept;
 
