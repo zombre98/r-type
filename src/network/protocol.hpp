@@ -14,6 +14,7 @@ namespace net {
 		CONNECTION,
 		NEW_CONNECTION,
 		OLD_CONNECTION,
+		NEW_ENEMY,
 		POSITION,
 		INPUT,
 		LIFE_POINT,
@@ -99,5 +100,10 @@ namespace net {
 		}
 
 		ecs::Input::Action action;
+	};
+
+	struct EnemyType : Package, ecs::EnemyType, BaseEvent {
+		EnemyType() = delete;
+		EnemyType(std::size_t id, ecs::EnemyType::Enemy t) : Package{id, opCode::NEW_ENEMY}, ecs::EnemyType{t} {}
 	};
 }

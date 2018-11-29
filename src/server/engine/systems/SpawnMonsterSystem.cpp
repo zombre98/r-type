@@ -14,7 +14,7 @@ ecs::SpawnMonsterSystem::SpawnMonsterSystem(ecs::entityVector entities,
 void ecs::SpawnMonsterSystem::update(double delta[[maybe_unused]]) {
 	auto now = std::chrono::steady_clock::now();
 	std::chrono::duration<double> diff = now - lastSpawn;
-	if (diff.count() > 5) {
+	if (diff.count() > 10) {
 		lastSpawn = std::chrono::steady_clock::now();
 		_world->createEnemies();
 	}

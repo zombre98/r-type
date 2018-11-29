@@ -35,10 +35,8 @@ namespace ecs {
 			if (velocity.x == 0 && velocity.y == 0) {
 				continue;
 			}
-			//			if (_isValidPosition(position.x + velocity.x, position.y))
-				position.x += velocity.x;
-			//			if (_isValidPosition(position.x, position.y + velocity.y))
-				position.y += velocity.y;
+			position.x += velocity.x;
+			position.y += velocity.y;
 			velocity.x = 0;
 			velocity.y = 0;
 			position.updated = true;

@@ -11,6 +11,7 @@ void GameScene::enter() noexcept {
 	_evtMgr.subscribe<SfmlEvent>(*this);
 	_evtMgr.subscribe<net::NetPlayer>(*this);
 	_evtMgr.subscribe<net::Pos>(*this);
+	_evtMgr.subscribe<net::EnemyType>(*this);
 	_resourceMgr.loadTexture("background.png");
 	_resourceMgr.loadAllTexturesInDirectory("");
 }
@@ -62,5 +63,20 @@ void GameScene::receive(const net::NetPlayer &player) {
 }
 
 void GameScene::receive(const net::Pos &pos) {
+	auto it = _sprites.find(pos.head.id);
+	std::cout << "[" << pos.head.id << "] Pos" << std::endl;
+	if (it == _sprites.end())
+		return;
 	_sprites.at(pos.head.id).setPosition(pos.x, pos.y);
+}
+
+void GameScene::receive(const net::EnemyType &eType) {
+	auto it = _sprites.find(eType.head.id);
+	if (it != _sprites.end())
+		return;
+	if (eType.type == net::EnemyType::Enemy::CLASSIC) {
+		std::cout << "Classic Enemy" << std::endl;
+		_sprites.emplace(eType.head.id, _resourceMgr.getTexture("enemy1/frame00"));
+		_sprites[eType.head.id].setPosition(-300, -300);
+	}
 }

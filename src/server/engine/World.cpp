@@ -34,9 +34,11 @@ ecs::Entity &ecs::World::createPlayer() {
 void ecs::World::createEnemies() {
 	auto &ent = createEntity();
 
-	//	std::cout << "[" << ent.id << "]" << " : New enemy" << std::endl;
-	ent.addComponent<Position>(std::rand() % 100, std::rand() % 100);
+	std::cout << "[" << ent.id << "]" << " : New enemy" << std::endl;
+	ent.addComponent<Position>(1950, std::rand() % 1080);
 	ent.addComponent<LifePoint>(10);
+	ent.addComponent<EnemyType>(EnemyType::Enemy::CLASSIC);
+	ent.addComponent<Velocity>(-1, 0);
 }
 
 void ecs::World::createAllyShot(const Position &pos) {
