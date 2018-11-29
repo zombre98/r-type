@@ -127,17 +127,6 @@ namespace ecs {
         Shot type;
     };
 
-    struct EnemyType : public Component {
-        enum class Enemy {
-            CLASSIC,
-        };
-
-        EnemyType() = delete;
-        EnemyType(Enemy t) : type(t) {}
-        ~EnemyType() = default;
-        Enemy type;
-    };
-
     struct Hitbox : public Component {
         Hitbox() = delete;
         Hitbox(int w, int h): width(w), height(h) {}
