@@ -39,14 +39,16 @@ class GameScene final : public AScene, public Receiver {
 	void receive(const net::EnemyType &eType);
 	void receive(const net::ShotType &sType);
 	void receive(const net::Dead &dead);
+	void receive(const net::Life &life);
 	private:
 	void displayGame(float timeSinceLastFrame) noexcept;
 
-	std::unordered_map<std::size_t, sf::Sprite> _sprites{};
+	private:
+	std::unordered_map<std::size_t, sf::Sprite> _sprites;
+	std::unordered_map<std::size_t, sf::RectangleShape> _rectangles;
 	bool _started{false};
 	bool _running{true};
-
     sf::Sprite _bg;
 
-    void _displayBg(sf::RenderWindow &);
+	void _displayBg(sf::RenderWindow &);
 };

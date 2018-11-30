@@ -14,6 +14,7 @@ void GameScene::enter() noexcept {
 	_evtMgr.subscribe<net::EnemyType>(*this);
 	_evtMgr.subscribe<net::ShotType>(*this);
 	_evtMgr.subscribe<net::Dead>(*this);
+	_evtMgr.subscribe<net::Life>(*this);
 	_resourceMgr.loadTexture("background.png");
 
 	_bg.setTexture(_resourceMgr.getTexture("background"));
@@ -31,6 +32,10 @@ void GameScene::displayGame(float timeSinceLastFrame[[maybe_unused]]) noexcept {
         _displayBg(window);
 	for (auto &it : _sprites) {
 		window.draw(it.second);
+		auto recIt = _rectangles.find(it.first);
+		if (recIt != _rectangles.end()) {
+			window.draw(_rectangles.at(it.first));
+		}
 	}
 }
 
@@ -72,6 +77,12 @@ void GameScene::receive(const net::Pos &pos) {
 	auto it = _sprites.find(pos.head.id);
 	if (it == _sprites.end())
 		return;
+	auto recIt = _rectangles.find(pos.head.id);
+	if (recIt != _rectangles.end()) {
+		_rectangles.at(pos.head.id).setPosition(
+				pos.x - (_sprites.at(pos.head.id).getTexture()->getSize().x * _sprites.at(pos.head.id).getScale().x),
+				pos.y - 5);
+	}
 	_sprites.at(pos.head.id).setPosition(pos.x, pos.y);
 }
 
@@ -99,6 +110,19 @@ void GameScene::receive(const net::Dead &dead) {
 	_sprites.erase(it);
 }
 
+void GameScene::receive(const net::Life &life) {
+	auto it = _rectangles.find(life.head.id);
+	if (it != _rectangles.end()) {
+		_rectangles.at(life.head.id).setSize(sf::Vector2f(static_cast<float>(life.lifePoint), 3));
+		return;
+	}
+	_rectangles.emplace(life.head.id, sf::Vector2f(static_cast<float>(life.lifePoint), 3));
+	_rectangles.at(life.head.id).setFillColor(sf::Color(100, 250, 50));
+	_rectangles.at(life.head.id).setPosition(
+			_sprites.at(life.head.id).getPosition().x - (_sprites.at(life.head.id).getTexture()->getSize().x * _sprites.at(life.head.id).getScale().x),
+			_sprites.at(life.head.id).getPosition().y - 5);
+}
+
 void GameScene::_displayBg(sf::RenderWindow &window) {
     static std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
     auto t2 = std::chrono::steady_clock::now();
@@ -120,4 +144,5 @@ void GameScene::_displayBg(sf::RenderWindow &window) {
     if (_bg.getPosition().x + _bg.getTexture()->getSize().x * _bg.getScale().x <= 0)
         _bg.setPosition(0, _bg.getPosition().y);
 }
+
 

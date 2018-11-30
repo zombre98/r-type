@@ -22,7 +22,7 @@ void net::ProtocolServer::poll() {
 		_sendNewShoot();
 		_sendAllEnemies();
 		_sendAllPosition();
-		//		_sendLifePoint();
+		_sendLifePoint();
 	}
 }
 
@@ -58,9 +58,13 @@ void net::ProtocolServer::_handleNewClient() {
 	auto vec = _gContainer.getWorld()->getEntities<ecs::Player>();
 	for (auto &it : vec) {
 		auto othId = it->getComponent<ecs::Player>().id;
+		auto pos = it->getComponent<ecs::Position>();
+		auto life = it->getComponent<ecs::LifePoint>();
 		if (othId != entPlayer.id) {
 			NetPlayer oldPly{it->id, opCode::OLD_CONNECTION, othId};
 			sendDataToAll(oldPly);
+			sendDataToAll(Pos{it->id, opCode::POSITION, pos.x, pos.y});
+			sendDataToAll(Life{it->id, life.lifePoint});
 		}
 	}
 }
@@ -89,6 +93,8 @@ void net::ProtocolServer::_sendLifePoint() {
 	auto const &EntitiesWithLifePoint = _gContainer.getWorld()->getEntities<ecs::LifePoint>();
 	for (auto const &ent : EntitiesWithLifePoint) {
 		auto &compLife = ent->getComponent<ecs::LifePoint>();
+		if (ent->hasComponent<ecs::ShotType>())
+			continue;
 		if (compLife.updated) {
 			sendDataToAll(Life{ent->id, compLife.lifePoint});
 			compLife.updated = false;

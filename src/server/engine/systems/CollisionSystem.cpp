@@ -41,6 +41,7 @@ void ecs::CollisionSystem::update(double delta[[maybe_unused]]) {
 
 		        e->getComponent<LifePoint>().lifePoint -= s->getComponent<Damage>().damage;
 		        s->getComponent<LifePoint>().lifePoint -= 1;
+		        e->getComponent<LifePoint>().updated = true;
 	        }
         }
     }

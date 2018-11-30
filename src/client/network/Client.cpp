@@ -84,6 +84,7 @@ void net::Client::handleMessage() {
 	}
 	case opCode::LIFE_POINT : {
 		auto life = getData<Life>();
+		_sceneManager.emit<Life>(life);
 		//			std::cout << "Id : " << life.head.id << " LifePoint = " << life.lifePoint << std::endl;
 		break;
 	}

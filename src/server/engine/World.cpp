@@ -37,7 +37,7 @@ void ecs::World::createEnemies() {
 
 	std::cout << "[" << ent.id << "]" << " : New enemy" << std::endl;
 	ent.addComponent<Position>(1950, std::rand() % 1080);
-	ent.addComponent<LifePoint>(10);
+	ent.addComponent<LifePoint>(90);
 	ent.addComponent<EnemyType>(EnemyType::Enemy::CLASSIC);
 	ent.addComponent<Hitbox>(33, 34);
 	ent.addComponent<Velocity>(-1, 0);

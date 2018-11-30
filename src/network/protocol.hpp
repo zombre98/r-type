@@ -21,6 +21,7 @@ namespace net {
 		LIFE_POINT,
 		DEAD,
 		SCORE,
+		UNKNOW_ID,
 		NEW_STAGE,
 		SPRITE_STAGE,
 		STAGE_IS_WIN
@@ -68,7 +69,7 @@ namespace net {
 		}
 	};
 
-	struct Life : Package, ecs::LifePoint {
+	struct Life : Package, ecs::LifePoint, BaseEvent {
 		Life() = delete;
 
 		Life(std::size_t id, int life) :
