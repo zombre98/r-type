@@ -38,6 +38,7 @@ class GameScene final : public AScene, public Receiver {
 	void receive(const net::Pos &pos);
 	void receive(const net::EnemyType &eType);
 	void receive(const net::ShotType &sType);
+	void receive(const net::Dead &dead);
 	private:
 	void displayGame(float timeSinceLastFrame) noexcept;
 

@@ -5,6 +5,7 @@
 ** MovementSystem
 */
 
+#include <iostream>
 #include "EnemiesMovementSystem.hpp"
 
 namespace ecs {
@@ -19,8 +20,9 @@ namespace ecs {
 
 		if (diff.count() > 0.5) {
 			for (auto &e : entities) {
-				if (e->getComponent<EnemyType>().type == EnemyType::Enemy::CLASSIC)
-					e->getComponent<Velocity>().x = -7;
+				if (e->getComponent<EnemyType>().type == EnemyType::Enemy::CLASSIC) {
+					e->getComponent<Velocity>().x = -10;
+				}
 			}
 			_lastMove = std::chrono::steady_clock::now();
 		}

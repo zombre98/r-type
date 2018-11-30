@@ -17,7 +17,7 @@ void net::ProtocolServer::poll() {
 		while (!_buff.empty())
 			handleData();
 		_gContainer.runSystem();
-		//		_sendDeadEntities();
+		_sendDeadEntities();
 		//		_sendScore();
 		_sendNewShoot();
 		_sendAllEnemies();
@@ -109,6 +109,7 @@ void net::ProtocolServer::_sendDeadEntities() {
 		auto const &compLife = ent->getComponent<ecs::LifePoint>();
 		auto const &compPos = ent->getComponent<ecs::Position>();
 		if (compLife.lifePoint <= 0) {
+			std::cout << "New dead Entities" << std::endl;
 			Dead dead{ent->id, compPos.x, compPos.y};
 			sendDataToAll(dead);
 		}

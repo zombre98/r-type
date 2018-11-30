@@ -18,6 +18,8 @@ set(ENGINE
   engine/systems/SpawnMonsterSystem.cpp
   engine/systems/MovementShootSystem.cpp
   engine/systems/MovementShootSystem.hpp
+  engine/systems/InGameBoardSystem.cpp
+  engine/systems/InGameBoardSystem.hpp
   engine/systems/EnemiesMovementSystem.hpp
   engine/systems/EnemiesMovementSystem.cpp
   engine/systems/RemoveSystem.hpp

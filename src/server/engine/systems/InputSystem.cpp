@@ -10,8 +10,8 @@
 #include "InputSystem.hpp"
 
 ecs::InputSystem::InputSystem(entityVector allEntities, std::shared_ptr<ecs::World> world) :
-	System(std::move(allEntities)),
-	_world(std::move(world))
+	System(allEntities),
+	_world(world)
 {}
 
 void ecs::InputSystem::update(double delta[[maybe_unused]]) {

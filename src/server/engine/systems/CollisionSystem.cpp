@@ -5,6 +5,7 @@
 ** InputSystem
 */
 
+#include <iostream>
 #include "CollisionSystem.hpp"
 
 ecs::CollisionSystem::CollisionSystem(entityVector allEntities,
@@ -13,7 +14,7 @@ ecs::CollisionSystem::CollisionSystem(entityVector allEntities,
 {}
 
 void ecs::CollisionSystem::update(double delta[[maybe_unused]]) {
-    auto entities = getEntities<Velocity, Position, Hitbox, LifePoint>();
+    auto entities = getEntities<Velocity, Position, Hitbox, LifePoint, EnemyType>();
     auto shots = getEntities<Position, Hitbox, ShotType, Damage>();
 
     for (auto &e : entities) {
@@ -28,25 +29,32 @@ void ecs::CollisionSystem::update(double delta[[maybe_unused]]) {
                 (e->hasComponent<EnemyType>() &&
                  s->getComponent<ShotType>().type == ShotType::Shot::ENEMY))
                 continue;
-            if (!_collides(e, s))
-                continue;
-            e->getComponent<LifePoint>().lifePoint -= s->getComponent<Damage>().damage;
-            _world->eraseEntity(s->id);
+
+            auto &compPPos = e->getComponent<Position>();
+	        auto &compPBox = e->getComponent<Hitbox>();
+	        auto &compShotPos = s->getComponent<Position>();
+	        auto &compShotBox = s->getComponent<Hitbox>();
+	        std::cout << (compPPos.x < compShotPos.x + compShotBox.width);
+	        std::cout << (compPPos.x + compPBox.width > compShotPos.x);
+	        std::cout << (compPPos.y > compShotPos.y + compShotBox.height);
+	        std::cout << (compPPos.y + compPBox.height < compShotPos.y) << std::endl;
+
+	        std::cout << "c1 : " << compPPos.x << " < " << compShotPos.x + compShotBox.width << std::endl;
+	        std::cout << "c2 : " << compPPos.x + compPBox.width << " > " << compShotPos.x << std::endl;
+	        std::cout << "c3 : " << compPPos.y << " > " << compShotPos.y + compShotBox.height << std::endl;
+	        std::cout << "c4 : " << compPPos.y + compPBox.height << " < " << compShotPos.y << std::endl;
+	        if  ((compPPos.x < compShotPos.x + compShotBox.width && compPPos.x + compPBox.width > compShotPos.x &&
+	             compPPos.y > compShotPos.y + compShotBox.height && compPPos.y + compPBox.height < compShotPos.y)) {
+
+
+		        std::cout << "Shot hitbox : " << compPBox.height << ", " << compPBox.width << std::endl;
+		        std::cout << "Pos shoot : " << compShotPos.x << ", " << compShotPos.y << std::endl;
+		        std::cout << "Enely hitbox : " << compShotBox.height << ", " << compShotBox.width << std::endl;
+		        std::cout << "Pos Enemy : " << compPPos.x << ", " << compPPos.y << std::endl;
+		        std::cout << "Collide" << std::endl;
+		        e->getComponent<LifePoint>().lifePoint -= s->getComponent<Damage>().damage;
+		        s->getComponent<LifePoint>().lifePoint -= 1;
+	        }
         }
     }
-}
-
-bool ecs::CollisionSystem::_collides(const Entity *e, const Entity *shot) {
-    auto &ePos = e->getComponent<Position>();
-    auto &eBox = e->getComponent<Hitbox>();
-    auto &shotPos = shot->getComponent<Position>();
-    auto &shotBox = shot->getComponent<Hitbox>();
-
-    // (RectA.Left < RectB.Right && RectA.Right > RectB.Left &&
-    //  RectA.Top > RectB.Bottom && RectA.Bottom < RectB.Top )
-    // = colliding
-    if (ePos.x < shotPos.x + shotBox.width && ePos.x + eBox.width > shotPos.x &&
-        ePos.y > shotPos.y + shotBox.height && ePos.y + eBox.height < shotPos.y)
-        return (true);
-    return (false);
 }

@@ -86,11 +86,11 @@ namespace net {
 		}
 	};
 
-	struct Dead : Package, ecs::Position {
+	struct Dead : Package, ecs::Position, BaseEvent {
 		Dead() = delete;
 
 		Dead(std::size_t id, int x, int y) :
-				Package{id, opCode::POSITION},
+				Package{id, opCode::DEAD},
 				ecs::Position{x, y} {
 		}
 	};

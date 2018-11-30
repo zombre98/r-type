@@ -13,6 +13,7 @@ void GameScene::enter() noexcept {
 	_evtMgr.subscribe<net::Pos>(*this);
 	_evtMgr.subscribe<net::EnemyType>(*this);
 	_evtMgr.subscribe<net::ShotType>(*this);
+	_evtMgr.subscribe<net::Dead>(*this);
 	_resourceMgr.loadTexture("background.png");
         _bg.setTexture(_resourceMgr.getTexture("background"));
         _bg.scale(static_cast<float>(_parent.getWindow().getSize().x) /
@@ -70,7 +71,6 @@ void GameScene::receive(const net::NetPlayer &player) {
 
 void GameScene::receive(const net::Pos &pos) {
 	auto it = _sprites.find(pos.head.id);
-	std::cout << "[" << pos.head.id << "] Pos" << std::endl;
 	if (it == _sprites.end())
 		return;
 	_sprites.at(pos.head.id).setPosition(pos.x, pos.y);
@@ -90,6 +90,14 @@ void GameScene::receive(const net::EnemyType &eType) {
 void GameScene::receive(const net::ShotType &sType) {
 	_sprites.emplace(sType.head.id, _resourceMgr.getTexture("shoot" + std::to_string(
 			static_cast<int>(sType.type)) + "/frame0"));
+}
+
+void GameScene::receive(const net::Dead &dead) {
+	std::cout << "Receive dead event" << std::endl;
+	auto it = _sprites.find(dead.head.id);
+	if (it == _sprites.end())
+		return;
+	_sprites.erase(it);
 }
 
 void GameScene::_displayBg(sf::RenderWindow &window) {
@@ -113,3 +121,4 @@ void GameScene::_displayBg(sf::RenderWindow &window) {
     if (_bg.getPosition().x + _bg.getTexture()->getSize().x * _bg.getScale().x <= 0)
         _bg.setPosition(0, _bg.getPosition().y);
 }
+

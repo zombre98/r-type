@@ -26,6 +26,7 @@ ecs::Entity &ecs::World::createPlayer() {
 	ent.addComponent<LifePoint>(100);
 	ent.addComponent<Position>(std::rand() % 1000, std::rand() % 1000);
 	ent.addComponent<Velocity>(0, 0);
+	ent.addComponent<Hitbox>(33, 17);
 	ent.addComponent<Score>(0);
 	ent.addComponent<Input>();
 	return ent;
@@ -38,6 +39,7 @@ void ecs::World::createEnemies() {
 	ent.addComponent<Position>(1950, std::rand() % 1080);
 	ent.addComponent<LifePoint>(10);
 	ent.addComponent<EnemyType>(EnemyType::Enemy::CLASSIC);
+	ent.addComponent<Hitbox>(33, 34);
 	ent.addComponent<Velocity>(-1, 0);
 }
 
@@ -47,5 +49,7 @@ void ecs::World::createAllyShot(const Position &pos) {
     ent.addComponent<Position>(pos.x, pos.y);
 	ent.addComponent<Velocity>(0, 3);
     ent.addComponent<Damage>(30);
+    ent.addComponent<Hitbox>(18, 16);
+    ent.addComponent<LifePoint>(1);
     ent.addComponent<ShotType>(ShotType::Shot::ALLY);
 }

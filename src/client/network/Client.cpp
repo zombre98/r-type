@@ -94,6 +94,7 @@ void net::Client::handleMessage() {
 	}
 	case opCode::DEAD : {
 		auto dead = getData<Dead>();
+		_sceneManager.emit(dead);
 		break;
 	}
 	case opCode::NEW_ENEMY : {
