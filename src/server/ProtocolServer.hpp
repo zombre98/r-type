@@ -55,6 +55,7 @@ namespace net {
 
 	private:
 		void _sendScore();
+		void _handleUnknowId();
 		void _sendDeadEntities();
 		void _sendLifePoint();
 		void _sendAllPosition();

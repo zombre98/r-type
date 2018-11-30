@@ -75,8 +75,10 @@ void GameScene::receive(const net::NetPlayer &player) {
 
 void GameScene::receive(const net::Pos &pos) {
 	auto it = _sprites.find(pos.head.id);
-	if (it == _sprites.end())
+	if (it == _sprites.end()) {
+		_parent.getClient().sendData(net::UnknowId{0, pos.head.id});
 		return;
+	}
 	auto recIt = _rectangles.find(pos.head.id);
 	if (recIt != _rectangles.end()) {
 		_rectangles.at(pos.head.id).setPosition(
@@ -87,6 +89,7 @@ void GameScene::receive(const net::Pos &pos) {
 }
 
 void GameScene::receive(const net::EnemyType &eType) {
+	std::cout << "Receive Enemy" << std::endl;
 	auto it = _sprites.find(eType.head.id);
 	if (it != _sprites.end())
 		return;
@@ -95,6 +98,7 @@ void GameScene::receive(const net::EnemyType &eType) {
 		_sprites.emplace(eType.head.id, _resourceMgr.getTexture("enemy1/frame00"));
 		_sprites[eType.head.id].setPosition(-300, -300);
 	}
+	std::cout << "End of Receive Enemy after emplace" << std::endl;
 }
 
 void GameScene::receive(const net::ShotType &sType) {
@@ -105,8 +109,10 @@ void GameScene::receive(const net::ShotType &sType) {
 void GameScene::receive(const net::Dead &dead) {
 	std::cout << "Receive dead event" << std::endl;
 	auto it = _sprites.find(dead.head.id);
-	if (it == _sprites.end())
+	if (it == _sprites.end()) {
+		_parent.getClient().sendData(net::UnknowId{0, dead.head.id});
 		return;
+	}
 	_sprites.erase(it);
 }
 

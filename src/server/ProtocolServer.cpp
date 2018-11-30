@@ -32,9 +32,8 @@ void net::ProtocolServer::handleData() {
 	case opCode::CONNECTION:
 		_handleNewClient();
 		break;
-	case opCode::POSITION: {
-		auto position = getData<Pos>();
-		sendDataToAll<Pos>(position);
+	case opCode::UNKNOW_ID: {
+		_handleUnknowId();
 		break;
 	}
 	case opCode::INPUT: {
@@ -128,7 +127,7 @@ void net::ProtocolServer::_sendAllEnemies() {
 	for (auto const &ent : EntitiesWithEnemies) {
 		auto &compEnemyType = ent->getComponent<ecs::EnemyType>();
 		if (compEnemyType.updated) {
-			EnemyType eType = {ent->id, compEnemyType.type};
+			EnemyType eType{ent->id, compEnemyType.type};
 			sendDataToAll(eType);
 			compEnemyType.updated = false;
 		}
@@ -143,6 +142,32 @@ void net::ProtocolServer::_sendNewShoot() {
 			ShotType shot{ent->id, compShot.type};
 			sendDataToAll(shot);
 			compShot.updated = false;
+		}
+	}
+}
+
+void net::ProtocolServer::_handleUnknowId() {
+	auto pkg = getData<UnknowId>();
+	if (auto entity = _gContainer.getWorld()->getEntity(pkg.head.id)) {
+		std::cout << "Unknow Id : [" << pkg.id << "]" << std::endl;
+		auto &ent = entity.value();
+		std::cout << ent->hasComponent<ecs::EnemyType>() << std::endl;
+		if (ent->hasComponent<ecs::EnemyType>()) {
+			std::cout << "Send New Enemies with Id : [" << ent->id << "]" << std::endl;
+			auto compEnemyType = ent->getComponent<ecs::EnemyType>();
+			sendDataToAll(EnemyType{ent->id, compEnemyType.type});
+		}
+		if (ent->hasComponent<ecs::ShotType>()) {
+			auto compShotType = (*entity)->getComponent<ecs::ShotType>();
+			sendDataToAll(ShotType{(*entity)->id, compShotType.type});
+		}
+		if (ent->hasComponent<ecs::Position>()) {
+			auto compPos = ent->getComponent<ecs::Position>();
+			sendDataToAll(Pos{ent->id, opCode::POSITION, compPos.x, compPos.y});
+		}
+		if (ent->hasComponent<ecs::LifePoint>()) {
+			auto compLife = ent->getComponent<ecs::LifePoint>();
+			sendDataToAll(Life{ent->id, compLife.lifePoint});
 		}
 	}
 }

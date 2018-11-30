@@ -118,4 +118,11 @@ namespace net {
 
 		ShotType(std::size_t id, ecs::ShotType::Shot s) : Package{id, opCode::NEW_SHOT}, ecs::ShotType{s} {}
 	};
+
+	struct UnknowId : Package {
+		UnknowId() = delete;
+
+		UnknowId(std::size_t id, std::size_t uId) : Package{id, opCode::UNKNOW_ID}, id(uId) {}
+		std::size_t id;
+	};
 }
