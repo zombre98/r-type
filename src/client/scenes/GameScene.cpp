@@ -89,16 +89,13 @@ void GameScene::receive(const net::Pos &pos) {
 }
 
 void GameScene::receive(const net::EnemyType &eType) {
-	std::cout << "Receive Enemy" << std::endl;
 	auto it = _sprites.find(eType.head.id);
 	if (it != _sprites.end())
 		return;
 	if (eType.type == net::EnemyType::Enemy::CLASSIC) {
-		std::cout << "Classic Enemy" << std::endl;
 		_sprites.emplace(eType.head.id, _resourceMgr.getTexture("enemy1/frame00"));
 		_sprites[eType.head.id].setPosition(-300, -300);
 	}
-	std::cout << "End of Receive Enemy after emplace" << std::endl;
 }
 
 void GameScene::receive(const net::ShotType &sType) {

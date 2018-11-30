@@ -127,6 +127,7 @@ void net::ProtocolServer::_sendAllEnemies() {
 	for (auto const &ent : EntitiesWithEnemies) {
 		auto &compEnemyType = ent->getComponent<ecs::EnemyType>();
 		if (compEnemyType.updated) {
+			std::cout << "Enemy got Id : " << ent->id << std::endl;
 			EnemyType eType{ent->id, compEnemyType.type};
 			sendDataToAll(eType);
 			compEnemyType.updated = false;
@@ -148,12 +149,9 @@ void net::ProtocolServer::_sendNewShoot() {
 
 void net::ProtocolServer::_handleUnknowId() {
 	auto pkg = getData<UnknowId>();
-	if (auto entity = _gContainer.getWorld()->getEntity(pkg.head.id)) {
-		std::cout << "Unknow Id : [" << pkg.id << "]" << std::endl;
+	if (auto entity = _gContainer.getWorld()->getEntity(pkg.id)) {
 		auto &ent = entity.value();
-		std::cout << ent->hasComponent<ecs::EnemyType>() << std::endl;
 		if (ent->hasComponent<ecs::EnemyType>()) {
-			std::cout << "Send New Enemies with Id : [" << ent->id << "]" << std::endl;
 			auto compEnemyType = ent->getComponent<ecs::EnemyType>();
 			sendDataToAll(EnemyType{ent->id, compEnemyType.type});
 		}
