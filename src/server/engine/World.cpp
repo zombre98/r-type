@@ -34,7 +34,6 @@ ecs::Entity &ecs::World::createPlayer() {
 void ecs::World::createEnemies() {
 	auto &ent = createEntity();
 
-	// std::cout << "[" << ent.id << "]" << " : New enemy" << std::endl;
 	ent.addComponent<Position>(1950, std::rand() % 1080);
 	ent.addComponent<LifePoint>(10);
 	ent.addComponent<EnemyType>(EnemyType::Enemy::CLASSIC);
@@ -45,7 +44,7 @@ void ecs::World::createAllyShot(const Position &pos) {
     auto &ent = createEntity();
 
     ent.addComponent<Position>(pos.x, pos.y);
-	ent.addComponent<Velocity>(0, 3);
+    ent.addComponent<Velocity>(0, 3);
     ent.addComponent<Damage>(30);
     ent.addComponent<ShotType>(ShotType::Shot::ALLY);
 }

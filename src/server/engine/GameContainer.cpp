@@ -50,8 +50,8 @@ void rtype::GameContainer::checkWatcher() {
 
     if (index >= _watcher.getLoaders().size())
         return;
-    // std::cout << "toto\n";
     auto entity = _watcher.getLoaders()[index]->getFunction<ecs::Entity *(*)()>("createEntity")();
-    // std::cout << "hello\n";
+    entity->id = entity->nextId++;
+    _world->addEntity(entity);
     index++;
 }
