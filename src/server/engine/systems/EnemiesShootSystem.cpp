@@ -15,10 +15,9 @@ namespace ecs {
 		std::chrono::duration<double> diff = now - _lastShoot;
 
 		if (entities.empty()) {
-			std::cout << "Is empty" << std::endl;
 			return;
 		}
-		if (diff.count() > 5.0) {
+		if (diff.count() > 2.0) {
 			for (auto &e : entities) {
 				if (e->getComponent<EnemyType>().type == EnemyType::Enemy::CLASSIC) {
 					_world->createShot(e->getComponent<Position>(), ShotType::Shot::ENEMY);
