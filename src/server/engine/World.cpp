@@ -32,6 +32,7 @@ ecs::Entity &ecs::World::createPlayer() {
 	return ent;
 }
 
+
 void ecs::World::createEnemies() {
 	auto &ent = createEntity();
 
@@ -43,7 +44,7 @@ void ecs::World::createEnemies() {
 	ent.addComponent<Velocity>(-1, 0);
 }
 
-void ecs::World::createAllyShot(const Position &pos) {
+void ecs::World::createShot(const Position &pos, ShotType::Shot sType) {
     auto &ent = createEntity();
 
     ent.addComponent<Position>(pos.x, pos.y);
@@ -51,5 +52,5 @@ void ecs::World::createAllyShot(const Position &pos) {
     ent.addComponent<Damage>(30);
     ent.addComponent<Hitbox>(18, 16);
     ent.addComponent<LifePoint>(1);
-    ent.addComponent<ShotType>(ShotType::Shot::ALLY);
+    ent.addComponent<ShotType>(sType);
 }

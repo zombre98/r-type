@@ -15,7 +15,7 @@ ecs::CollisionSystem::CollisionSystem(entityVector allEntities,
 {}
 
 void ecs::CollisionSystem::update(double delta[[maybe_unused]]) {
-    auto entities = getEntities<Velocity, Position, Hitbox, LifePoint, EnemyType>();
+    auto entities = getEntities<Velocity, Position, Hitbox, LifePoint>();
     auto shots = getEntities<Position, Hitbox, ShotType, Damage>();
 
     for (auto &e : entities) {

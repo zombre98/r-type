@@ -21,6 +21,8 @@ namespace ecs {
 			for (auto &e : entities) {
 				if (e->getComponent<ShotType>().type == ShotType::Shot::ALLY)
 					e->getComponent<Velocity>().x = 7;
+				if (e->getComponent<ShotType>().type == ShotType::Shot::ENEMY)
+					e->getComponent<Velocity>().x = -7;
 			}
 			_lastMove = std::chrono::steady_clock::now();
 		}

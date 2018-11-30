@@ -36,6 +36,6 @@ void ecs::InputSystem::updateVelocity(ecs::Entity *e, const ecs::Input &inputCom
 void ecs::InputSystem::doShoot(ecs::Entity *e, const ecs::Input &inputComp) {
 	if (inputComp.input[ecs::Input::Shoot]) {
 		auto &pos = e->getComponent<Position>();
-		_world->createAllyShot(Position(pos.x + 10, pos.y));
+		_world->createShot(Position(pos.x + 10, pos.y), ShotType::Shot::ALLY);
 	}
 }

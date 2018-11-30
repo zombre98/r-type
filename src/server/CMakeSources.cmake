@@ -20,6 +20,8 @@ set(ENGINE
   engine/systems/MovementShootSystem.hpp
   engine/systems/InGameBoardSystem.cpp
   engine/systems/InGameBoardSystem.hpp
+  engine/systems/EnemiesShootSystem.hpp
+  engine/systems/EnemiesShootSystem.cpp
   engine/systems/EnemiesMovementSystem.hpp
   engine/systems/EnemiesMovementSystem.cpp
   engine/systems/RemoveSystem.hpp
