@@ -14,8 +14,9 @@
 #include "GameContainer.hpp"
 #include "SpawnMonsterSystem.hpp"
 
-rtype::GameContainer::GameContainer() : _world{std::make_shared<ecs::World>()} {
-	_initSystem();
+rtype::GameContainer::GameContainer() : _world{std::make_shared<ecs::World>()}, _watcher{"assets/libraries/"} {
+    _initSystem();
+    _watcher.run();
 }
 
 void rtype::GameContainer::_initSystem() {
@@ -38,5 +39,19 @@ void rtype::GameContainer::runSystem() {
 	last = std::chrono::steady_clock::now();
 }
 
+void rtype::GameContainer::checkWatcher() {
+    static unsigned int index = 0;
+    static std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+    auto t2 = std::chrono::steady_clock::now();
+    auto timeSpan = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 
+    if (timeSpan.count() < 10.f)
+        return;
 
+    if (index >= _watcher.getLoaders().size())
+        return;
+    // std::cout << "toto\n";
+    auto entity = _watcher.getLoaders()[index]->getFunction<ecs::Entity *(*)()>("createEntity")();
+    // std::cout << "hello\n";
+    index++;
+}
