@@ -18,10 +18,10 @@ namespace ecs {
 		auto now = std::chrono::steady_clock::now();
 		std::chrono::duration<double> diff = now - _lastMove;
 
-		if (diff.count() > 0.5) {
+		if (diff.count() > 0.1) {
 			for (auto &e : entities) {
 				if (e->getComponent<EnemyType>().type == EnemyType::Enemy::CLASSIC) {
-					e->getComponent<Velocity>().x = -10;
+					e->getComponent<Velocity>().x = -7;
 				}
 			}
 			_lastMove = std::chrono::steady_clock::now();

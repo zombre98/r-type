@@ -15,11 +15,10 @@ void GameScene::enter() noexcept {
 	_evtMgr.subscribe<net::ShotType>(*this);
 	_evtMgr.subscribe<net::Dead>(*this);
 	_resourceMgr.loadTexture("background.png");
-        _bg.setTexture(_resourceMgr.getTexture("background"));
-        _bg.scale(static_cast<float>(_parent.getWindow().getSize().x) /
-                  _bg.getTexture()->getSize().x,
-                  static_cast<float>(_parent.getWindow().getSize().y) /
-                  _bg.getTexture()->getSize().y);
+
+	_bg.setTexture(_resourceMgr.getTexture("background"));
+	_bg.scale(static_cast<float>(_parent.getWindow().getSize().x) / _bg.getTexture()->getSize().x,
+	static_cast<float>(_parent.getWindow().getSize().y) / _bg.getTexture()->getSize().y);
 	_resourceMgr.loadAllTexturesInDirectory("");
 }
 

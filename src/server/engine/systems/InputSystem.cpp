@@ -27,10 +27,10 @@ void ecs::InputSystem::update(double delta[[maybe_unused]]) {
 
 void ecs::InputSystem::updateVelocity(ecs::Entity *e, const ecs::Input &inputComp) {
 	auto &velocity = e->getComponent<Velocity>();
-	velocity.x -= static_cast<int>(inputComp.input[ecs::Input::Left]) * 5;
-	velocity.x += static_cast<int>(inputComp.input[ecs::Input::Right]) * 5;
-	velocity.y -= static_cast<int>(inputComp.input[ecs::Input::Up]) * 5;
-	velocity.y += static_cast<int>(inputComp.input[ecs::Input::Down]) * 5;
+	velocity.x -= static_cast<int>(inputComp.input[ecs::Input::Left]) * 15;
+	velocity.x += static_cast<int>(inputComp.input[ecs::Input::Right]) * 15;
+	velocity.y -= static_cast<int>(inputComp.input[ecs::Input::Up]) * 15;
+	velocity.y += static_cast<int>(inputComp.input[ecs::Input::Down]) * 15;
 }
 
 void ecs::InputSystem::doShoot(ecs::Entity *e, const ecs::Input &inputComp) {
