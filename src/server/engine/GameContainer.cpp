@@ -28,7 +28,7 @@ void rtype::GameContainer::_initSystem() {
 	_listSystem.emplace_back(new ecs::EnemiesMovementSystem(_world->getAllEntities(), std::chrono::steady_clock::now()));
 	_listSystem.emplace_back(new ecs::MovementShootSystem(_world->getAllEntities(), std::chrono::steady_clock::now()));
 	_listSystem.emplace_back(new ecs::InGameBoardSystem(_world->getAllEntities(), _world));
-//	_listSystem.emplace_back(new ecs::CollisionSystem(_world->getAllEntities(), _world));
+	_listSystem.emplace_back(new ecs::CollisionSystem(_world->getAllEntities(), _world));
 }
 
 void rtype::GameContainer::runSystem() {

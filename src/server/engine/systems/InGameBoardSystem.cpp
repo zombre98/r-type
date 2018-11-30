@@ -15,7 +15,7 @@ void ecs::InGameBoardSystem::update(double delta[[maybe_unused]]) {
 
 	for (auto &ent : entities) {
 		auto  &compPos = ent->getComponent<Position>();
-		if (compPos.y < 0 || compPos.x < 0 || compPos.y > 1080 || compPos.x > 1000) {
+		if (compPos.y < 0 || compPos.x < 0 || compPos.y > 1080 || compPos.x > 1920) {
 			ent->getComponent<LifePoint>().lifePoint = 0;
 		}
 	}

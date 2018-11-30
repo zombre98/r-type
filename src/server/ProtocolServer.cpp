@@ -76,6 +76,8 @@ void net::ProtocolServer::_sendAllPosition() {
 	auto const &EntitiesWithPos = _gContainer.getWorld()->getEntities<ecs::Position>();
 	for (auto const &ent : EntitiesWithPos) {
 		auto &compPos = ent->getComponent<ecs::Position>();
+		if (ent->hasComponent<ecs::LifePoint>() && ent->getComponent<ecs::LifePoint>().lifePoint <= 0)
+			continue;
 		if (compPos.updated) {
 			sendDataToAll(Pos{ent->id, opCode::POSITION, compPos.x, compPos.y});
 			compPos.updated = false;

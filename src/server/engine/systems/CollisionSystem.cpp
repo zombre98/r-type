@@ -6,6 +6,7 @@
 */
 
 #include <iostream>
+#include <unistd.h>
 #include "CollisionSystem.hpp"
 
 ecs::CollisionSystem::CollisionSystem(entityVector allEntities,
@@ -34,24 +35,10 @@ void ecs::CollisionSystem::update(double delta[[maybe_unused]]) {
 	        auto &compPBox = e->getComponent<Hitbox>();
 	        auto &compShotPos = s->getComponent<Position>();
 	        auto &compShotBox = s->getComponent<Hitbox>();
-	        std::cout << (compPPos.x < compShotPos.x + compShotBox.width);
-	        std::cout << (compPPos.x + compPBox.width > compShotPos.x);
-	        std::cout << (compPPos.y > compShotPos.y + compShotBox.height);
-	        std::cout << (compPPos.y + compPBox.height < compShotPos.y) << std::endl;
 
-	        std::cout << "c1 : " << compPPos.x << " < " << compShotPos.x + compShotBox.width << std::endl;
-	        std::cout << "c2 : " << compPPos.x + compPBox.width << " > " << compShotPos.x << std::endl;
-	        std::cout << "c3 : " << compPPos.y << " > " << compShotPos.y + compShotBox.height << std::endl;
-	        std::cout << "c4 : " << compPPos.y + compPBox.height << " < " << compShotPos.y << std::endl;
 	        if  ((compPPos.x < compShotPos.x + compShotBox.width && compPPos.x + compPBox.width > compShotPos.x &&
-	             compPPos.y > compShotPos.y + compShotBox.height && compPPos.y + compPBox.height < compShotPos.y)) {
+	             compPPos.y < compShotPos.y + compShotBox.height && compPPos.y + compPBox.height > compShotPos.y)) {
 
-
-		        std::cout << "Shot hitbox : " << compPBox.height << ", " << compPBox.width << std::endl;
-		        std::cout << "Pos shoot : " << compShotPos.x << ", " << compShotPos.y << std::endl;
-		        std::cout << "Enely hitbox : " << compShotBox.height << ", " << compShotBox.width << std::endl;
-		        std::cout << "Pos Enemy : " << compPPos.x << ", " << compPPos.y << std::endl;
-		        std::cout << "Collide" << std::endl;
 		        e->getComponent<LifePoint>().lifePoint -= s->getComponent<Damage>().damage;
 		        s->getComponent<LifePoint>().lifePoint -= 1;
 	        }

@@ -24,7 +24,7 @@ ecs::Entity &ecs::World::createPlayer() {
 	//	std::cout << "[" << ent.id << "]" << " : New Player" << std::endl;
 	ent.addComponent<Player>(idPlayer++);
 	ent.addComponent<LifePoint>(100);
-	ent.addComponent<Position>(std::rand() % 1000, std::rand() % 1000);
+	ent.addComponent<Position>(std::rand() % 1000, 1000);
 	ent.addComponent<Velocity>(0, 0);
 	ent.addComponent<Hitbox>(33, 17);
 	ent.addComponent<Score>(0);
@@ -36,7 +36,7 @@ void ecs::World::createEnemies() {
 	auto &ent = createEntity();
 
 	std::cout << "[" << ent.id << "]" << " : New enemy" << std::endl;
-	ent.addComponent<Position>(1950, std::rand() % 1080);
+	ent.addComponent<Position>(1950, 1000);
 	ent.addComponent<LifePoint>(10);
 	ent.addComponent<EnemyType>(EnemyType::Enemy::CLASSIC);
 	ent.addComponent<Hitbox>(33, 34);
