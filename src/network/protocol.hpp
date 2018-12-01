@@ -21,7 +21,8 @@ namespace net {
 		LIFE_POINT,
 		DEAD,
 		SCORE,
-		UNKNOW_ID,
+		UNKNOWN_ID,
+		LOSE,
 		NEW_STAGE,
 		SPRITE_STAGE,
 		STAGE_IS_WIN
@@ -120,10 +121,17 @@ namespace net {
 		ShotType(std::size_t id, ecs::ShotType::Shot s) : Package{id, opCode::NEW_SHOT}, ecs::ShotType{s} {}
 	};
 
-	struct UnknowId : Package {
-		UnknowId() = delete;
+	struct UnknownId : Package {
+		UnknownId() = delete;
 
-		UnknowId(std::size_t id, std::size_t uId) : Package{id, opCode::UNKNOW_ID}, id(uId) {}
+		UnknownId(std::size_t id, std::size_t uId) : Package{id, opCode::UNKNOWN_ID}, id(uId) {}
 		std::size_t id;
+	};
+
+	struct IsLose : Package {
+		IsLose() = delete;
+
+		IsLose(std::size_t id, bool l) : Package{id, opCode::LOSE}, isLose(l) {}
+		bool isLose;
 	};
 }

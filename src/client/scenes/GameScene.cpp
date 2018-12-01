@@ -85,7 +85,7 @@ void GameScene::receive(const net::NetPlayer &player) {
 void GameScene::receive(const net::Pos &pos) {
 	auto it = _sprites.find(pos.head.id);
 	if (it == _sprites.end()) {
-		_parent.getClient().sendData(net::UnknowId{0, pos.head.id});
+		_parent.getClient().sendData(net::UnknownId{0, pos.head.id});
 		return;
 	}
 	auto recIt = _rectangles.find(pos.head.id);
@@ -114,7 +114,7 @@ void GameScene::receive(const net::Dead &dead) {
 	std::cout << "received dead event" << std::endl;
 	auto s = _sprites.find(dead.head.id);
 	if (s == _sprites.end()) {
-		_parent.getClient().sendData(net::UnknowId{0, dead.head.id});
+		_parent.getClient().sendData(net::UnknownId{0, dead.head.id});
 		return;
 	}
 	_sprites.erase(s);
@@ -130,7 +130,6 @@ void GameScene::receive(const net::Dead &dead) {
 void GameScene::receive(const net::Life &life) {
 	auto it = _rectangles.find(life.head.id);
 	if (_sprites.find(life.head.id) == _sprites.end()) {
-		std::cout << "Unknow Id in Life" << std::endl;
 		return;
 	}
 	if (it != _rectangles.end()) {
