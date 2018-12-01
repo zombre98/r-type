@@ -22,13 +22,22 @@ net::Client::~Client() {
 void net::Client::connect(const std::string &address, const std::string &port) {
 	_address = address;
 	_port = port;
-	_senderEndpoint = *_resolver.resolve(ba::ip::udp::v4(), _address, _port).begin();
+	try {
+		_senderEndpoint = *_resolver.resolve(ba::ip::udp::v4(), _address, _port).begin();
+	} catch (boost::exception &e) {
+		_sceneManager.emit(ConnectTimeOut{});
+		return;
+	}
 	_socket.open(ba::ip::udp::v4());
 	sendData(NetPlayer{0, opCode::CONNECTION, 0});
 	std::cout << "Called connect" << std::endl;
+	if (_connectionTimeout.joinable())
+		_connectionTimeout.join();
 	_connectionTimeout = std::thread{[this]() {
 		std::this_thread::sleep_for(std::chrono::seconds{5});
 		if (!_connected) {
+			_socket.close();
+			_connecting = false;
 			_sceneManager.emit(ConnectTimeOut{});
 			return;
 		}
@@ -59,6 +68,7 @@ void net::Client::poll() {
 }
 
 void net::Client::handleMessage() {
+	std::cout << "must handle message" << std::endl;
 	auto head = getData<Header>();
 	switch (head.op) {
 	case opCode::CONNECTION : {

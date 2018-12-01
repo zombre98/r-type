@@ -60,9 +60,9 @@ void MenuScene::receive(const ConnectSuccess &event) noexcept {
 }
 
 void MenuScene::receive(const SfmlEvent &event) noexcept {
-	_texts["failed_notice"].t.setString("");
 	switch (event._event.type) {
 	case sf::Event::KeyPressed:
+		_texts["failed_notice"].t.setString("");
 		if (event._event.key.code == sf::Keyboard::Escape) {
 			_parent.getWindow().close();
 		} else if (event._event.key.code == sf::Keyboard::Enter) {
@@ -70,9 +70,11 @@ void MenuScene::receive(const SfmlEvent &event) noexcept {
 		}
 		break;
 	case sf::Event::TextEntered:
+		_texts["failed_notice"].t.setString("");
 		handleInput(event._event);
 		break;
 	case sf::Event::MouseButtonPressed: {
+		_texts["failed_notice"].t.setString("");
 		if (const auto &mousePos = sf::Mouse::getPosition(); mousePos.x > 820 && mousePos.x < 1070 &&
 			mousePos.y > 570 && mousePos.y < 700)
 			_tryConnection();
