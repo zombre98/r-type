@@ -111,7 +111,6 @@ void GameScene::receive(const net::ShotType &sType) {
 }
 
 void GameScene::receive(const net::Dead &dead) {
-	std::cout << "received dead event" << std::endl;
 	auto s = _sprites.find(dead.head.id);
 	if (s == _sprites.end()) {
 		_parent.getClient().sendData(net::UnknownId{0, dead.head.id});

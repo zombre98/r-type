@@ -14,7 +14,7 @@ namespace ecs {
 
     class World {
     public:
-        World() = default;
+        World() { createUselessEnemy(); };
         ~World() = default;
 
         Entity &createEntity();
@@ -27,6 +27,7 @@ namespace ecs {
         entityVector getAllEntities() const noexcept { return entities; }
         bool isLoose();
         bool isEmpty();
+        void reset();
 
         void addEntity(Entity *entity) {
             entities->emplace_back(entity);

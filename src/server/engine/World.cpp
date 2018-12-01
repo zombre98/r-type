@@ -91,3 +91,8 @@ bool ecs::World::isEmpty() {
 	auto const &ent = getAllEntities();
 	return ent->size() <= 1;
 }
+
+void ecs::World::reset() {
+	entities->clear();
+	entities = std::make_shared<std::vector<std::unique_ptr<Entity>>>();
+}

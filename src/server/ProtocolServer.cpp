@@ -20,6 +20,8 @@ void net::ProtocolServer::poll() {
 			continue;
 		if (_gContainer.getWorld()->isLoose()) {
 			sendDataToAll(IsLose{0, true});
+			_gContainer.getWorld()->reset();
+			_gContainer.resetSystem();
 		}
 		_gContainer.runSystem();
 		_gContainer.checkWatcher();

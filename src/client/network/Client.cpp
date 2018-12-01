@@ -31,7 +31,6 @@ void net::Client::connect(const std::string &address, const std::string &port) {
 	}
 	_socket.open(ba::ip::udp::v4());
 	sendData(NetPlayer{0, opCode::CONNECTION, 0});
-	std::cout << "Called connect" << std::endl;
 	if (_connectionTimeout.joinable())
 		_connectionTimeout.join();
 	_connectionTimeout = std::thread{[this]() {
@@ -118,8 +117,11 @@ void net::Client::handleMessage() {
 	}
 	case opCode::LOSE : {
 		auto lose = getData<IsLose>();
-		if (lose.isLose)
+		if (lose.isLose) {
 			_sceneManager.popScene();
+			_socket.close();
+			_connected = false;
+		}
 	}
 	default:
 		break;

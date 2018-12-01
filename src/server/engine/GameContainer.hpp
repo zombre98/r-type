@@ -21,6 +21,7 @@ namespace rtype {
 		GameContainer &operator=(GameContainer &) = delete;
 
 		void runSystem();
+		void resetSystem();
 		std::shared_ptr<ecs::World> getWorld() const { return _world; }
 
 		void checkWatcher();
