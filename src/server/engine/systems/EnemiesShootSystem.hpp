@@ -15,6 +15,7 @@ namespace ecs {
 		void update(double delta) override;
 	private:
 		std::shared_ptr<ecs::World> _world;
-		std::chrono::time_point<std::chrono::steady_clock> _lastShoot;
+		std::chrono::time_point<std::chrono::steady_clock> _lastClassicShoot;
+		std::chrono::time_point<std::chrono::steady_clock> _lastShipShoot;
 	};
 };

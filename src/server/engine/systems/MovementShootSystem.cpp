@@ -23,6 +23,8 @@ namespace ecs {
 					e->getComponent<Velocity>().x = 7;
 				if (e->getComponent<ShotType>().type == ShotType::Shot::ENEMY)
 					e->getComponent<Velocity>().x = -7;
+				if (e->getComponent<ShotType>().type == ShotType::Shot::SHIPENEMY)
+					e->getComponent<Velocity>().y = 5;
 			}
 			_lastMove = std::chrono::steady_clock::now();
 		}

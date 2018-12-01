@@ -33,7 +33,7 @@ ecs::Entity &ecs::World::createPlayer() {
 }
 
 
-void ecs::World::createEnemies() {
+void ecs::World::createClassicEnemies() {
 	auto &ent = createEntity();
 
 	std::cout << "[" << ent.id << "]" << " : New enemy" << std::endl;
@@ -49,8 +49,23 @@ void ecs::World::createShot(const Position &pos, ShotType::Shot sType) {
 
     ent.addComponent<Position>(pos.x, pos.y);
 	ent.addComponent<Velocity>(0, 3);
-    ent.addComponent<Damage>(30);
-    ent.addComponent<Hitbox>(18, 16);
+	if (sType == ShotType::Shot::ENEMY) {
+	    ent.addComponent<Damage>(30);
+	    ent.addComponent<Hitbox>(18, 16);
+	} else if (sType == ShotType::Shot::SHIPENEMY) {
+		ent.addComponent<Damage>(50);
+		ent.addComponent<Hitbox>(15, 16);
+	}
     ent.addComponent<LifePoint>(1);
     ent.addComponent<ShotType>(sType);
+}
+
+void ecs::World::createShipEnemy() {
+	auto &ent = createEntity();
+
+	ent.addComponent<Position>(1950, 1080);
+	ent.addComponent<LifePoint>(150);
+	ent.addComponent<EnemyType>(EnemyType::Enemy::SHIP);
+	ent.addComponent<Hitbox>(66, 50);
+	ent.addComponent<Velocity>(-1, 0);
 }

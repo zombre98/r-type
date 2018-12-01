@@ -92,10 +92,9 @@ void GameScene::receive(const net::EnemyType &eType) {
 	auto it = _sprites.find(eType.head.id);
 	if (it != _sprites.end())
 		return;
-	if (eType.type == net::EnemyType::Enemy::CLASSIC) {
-		_sprites.emplace(eType.head.id, _resourceMgr.getTexture("enemy1/frame00"));
-		_sprites[eType.head.id].setPosition(-300, -300);
-	}
+	_sprites.emplace(eType.head.id, _resourceMgr.getTexture("enemy" +
+	std::to_string(static_cast<int>(eType.type)) + "/frame00"));
+	_sprites[eType.head.id].setPosition(-300, -300);
 }
 
 void GameScene::receive(const net::ShotType &sType) {

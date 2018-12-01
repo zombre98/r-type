@@ -103,7 +103,8 @@ namespace ecs {
 
 	struct EnemyType : public Component {
 		enum class Enemy : std::size_t {
-			CLASSIC
+			CLASSIC,
+			SHIP
 		};
 
 		EnemyType() = delete;
@@ -116,6 +117,7 @@ namespace ecs {
         enum class Shot : std::size_t {
             ALLY,
             ENEMY,
+            SHIPENEMY
         };
 
         ShotType() = delete;
