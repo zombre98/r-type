@@ -11,8 +11,19 @@ System(allEntities),  _world{world} {
 void ecs::RemoveSystem::update(double delta[[maybe_unused]]) {
 	auto entitiesWithLife = getEntities<ecs::LifePoint>();
 
+
 	for (auto &entity : entitiesWithLife) {
 		if (entity->getComponent<ecs::LifePoint>().lifePoint <= 0) {
+			if (entity->hasComponent<ScoreEnemy>()) {
+				auto check = getEntities<Score>();
+				if (check.empty())
+					_world->createScore();
+				auto scores = getEntities<Score>();
+				for (auto score : scores) {
+					score->getComponent<Score>().score += entity->getComponent<ScoreEnemy>().enemyValue;
+					score->getComponent<Score>().updated = true;
+				}
+			}
 			_world->eraseEntity(entity->id);
 		}
 	}

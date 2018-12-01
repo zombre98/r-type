@@ -41,16 +41,6 @@ void ecs::CollisionSystem::update(double delta[[maybe_unused]]) {
 	        if  ((compPPos.x < compShotPos.x + compShotBox.width && compPPos.x + compPBox.width > compShotPos.x &&
 	             compPPos.y < compShotPos.y + compShotBox.height && compPPos.y + compPBox.height > compShotPos.y)) {
 
-	        	if (e->hasComponent<ScoreEnemy>()) {
-	        	    auto check = getEntities<Score>();
-	        	    if (check.empty())
-	        	    	_world->createScore();
-	        	    auto scores = getEntities<Score>();
-	        	    for (auto score : scores) {
-			            score->getComponent<Score>().score += e->getComponent<ScoreEnemy>().enemyValue;
-			            score->getComponent<Score>().updated = true;
-		            }
-	        	}
 		        e->getComponent<LifePoint>().lifePoint -= s->getComponent<Damage>().damage;
 		        s->getComponent<LifePoint>().lifePoint -= 1;
 		        e->getComponent<LifePoint>().updated = true;

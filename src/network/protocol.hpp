@@ -79,7 +79,7 @@ namespace net {
 		}
 	};
 
-	struct Score : Package, ecs::Score {
+	struct Score : Package, ecs::Score, BaseEvent {
 		Score() = delete;
 
 		Score(std::size_t id, int score) :

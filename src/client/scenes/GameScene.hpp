@@ -33,6 +33,7 @@ class GameScene final : public AScene, public Receiver {
 	 * Events Callback
 	 */
 	void receive(const SfmlEvent &event) noexcept;
+	void receive(const net::Score &Score);
 	void receive(const net::NetPlayer &player);
 	void receive(const net::Pos &pos);
 	void receive(const net::EnemyType &eType);
@@ -45,6 +46,7 @@ class GameScene final : public AScene, public Receiver {
 
 	private:
 	sf::Sprite _bg;
+	Texts _score{};
 	std::map<std::size_t, AnimationState> _animated;
 	std::map<std::size_t, sf::Sprite> _sprites;
 	std::map<std::size_t, sf::RectangleShape> _rectangles;

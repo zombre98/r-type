@@ -15,8 +15,12 @@ void GameScene::enter() noexcept {
 	_evtMgr.subscribe<net::ShotType>(*this);
 	_evtMgr.subscribe<net::Dead>(*this);
 	_evtMgr.subscribe<net::Life>(*this);
+	_evtMgr.subscribe<net::Score>(*this);
 	_resourceMgr.loadAllTexturesInDirectory("");
+	const auto &font = _resourceMgr.loadFont(fs::current_path() / "assets" / "font" / "prototype.ttf");
 
+	_score = {sf::Text{"Score : 0", font, 50}, {850, 1000}};
+	_score.t.setPosition(_score.pos);
 	_bg.setTexture(_resourceMgr.getTexture("background"));
 	_bg.scale(static_cast<float>(_parent.getWindow().getSize().x) / _bg.getTexture()->getSize().x,
 		static_cast<float>(_parent.getWindow().getSize().y) / _bg.getTexture()->getSize().y);
@@ -39,6 +43,7 @@ void GameScene::update(float timeSinceLastFrame) noexcept {
 void GameScene::displayGame(float timeSinceLastFrame[[maybe_unused]]) noexcept {
 	auto &window = _parent.getWindow();
 	_displayBg(window);
+	window.draw(_score.t);
 	for (auto &it : _sprites) {
 		window.draw(it.second);
 		auto recIt = _rectangles.find(it.first);
@@ -162,6 +167,11 @@ void GameScene::_displayBg(sf::RenderWindow &window) {
 	_bg.setPosition(_bg.getPosition().x - 2, _bg.getPosition().y);
 	if (_bg.getPosition().x + _bg.getTexture()->getSize().x * _bg.getScale().x <= 0)
 		_bg.setPosition(0, _bg.getPosition().y);
+}
+
+void GameScene::receive(const net::Score &score) {
+	std::cout << "Score :" << score.score << std::endl;
+	_score.t.setString("Score : " + std::to_string(score.score));
 }
 
 
