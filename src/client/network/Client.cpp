@@ -16,7 +16,8 @@ net::Client::Client(ba::io_context &context, SceneManager &_sceneManager) :
 }
 
 net::Client::~Client() {
-	_connectionTimeout.join();
+	if (_connectionTimeout.joinable())
+		_connectionTimeout.join();
 }
 
 void net::Client::connect(const std::string &address, const std::string &port) {
