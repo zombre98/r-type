@@ -71,3 +71,13 @@ void ecs::World::createShipEnemy() {
 	ent.addComponent<Hitbox>(66, 50);
 	ent.addComponent<Velocity>(-1, 0);
 }
+
+void ecs::World::createUselessEnemy() {
+	auto &ent = createEntity();
+
+	ent.addComponent<Position>(1950, -300);
+	ent.addComponent<LifePoint>(90);
+	ent.addComponent<EnemyType>(EnemyType::Enemy::CLASSIC);
+	ent.addComponent<Hitbox>(33, 34);
+	ent.addComponent<Velocity>(-1, 0);
+}

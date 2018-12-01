@@ -69,11 +69,9 @@ void net::Client::poll() {
 }
 
 void net::Client::handleMessage() {
-	std::cout << "must handle message" << std::endl;
 	auto head = getData<Header>();
 	switch (head.op) {
 	case opCode::CONNECTION : {
-		std::cout << "Connection success" << std::endl;
 		_connecting = false;
 		_connected = true;
 		auto p = getData<NetPlayer>();

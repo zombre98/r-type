@@ -113,6 +113,10 @@ void GameScene::receive(const net::Dead &dead) {
 
 void GameScene::receive(const net::Life &life) {
 	auto it = _rectangles.find(life.head.id);
+	if (_sprites.find(life.head.id) == _sprites.end()) {
+		std::cout << "Unknow Id in Life" << std::endl;
+		return;
+	}
 	if (it != _rectangles.end()) {
 		_rectangles.at(life.head.id).setSize(sf::Vector2f(static_cast<float>(life.lifePoint), 3));
 		return;

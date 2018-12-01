@@ -68,6 +68,24 @@ void net::ProtocolServer::_handleNewClient() {
 			sendDataToAll(Life{it->id, life.lifePoint});
 		}
 	}
+	auto enemies = _gContainer.getWorld()->getEntities<ecs::EnemyType>();
+	for (auto &it : enemies) {
+		auto const &compEnt = it->getComponent<ecs::EnemyType>();
+		EnemyType oldEnt{it->id, compEnt.type};
+		sendDataTo(_targetEndpoint, oldEnt);
+	}
+	auto shoot = _gContainer.getWorld()->getEntities<ecs::ShotType>();
+	for (auto &it : shoot) {
+		auto const &ShootComp = it->getComponent<ecs::ShotType>();
+		ShotType oldEnt{it->id, ShootComp.type};
+		sendDataTo(_targetEndpoint, oldEnt);
+	}
+	auto lifes = _gContainer.getWorld()->getEntities<ecs::LifePoint>();
+	for (auto &it : lifes) {
+		auto const &LifeComp = it->getComponent<ecs::LifePoint>();
+		Life life{it->id, LifeComp.lifePoint};
+		sendDataTo(_targetEndpoint, life);
+	}
 }
 
 void net::ProtocolServer::_handleInput() {

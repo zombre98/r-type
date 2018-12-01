@@ -20,6 +20,7 @@
 rtype::GameContainer::GameContainer() : _world{std::make_shared<ecs::World>()}, _watcher{"assets/libraries/"} {
     _initSystem();
     _watcher.run();
+    _world->createUselessEnemy();
 }
 
 void rtype::GameContainer::_initSystem() {
