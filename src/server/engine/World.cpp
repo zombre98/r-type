@@ -37,15 +37,10 @@ void ecs::World::createClassicEnemies() {
 	auto &ent = createEntity();
 
 	ent.addComponent<Position>(1950, std::rand() % 1080);
-        std::cout << ComponentId::getTypeId<Position>() << std::endl;
 	ent.addComponent<LifePoint>(90);
-        std::cout << ComponentId::getTypeId<LifePoint>() << std::endl;
 	ent.addComponent<EnemyType>(EnemyType::Enemy::CLASSIC);
-        std::cout << ComponentId::getTypeId<EnemyType>() << std::endl;
 	ent.addComponent<Hitbox>(33, 34);
-        std::cout << ComponentId::getTypeId<Hitbox>() << std::endl;
 	ent.addComponent<Velocity>(-1, 0);
-        std::cout << ComponentId::getTypeId<Velocity>() << std::endl << std::endl;
 }
 
 void ecs::World::createShot(const Position &pos, ShotType::Shot sType) {
