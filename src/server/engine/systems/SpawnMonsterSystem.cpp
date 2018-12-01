@@ -26,7 +26,7 @@ void ecs::SpawnMonsterSystem::update(double delta[[maybe_unused]]) {
 		lastShipSpawn = std::chrono::steady_clock::now();
 		_world->createShipEnemy();
 	}
-        if (diffSinus.count() > 5) {
+        if (diffSinus.count() > 3) {
 		lastSinusSpawn = std::chrono::steady_clock::now();
 		_world->createSinusEnemy();
 	}

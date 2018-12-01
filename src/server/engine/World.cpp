@@ -91,7 +91,7 @@ void ecs::World::createSinusEnemy() {
 	ent.addComponent<Position>(1950, std::rand() % 1080);
 	ent.addComponent<LifePoint>(50);
 	ent.addComponent<EnemyType>(EnemyType::Enemy::SINUS);
-	ent.addComponent<Hitbox>(33, 34);
+	ent.addComponent<Hitbox>(27, 27);
 	ent.addComponent<Velocity>(-5, 0);
 }
 

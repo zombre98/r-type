@@ -1,6 +1,11 @@
 function sin(x)
    x = x / 500
-   return ((3 * (x - 2)) ^ 2 + 4) * 100
+   y = ((3 * (x - 2)) ^ 2 + 4) * 70
+   return (y)
+end
+
+function revert_sin(x)
+   return (sin(x) * -1 + 1080)
 end
 
 function update(delta)
@@ -14,6 +19,9 @@ function update(delta)
       if (e:getComponentEnemyType().type == EnemyEnum.SINUS) then
          pos = e:getComponentPosition()
          local new_pos = Position:new(pos.x - 4, sin(pos.x - 4))
+         if (i % 2 == 0) then
+            new_pos.y = revert_sin(pos.x - 4)
+         end
          e:getComponentVelocity().x = new_pos.x - pos.x
          e:getComponentVelocity().y = new_pos.y - pos.y
       end

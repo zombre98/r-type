@@ -30,10 +30,10 @@ namespace ecs {
                     _world->createShot(e->getComponent<Position>(), ShotType::Shot::SHIPENEMY);
                 _lastShipShoot = std::chrono::steady_clock::now();
             }
-            if (diffSinus.count() > 0.5) {
+            if (diffSinus.count() > 0.4) {
                 if (e->getComponent<EnemyType>().type == EnemyType::Enemy::SINUS)
                     _world->createCustomShot(e->getComponent<Position>(), Velocity(-5, 0),
-                                             Hitbox(18, 16), ShotType::Shot::SINUSENEMY, 5);
+                                             Hitbox(10, 10), ShotType::Shot::SINUSENEMY, 5);
                 _lastSinusShoot = std::chrono::steady_clock::now();
             }
         }
