@@ -121,7 +121,8 @@ void GameScene::receive(const net::Dead &dead) {
 	auto r = _rectangles.find(dead.head.id);
 	if (r != _rectangles.end())
 		_rectangles.erase(r);
-	const auto &explosion = _animated.emplace(dead.head.id, _resourceMgr.copyOrLoadAnimation("explosion"));
+	auto explosionType = dead.isMonster ? "big-explosion" : "explosion";
+	const auto &explosion = _animated.emplace(dead.head.id, _resourceMgr.copyOrLoadAnimation(explosionType));
 	auto result = _sprites.emplace(dead.head.id, _resourceMgr.getTexture(explosion.first->second.getCurrent()));
 	result.first->second.setPosition(dead.x, dead.y);
 }
