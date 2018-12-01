@@ -49,12 +49,12 @@ void MenuScene::update(float timeSinceLastFrame[[maybe_unused]]) noexcept {
 	}
 }
 
-void MenuScene::receive(const ConnectTimeOut &event) noexcept {
+void MenuScene::receive(const ConnectTimeOut &) noexcept {
 	_sprites.erase("loading");
 	_texts["failed_notice"].t.setString("Failed to connect to server");
 }
 
-void MenuScene::receive(const ConnectSuccess &event) noexcept {
+void MenuScene::receive(const ConnectSuccess &) noexcept {
 	_sprites.erase("loading");
 	_parent.pushScene(create<GameScene>(_parent));
 }
