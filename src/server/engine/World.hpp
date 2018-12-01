@@ -22,6 +22,7 @@ namespace ecs {
 	    ecs::Entity &createPlayer();
         void createClassicEnemies();
         void createShipEnemy();
+        void createSinusEnemy();
         void createShot(const Position &pos, ShotType::Shot sType);
         entityVector getAllEntities() const noexcept { return entities; }
 

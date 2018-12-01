@@ -37,8 +37,8 @@ namespace ecs {
 			}
 			position.x += velocity.x;
 			position.y += velocity.y;
-			velocity.x = 0;
-			velocity.y = 0;
+                        velocity.x = 0;
+                        velocity.y = 0;
 			position.updated = true;
 		}
 	}

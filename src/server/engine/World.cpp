@@ -71,3 +71,13 @@ void ecs::World::createShipEnemy() {
 	ent.addComponent<Hitbox>(66, 50);
 	ent.addComponent<Velocity>(-1, 0);
 }
+
+void ecs::World::createSinusEnemy() {
+	auto &ent = createEntity();
+
+	ent.addComponent<Position>(1950, std::rand() % 1080);
+	ent.addComponent<LifePoint>(50);
+	ent.addComponent<EnemyType>(EnemyType::Enemy::SINUS);
+	ent.addComponent<Hitbox>(33, 34);
+	ent.addComponent<Velocity>(-5, 0);
+}

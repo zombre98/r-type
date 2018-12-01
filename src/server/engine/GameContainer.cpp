@@ -16,6 +16,7 @@
 #include "GameContainer.hpp"
 #include "EnemiesShootSystem.hpp"
 #include "SpawnMonsterSystem.hpp"
+#include "LuaSystem.hpp"
 
 rtype::GameContainer::GameContainer() : _world{std::make_shared<ecs::World>()}, _watcher{"assets/libraries/"} {
     _initSystem();
@@ -28,6 +29,7 @@ void rtype::GameContainer::_initSystem() {
 	_listSystem.emplace_back(new ecs::RemoveSystem(_world->getAllEntities(), _world));
 	_listSystem.emplace_back(new ecs::SpawnMonsterSystem(_world->getAllEntities(), _world, std::chrono::steady_clock::now()));
 	_listSystem.emplace_back(new ecs::EnemiesMovementSystem(_world->getAllEntities(), std::chrono::steady_clock::now()));
+        _listSystem.emplace_back(new ecs::LuaSystem<ecs::EnemyType, ecs::Velocity>(_world->getAllEntities(), "sinus_movement_system.lua"));
 	_listSystem.emplace_back(new ecs::MovementShootSystem(_world->getAllEntities(), std::chrono::steady_clock::now()));
 	_listSystem.emplace_back(new ecs::InGameBoardSystem(_world->getAllEntities(), _world));
 	_listSystem.emplace_back(new ecs::CollisionSystem(_world->getAllEntities(), _world));
@@ -37,11 +39,11 @@ void rtype::GameContainer::_initSystem() {
 void rtype::GameContainer::runSystem() {
 	static auto last = std::chrono::steady_clock::now();
 
-	auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(
+	auto delta = std::chrono::duration_cast<std::chrono::microseconds>(
 		std::chrono::steady_clock::now() - last).count();
-	for (auto &it : _listSystem)
-		it->update(delta);
 	last = std::chrono::steady_clock::now();
+	for (auto &it : _listSystem)
+            it->update(delta);
 }
 
 void rtype::GameContainer::checkWatcher() {
