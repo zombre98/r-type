@@ -25,6 +25,8 @@ namespace ecs {
         void createSinusEnemy();
         void createUselessEnemy();
         void createShot(const Position &pos, ShotType::Shot sType);
+        void createCustomShot(const Position &, const Velocity &,
+                              const Hitbox &, ShotType::Shot, int);
         entityVector getAllEntities() const noexcept { return entities; }
         bool isLoose();
         bool isEmpty();

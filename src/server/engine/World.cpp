@@ -62,6 +62,19 @@ void ecs::World::createShot(const Position &pos, ShotType::Shot sType) {
     ent.addComponent<ShotType>(sType);
 }
 
+void ecs::World::createCustomShot(const Position &pos, const Velocity &v,
+                                  const Hitbox &hbox, ShotType::Shot sType,
+                                  int damage) {
+    auto &ent = createEntity();
+
+    ent.addComponent<Velocity>(v.x, v.y);
+    ent.addComponent<Position>(pos.x, pos.y);
+    ent.addComponent<Hitbox>(hbox.width, hbox.height);
+    ent.addComponent<Damage>(damage);
+    ent.addComponent<LifePoint>(1);
+    ent.addComponent<ShotType>(sType);
+}
+
 void ecs::World::createShipEnemy() {
 	auto &ent = createEntity();
 

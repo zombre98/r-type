@@ -28,8 +28,9 @@ void ecs::CollisionSystem::update(double delta[[maybe_unused]]) {
                 (e->hasComponent<Player>() &&
                  s->getComponent<ShotType>().type == ShotType::Shot::ALLY) ||
                 (e->hasComponent<EnemyType>() &&
-		                (s->getComponent<ShotType>().type == ShotType::Shot::ENEMY ||
-				        s->getComponent<ShotType>().type == ShotType::Shot::SHIPENEMY)))
+                 (s->getComponent<ShotType>().type == ShotType::Shot::ENEMY ||
+                  s->getComponent<ShotType>().type == ShotType::Shot::SHIPENEMY ||
+                  s->getComponent<ShotType>().type == ShotType::Shot::SINUSENEMY)))
                 continue;
 
             auto &compPPos = e->getComponent<Position>();

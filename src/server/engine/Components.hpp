@@ -118,7 +118,8 @@ namespace ecs {
         enum class Shot : std::size_t {
             ALLY,
             ENEMY,
-            SHIPENEMY
+            SHIPENEMY,
+            SINUSENEMY
         };
 
         ShotType() = delete;
