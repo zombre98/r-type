@@ -25,6 +25,8 @@ namespace ecs {
 					e->getComponent<Velocity>().x = -7;
 				if (e->getComponent<ShotType>().type == ShotType::Shot::SHIPENEMY)
 					e->getComponent<Velocity>().y = 5;
+                                if (e->getComponent<ShotType>().type == ShotType::Shot::SINUSENEMY)
+                                    e->getComponent<Velocity>().x = -10;
 			}
 			_lastMove = std::chrono::steady_clock::now();
 		}

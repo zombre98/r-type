@@ -20,56 +20,76 @@
 #include "sol.hpp"
 #include "System.hpp"
 
-namespace ecs {
+ namespace ecs {
 
-   template <typename... Types>
-   class LuaSystem : public System {
-   public:
+     template <typename... Types>
+     class LuaSystem : public System {
+     public:
 	 static constexpr char LUA_FOLDER_PATH[] = "assets/lua/";
 
 	 LuaSystem(entityVector allEntities, const std::string &fileName)
-	   : System{allEntities}, _scriptPath(LUA_FOLDER_PATH) {
+             : System{allEntities}, _scriptPath(LUA_FOLDER_PATH) {
 		 _scriptPath += fileName;
 		 _lua.open_libraries();
 		 _defineClasses();
-		 _lua["entities"] = getEntities<Types...>();
 		 _lua.script_file(_scriptPath.string());
 		 _luaUpdate = _lua["update"];
-	   }
+                 _lua["clock"] = 0;
+             }
 
 	 void update(double delta) override final {
-	   _luaUpdate(delta);
+             _lua["entities"] = getEntities<Types ...>();
+             _luaUpdate(delta);
 	 };
 
-   private:
+     private:
 	 sol::state _lua;
 	 sol::function _luaUpdate;
 	 std::filesystem::path _scriptPath;
 
 	 void _defineClasses() {
-	   _lua.new_usertype<Entity>("Entity",
-								 sol::constructors<Entity()>(),
-								 COMPONENT_FUNC(Velocity, float, float),
-								 COMPONENT_FUNC(Orientation, float),
-								 COMPONENT_FUNC(Position, float, float)
-								 );
+             _lua.new_usertype<Entity>("Entity",
+                                       sol::constructors<Entity()>(),
+                                       COMPONENT_FUNC(Velocity, int, int),
+                                       COMPONENT_FUNC(Orientation, float),
+                                       COMPONENT_FUNC(Position, int, int),
+                                       COMPONENT_FUNC(LifePoint, int),
+                                       COMPONENT_FUNC(EnemyType, EnemyType::Enemy),
+                                       COMPONENT_FUNC(Damage, int)
+                                       );
 
-	   // [COMPONENTS]
-	   _lua.new_usertype<Component>("", sol::constructors<Component()>());
+             // [COMPONENTS]
+             _lua.new_usertype<Component>("", sol::constructors<Component()>());
 
-	   _lua.new_usertype<Velocity>("Velocity",
-								   sol::constructors<Velocity(float, float)>(),
-								   "x", &Velocity::x,
-								   "y", &Velocity::y);
+             _lua.new_usertype<Velocity>("Velocity",
+                                         sol::constructors<Velocity(int, int)>(),
+                                         "x", &Velocity::x,
+                                         "y", &Velocity::y);
 
-	   _lua.new_usertype<Orientation>("Orientation",
-									  sol::constructors<Orientation(float)>(),
-									  "orientation", &Orientation::orientation);
+             _lua.new_usertype<Orientation>("Orientation",
+                                            sol::constructors<Orientation(float)>(),
+                                            "orientation", &Orientation::orientation);
 
-	   _lua.new_usertype<Position>("Position",
-								   sol::constructors<Position(float, float)>(),
-								   "x", &Position::x,
-								   "y", &Position::y);
+             _lua.new_usertype<Position>("Position",
+                                         sol::constructors<Position(int, int)>(),
+                                         "x", &Position::x,
+                                         "y", &Position::y);
+
+             _lua.new_usertype<LifePoint>("LifePoint",
+                                          sol::constructors<LifePoint(int)>(),
+                                          "lifePoint", &LifePoint::lifePoint);
+
+             _lua.new_usertype<EnemyType>("EnemyType",
+                                          sol::constructors<EnemyType(EnemyType::Enemy)>(),
+                                          "type", &EnemyType::type);
+
+             _lua["EnemyEnum"] = _lua.create_table_with("CLASSIC", EnemyType::Enemy::CLASSIC,
+                                                        "SHIP", EnemyType::Enemy::SHIP,
+                                                        "SINUS", EnemyType::Enemy::SINUS);
+
+             _lua.new_usertype<Damage>("Damage",
+                                       sol::constructors<Damage(int)>(),
+                                       "damage", &Damage::damage);
 	 }
-   };
-}
+     };
+ }

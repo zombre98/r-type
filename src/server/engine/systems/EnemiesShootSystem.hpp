@@ -17,5 +17,6 @@ namespace ecs {
 		std::shared_ptr<ecs::World> _world;
 		std::chrono::time_point<std::chrono::steady_clock> _lastClassicShoot;
 		std::chrono::time_point<std::chrono::steady_clock> _lastShipShoot;
+		std::chrono::time_point<std::chrono::steady_clock> _lastSinusShoot;
 	};
 };
