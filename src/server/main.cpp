@@ -1,6 +1,6 @@
 #include "ProtocolServer.hpp"
 
-int main(int argc, char *argv[]) {
+int main() {
 	 boost::asio::io_context ioContext;
     net::ProtocolServer serv(ioContext, 8080);
     serv.poll();

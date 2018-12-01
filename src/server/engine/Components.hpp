@@ -72,6 +72,14 @@ namespace ecs {
         int score;
     };
 
+    struct ScoreEnemy : public Component {
+    	ScoreEnemy() = delete;
+
+    	explicit ScoreEnemy(int sc) : enemyValue(sc) {}
+    	~ScoreEnemy() = default;
+    	std::size_t enemyValue;
+    };
+
     struct Input : public Component {
 	    enum Action : std::size_t {
 		    Left,

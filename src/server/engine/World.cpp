@@ -41,6 +41,7 @@ void ecs::World::createClassicEnemies() {
 	ent.addComponent<EnemyType>(EnemyType::Enemy::CLASSIC);
 	ent.addComponent<Hitbox>(33, 34);
 	ent.addComponent<Velocity>(-1, 0);
+	ent.addComponent<ScoreEnemy>(5);
 }
 
 void ecs::World::createShot(const Position &pos, ShotType::Shot sType) {
@@ -83,6 +84,7 @@ void ecs::World::createShipEnemy() {
 	ent.addComponent<EnemyType>(EnemyType::Enemy::SHIP);
 	ent.addComponent<Hitbox>(66, 50);
 	ent.addComponent<Velocity>(-1, 0);
+	ent.addComponent<ScoreEnemy>(15);
 }
 
 void ecs::World::createSinusEnemy() {
@@ -118,4 +120,10 @@ bool ecs::World::isEmpty() {
 void ecs::World::reset() {
 	entities->clear();
 	entities = std::make_shared<std::vector<std::unique_ptr<Entity>>>();
+}
+
+void ecs::World::createScore() {
+	auto &ent = createEntity();
+
+	ent.addComponent<Score>(0);
 }

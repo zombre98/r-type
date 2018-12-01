@@ -14,7 +14,9 @@ namespace ecs {
 
     class World {
     public:
-        World() { createUselessEnemy(); };
+        World() {
+        	createUselessEnemy();
+        };
         ~World() = default;
 
         Entity &createEntity();
@@ -23,6 +25,7 @@ namespace ecs {
         void createClassicEnemies();
         void createShipEnemy();
         void createSinusEnemy();
+        void createScore();
         void createUselessEnemy();
         void createShot(const Position &pos, ShotType::Shot sType);
         void createCustomShot(const Position &, const Velocity &,

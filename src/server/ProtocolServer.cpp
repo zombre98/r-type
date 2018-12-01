@@ -27,7 +27,7 @@ void net::ProtocolServer::poll() {
 		_gContainer.checkWatcher();
 		//		_sendDeadEntities();
 		_sendDeadEntities();
-		//		_sendScore();
+		_sendScore();
 		_sendNewShoot();
 		_sendAllEnemies();
 		_sendAllPosition();
@@ -131,9 +131,12 @@ void net::ProtocolServer::_sendLifePoint() {
 void net::ProtocolServer::_sendScore() {
 	auto const &EntitiesWithScore =  _gContainer.getWorld()->getEntities<ecs::Score>();
 	for (auto const &ent : EntitiesWithScore) {
-		auto const &compScore = ent->getComponent<ecs::Score>();
-		Score score{ent->id, compScore.score};
-		sendDataToAll(score);
+		auto &compScore = ent->getComponent<ecs::Score>();
+		if (compScore.updated) {
+			Score score{ent->id, compScore.score};
+			sendDataToAll(score);
+			compScore.updated = false;
+		}
 	}
 }
 

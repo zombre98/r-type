@@ -97,7 +97,7 @@ void net::Client::handleMessage() {
 	}
 	case opCode::SCORE : {
 		auto score = getData<Score>();
-		//			std::cout << "Score : " << score.score << std::endl;
+		std::cout << "Score : " << score.score << std::endl;
 		break;
 	}
 	case opCode::DEAD : {
