@@ -21,7 +21,7 @@ namespace ecs {
 
 	class System {
 		public:
-		explicit System(entityVector allEntities) : _allEntities(std::move(allEntities)) {
+		explicit System(entityVector allEntities) : _allEntities(allEntities) {
 		};
 		virtual void update(double delta) = 0;
 

@@ -21,6 +21,7 @@ namespace net {
 		LIFE_POINT,
 		DEAD,
 		SCORE,
+		UNKNOW_ID,
 		NEW_STAGE,
 		SPRITE_STAGE,
 		STAGE_IS_WIN
@@ -68,7 +69,7 @@ namespace net {
 		}
 	};
 
-	struct Life : Package, ecs::LifePoint {
+	struct Life : Package, ecs::LifePoint, BaseEvent {
 		Life() = delete;
 
 		Life(std::size_t id, int life) :
@@ -86,11 +87,11 @@ namespace net {
 		}
 	};
 
-	struct Dead : Package, ecs::Position {
+	struct Dead : Package, ecs::Position, BaseEvent {
 		Dead() = delete;
 
 		Dead(std::size_t id, int x, int y) :
-				Package{id, opCode::POSITION},
+				Package{id, opCode::DEAD},
 				ecs::Position{x, y} {
 		}
 	};
@@ -116,5 +117,12 @@ namespace net {
 		ShotType() = delete;
 
 		ShotType(std::size_t id, ecs::ShotType::Shot s) : Package{id, opCode::NEW_SHOT}, ecs::ShotType{s} {}
+	};
+
+	struct UnknowId : Package {
+		UnknowId() = delete;
+
+		UnknowId(std::size_t id, std::size_t uId) : Package{id, opCode::UNKNOW_ID}, id(uId) {}
+		std::size_t id;
 	};
 }

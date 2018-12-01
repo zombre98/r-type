@@ -60,6 +60,8 @@ namespace net {
 
 		void asyncReceive();
 
+		std::size_t getId() { return _me; }
+
 	private:
 		template<typename T>
 		void afterSend(boost::shared_ptr<boost::array<T, 1>>) {

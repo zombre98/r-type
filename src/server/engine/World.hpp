@@ -20,8 +20,9 @@ namespace ecs {
         Entity &createEntity();
         void eraseEntity(std::size_t const &id);
 	    ecs::Entity &createPlayer();
-        void createEnemies();
-        void createAllyShot(const Position &pos);
+        void createClassicEnemies();
+        void createShipEnemy();
+        void createShot(const Position &pos, ShotType::Shot sType);
         entityVector getAllEntities() const noexcept { return entities; }
 
 	    std::optional<Entity *> getEntity(entityId id) const {
