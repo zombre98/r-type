@@ -136,7 +136,7 @@ void net::ProtocolServer::_sendDeadEntities() {
 		auto const &compLife = ent->getComponent<ecs::LifePoint>();
 		auto const &compPos = ent->getComponent<ecs::Position>();
 		if (compLife.lifePoint <= 0) {
-			Dead dead{ent->id, compPos.x, compPos.y};
+			Dead dead{ent->id, compPos.x, compPos.y, ent->hasComponent<ecs::EnemyType>()};
 			sendDataToAll(dead);
 		}
 	}
