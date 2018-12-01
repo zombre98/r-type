@@ -85,7 +85,7 @@ void MenuScene::receive(const SfmlEvent &event) noexcept {
 }
 
 void MenuScene::handleInput(sf::Event textEvent) {
-	std::cout << textEvent.text.unicode << std::endl;
+	std::cout << static_cast<char>(textEvent.text.unicode) << std::endl;
 	if ((textEvent.text.unicode >= '0' && textEvent.text.unicode <= '9') || textEvent.text.unicode == '.' ||
 		textEvent.text.unicode == ':')
 		_address += textEvent.text.unicode;

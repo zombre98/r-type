@@ -16,6 +16,10 @@ void net::ProtocolServer::poll() {
 		_ioContext.poll();
 		while (!_buff.empty())
 			handleData();
+		if (_gContainer.getWorld()->isEmpty())
+			continue;
+		if (_gContainer.getWorld()->isLoose())
+			exit(0);
 		_gContainer.runSystem();
                 _gContainer.checkWatcher();
 		//		_sendDeadEntities();
@@ -68,6 +72,24 @@ void net::ProtocolServer::_handleNewClient() {
 			sendDataToAll(Life{it->id, life.lifePoint});
 		}
 	}
+	auto enemies = _gContainer.getWorld()->getEntities<ecs::EnemyType>();
+	for (auto &it : enemies) {
+		auto const &compEnt = it->getComponent<ecs::EnemyType>();
+		EnemyType oldEnt{it->id, compEnt.type};
+		sendDataTo(_targetEndpoint, oldEnt);
+	}
+	auto shoot = _gContainer.getWorld()->getEntities<ecs::ShotType>();
+	for (auto &it : shoot) {
+		auto const &ShootComp = it->getComponent<ecs::ShotType>();
+		ShotType oldEnt{it->id, ShootComp.type};
+		sendDataTo(_targetEndpoint, oldEnt);
+	}
+	auto lifes = _gContainer.getWorld()->getEntities<ecs::LifePoint>();
+	for (auto &it : lifes) {
+		auto const &LifeComp = it->getComponent<ecs::LifePoint>();
+		Life life{it->id, LifeComp.lifePoint};
+		sendDataTo(_targetEndpoint, life);
+	}
 }
 
 void net::ProtocolServer::_handleInput() {
@@ -118,7 +140,7 @@ void net::ProtocolServer::_sendDeadEntities() {
 		auto const &compLife = ent->getComponent<ecs::LifePoint>();
 		auto const &compPos = ent->getComponent<ecs::Position>();
 		if (compLife.lifePoint <= 0) {
-			Dead dead{ent->id, compPos.x, compPos.y};
+			Dead dead{ent->id, compPos.x, compPos.y, ent->hasComponent<ecs::EnemyType>()};
 			sendDataToAll(dead);
 		}
 	}

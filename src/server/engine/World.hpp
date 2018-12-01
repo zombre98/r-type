@@ -23,8 +23,11 @@ namespace ecs {
         void createClassicEnemies();
         void createShipEnemy();
         void createSinusEnemy();
+        void createUselessEnemy();
         void createShot(const Position &pos, ShotType::Shot sType);
         entityVector getAllEntities() const noexcept { return entities; }
+        bool isLoose();
+        bool isEmpty();
 
         void addEntity(Entity *entity) {
             entities->emplace_back(entity);

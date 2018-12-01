@@ -90,10 +90,11 @@ namespace net {
 	struct Dead : Package, ecs::Position, BaseEvent {
 		Dead() = delete;
 
-		Dead(std::size_t id, int x, int y) :
+		Dead(std::size_t id, int x, int y, bool m) :
 				Package{id, opCode::DEAD},
-				ecs::Position{x, y} {
+				ecs::Position{x, y}, isMonster(m) {
 		}
+		bool isMonster;
 	};
 
 	struct Input : Package {

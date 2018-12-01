@@ -66,13 +66,21 @@ class AnimationState {
 	public:
 	explicit AnimationState() = default;
 
+	AnimationState(const AnimationState &oth) noexcept {
+		_animations = oth._animations;
+		_loop = oth._loop;
+		_frameRate = oth._frameRate;
+	}
+
 	std::set<std::string> &getAnimations() noexcept {
 		return _animations;
 	}
 
-	std::string addTime(float timeSinceLastFrame) noexcept {
+	std::optional<std::string> addTime(float timeSinceLastFrame) noexcept {
 		_time += timeSinceLastFrame;
 		if (_time > _frameRate * _animations.size()) {
+			if (!_loop)
+				return std::nullopt;
 			_time = 0;
 			_index = 0;
 		}
@@ -81,7 +89,20 @@ class AnimationState {
 		return *std::next(_animations.begin(), _index);
 	}
 
+	void setFrameRate(float frameRate) noexcept {
+		_frameRate = frameRate;
+	}
+
+	void setLoop(bool loop) noexcept {
+		_loop = loop;
+	}
+
+	const std::string &getCurrent() const noexcept {
+		return *std::next(_animations.begin(), _index);
+	}
+
 	private:
+	bool _loop{false};
 	float _frameRate{0.2f};
 	float _time{0};
 	size_t _index{0};
@@ -108,7 +129,10 @@ class ResourceManager {
 		for (const auto &it : fs::recursive_directory_iterator(_resourceDirectoryPath)) {
 			if (it.status().type() != fs::file_type::directory) {
 				if (it.path().filename() == filename) {
-					return _texturesRegistry.load(filename.stem(), it.path());
+					auto id = it.path().stem();
+					if (it.path().parent_path() != _resourceDirectoryPath)
+						id = it.path().parent_path().filename() / id;
+					return _texturesRegistry.load(id, it.path());
 				}
 			}
 		}
@@ -138,21 +162,18 @@ class ResourceManager {
 		/*
 		 * Search for the animation directory
 		 */
-		for (auto &it : fs::recursive_directory_iterator(_resourceDirectoryPath)) {
-			if (it.status().type() == fs::file_type::directory && it.path().filename() == filename) {
-				for (const auto &sub : fs::directory_iterator(it.path())) {
-					loadTexture(sub.path().filename());
-					_animations[filename].getAnimations().insert(
-						sub.path().parent_path().filename() / sub.path().stem());
-				}
-				break;
-			}
+		for (const auto &sub : fs::directory_iterator(_resourceDirectoryPath / filename)) {
+			loadTexture(sub.path());
+			_animations[filename].getAnimations().insert(
+				sub.path().parent_path().filename() / sub.path().stem());
 		}
 		return _animations[filename];
 	}
 
-	AnimationState &getAnimation(const std::string &id) noexcept {
-		return _animations[id];
+	AnimationState &copyOrLoadAnimation(const std::string &id) noexcept {
+		if (_animations.find(id) != _animations.end())
+			return _animations[id];
+		return loadAnimation(id);
 	}
 
 	sf::Font &loadFont(const fs::path &filename) {

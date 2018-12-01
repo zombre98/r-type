@@ -23,7 +23,7 @@ namespace rtype {
 		void runSystem();
 		std::shared_ptr<ecs::World> getWorld() const { return _world; }
 
-                void checkWatcher();
+		void checkWatcher();
 
 	private:
 		void _initSystem();
@@ -32,6 +32,6 @@ namespace rtype {
 	private:
 		std::list<systemPtr> _listSystem;
 		std::shared_ptr<ecs::World> _world;
-                lib::Watcher _watcher;
+		lib::Watcher _watcher;
 	};
 }

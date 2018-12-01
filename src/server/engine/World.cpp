@@ -81,3 +81,23 @@ void ecs::World::createSinusEnemy() {
 	ent.addComponent<Hitbox>(33, 34);
 	ent.addComponent<Velocity>(-5, 0);
 }
+
+void ecs::World::createUselessEnemy() {
+	auto &ent = createEntity();
+
+	ent.addComponent<Position>(1950, -300);
+	ent.addComponent<LifePoint>(90);
+	ent.addComponent<EnemyType>(EnemyType::Enemy::CLASSIC);
+	ent.addComponent<Hitbox>(33, 34);
+	ent.addComponent<Velocity>(-1, 0);
+}
+
+bool ecs::World::isLoose() {
+	auto const &ent = getEntities<Player>();
+	return ent.empty();
+}
+
+bool ecs::World::isEmpty() {
+	auto const &ent = getAllEntities();
+	return ent->size() <= 1;
+}
