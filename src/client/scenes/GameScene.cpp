@@ -15,21 +15,30 @@ void GameScene::enter() noexcept {
 	_evtMgr.subscribe<net::ShotType>(*this);
 	_evtMgr.subscribe<net::Dead>(*this);
 	_evtMgr.subscribe<net::Life>(*this);
-	_resourceMgr.loadTexture("background.png");
+	_resourceMgr.loadAllTexturesInDirectory("");
 
 	_bg.setTexture(_resourceMgr.getTexture("background"));
 	_bg.scale(static_cast<float>(_parent.getWindow().getSize().x) / _bg.getTexture()->getSize().x,
-	static_cast<float>(_parent.getWindow().getSize().y) / _bg.getTexture()->getSize().y);
-	_resourceMgr.loadAllTexturesInDirectory("");
+		static_cast<float>(_parent.getWindow().getSize().y) / _bg.getTexture()->getSize().y);
 }
 
 void GameScene::update(float timeSinceLastFrame) noexcept {
+	for (auto it = _animated.begin(), last = _animated.end(); it != last;) {
+		const auto &nextFrame = it->second.addTime(timeSinceLastFrame);
+		if (nextFrame) {
+			_sprites[it->first].setTexture(_resourceMgr.getTexture(nextFrame.value()));
+			it++;
+		} else {
+			_sprites.erase(it->first);
+			it = _animated.erase(it);
+		}
+	}
 	displayGame(timeSinceLastFrame);
 }
 
 void GameScene::displayGame(float timeSinceLastFrame[[maybe_unused]]) noexcept {
 	auto &window = _parent.getWindow();
-        _displayBg(window);
+	_displayBg(window);
 	for (auto &it : _sprites) {
 		window.draw(it.second);
 		auto recIt = _rectangles.find(it.first);
@@ -81,34 +90,40 @@ void GameScene::receive(const net::Pos &pos) {
 	}
 	auto recIt = _rectangles.find(pos.head.id);
 	if (recIt != _rectangles.end()) {
-		_rectangles.at(pos.head.id).setPosition(
-				pos.x - (_sprites.at(pos.head.id).getTexture()->getSize().x * _sprites.at(pos.head.id).getScale().x),
-				pos.y - 5);
+		_rectangles.at(pos.head.id).setPosition(pos.x -
+				(_sprites.at(pos.head.id).getTexture()->getSize().x * _sprites.at(pos.head.id).getScale().x),
+			pos.y - 5);
 	}
 	_sprites.at(pos.head.id).setPosition(pos.x, pos.y);
 }
 
 void GameScene::receive(const net::EnemyType &eType) {
-	auto it = _sprites.find(eType.head.id);
-	if (it != _sprites.end())
+	if (_sprites.find(eType.head.id) != _sprites.end())
 		return;
-	_sprites.emplace(eType.head.id, _resourceMgr.getTexture("enemy" +
-	std::to_string(static_cast<int>(eType.type)) + "/frame00"));
+	_sprites.emplace(eType.head.id,
+		_resourceMgr.getTexture("enemy" + std::to_string(static_cast<int>(eType.type)) + "/frame00"));
 	_sprites[eType.head.id].setPosition(-300, -300);
 }
 
 void GameScene::receive(const net::ShotType &sType) {
-	_sprites.emplace(sType.head.id, _resourceMgr.getTexture("shoot" + std::to_string(
-			static_cast<int>(sType.type)) + "/frame0"));
+	_sprites.emplace(sType.head.id,
+		_resourceMgr.getTexture("shoot" + std::to_string(static_cast<int>(sType.type)) + "/frame0"));
 }
 
 void GameScene::receive(const net::Dead &dead) {
-	auto it = _sprites.find(dead.head.id);
-	if (it == _sprites.end()) {
+	std::cout << "received dead event" << std::endl;
+	auto s = _sprites.find(dead.head.id);
+	if (s == _sprites.end()) {
 		_parent.getClient().sendData(net::UnknowId{0, dead.head.id});
 		return;
 	}
-	_sprites.erase(it);
+	_sprites.erase(s);
+	auto r = _rectangles.find(dead.head.id);
+	if (r != _rectangles.end())
+		_rectangles.erase(r);
+	const auto &explosion = _animated.emplace(dead.head.id, _resourceMgr.copyOrLoadAnimation("explosion"));
+	auto result = _sprites.emplace(dead.head.id, _resourceMgr.getTexture(explosion.first->second.getCurrent()));
+	result.first->second.setPosition(dead.x, dead.y);
 }
 
 void GameScene::receive(const net::Life &life) {
@@ -123,31 +138,31 @@ void GameScene::receive(const net::Life &life) {
 	}
 	_rectangles.emplace(life.head.id, sf::Vector2f(static_cast<float>(life.lifePoint), 3));
 	_rectangles.at(life.head.id).setFillColor(sf::Color(100, 250, 50));
-	_rectangles.at(life.head.id).setPosition(
-			_sprites.at(life.head.id).getPosition().x - (_sprites.at(life.head.id).getTexture()->getSize().x * _sprites.at(life.head.id).getScale().x),
-			_sprites.at(life.head.id).getPosition().y - 5);
+	_rectangles.at(life.head.id).setPosition(_sprites.at(life.head.id).getPosition().x -
+			(_sprites.at(life.head.id).getTexture()->getSize().x * _sprites.at(life.head.id).getScale().x),
+		_sprites.at(life.head.id).getPosition().y - 5);
 }
 
 void GameScene::_displayBg(sf::RenderWindow &window) {
-    static std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-    auto t2 = std::chrono::steady_clock::now();
-    auto timeSpan = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+	static std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+	auto t2 = std::chrono::steady_clock::now();
+	auto timeSpan = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 
-    window.draw(_bg);
-    auto bgExtension = sf::Sprite{*(_bg.getTexture())};
-    bgExtension.setScale(_bg.getScale());
-    bgExtension.setPosition(_bg.getPosition().x + _bg.getTexture()->getSize().x * _bg.getScale().x,
-                            _bg.getPosition().y);
-    window.draw(bgExtension);
+	window.draw(_bg);
+	auto bgExtension = sf::Sprite{*(_bg.getTexture())};
+	bgExtension.setScale(_bg.getScale());
+	bgExtension.setPosition(_bg.getPosition().x + _bg.getTexture()->getSize().x * _bg.getScale().x,
+		_bg.getPosition().y);
+	window.draw(bgExtension);
 
-    if (timeSpan.count() < 1.f / BG_FPS)
-        return;
+	if (timeSpan.count() < 1.f / BG_FPS)
+		return;
 
-    t1 = std::chrono::steady_clock::now();
+	t1 = std::chrono::steady_clock::now();
 
-    _bg.setPosition(_bg.getPosition().x - 2, _bg.getPosition().y);
-    if (_bg.getPosition().x + _bg.getTexture()->getSize().x * _bg.getScale().x <= 0)
-        _bg.setPosition(0, _bg.getPosition().y);
+	_bg.setPosition(_bg.getPosition().x - 2, _bg.getPosition().y);
+	if (_bg.getPosition().x + _bg.getTexture()->getSize().x * _bg.getScale().x <= 0)
+		_bg.setPosition(0, _bg.getPosition().y);
 }
 
 
