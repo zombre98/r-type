@@ -81,3 +81,13 @@ void ecs::World::createUselessEnemy() {
 	ent.addComponent<Hitbox>(33, 34);
 	ent.addComponent<Velocity>(-1, 0);
 }
+
+bool ecs::World::isLoose() {
+	auto const &ent = getEntities<Player>();
+	return ent.empty();
+}
+
+bool ecs::World::isEmpty() {
+	auto const &ent = getAllEntities();
+	return ent->size() <= 1;
+}

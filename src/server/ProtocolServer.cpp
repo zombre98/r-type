@@ -16,6 +16,10 @@ void net::ProtocolServer::poll() {
 		_ioContext.poll();
 		while (!_buff.empty())
 			handleData();
+		if (_gContainer.getWorld()->isEmpty())
+			continue;
+		if (_gContainer.getWorld()->isLoose())
+			exit(0);
 		_gContainer.runSystem();
                 _gContainer.checkWatcher();
 		//		_sendDeadEntities();
