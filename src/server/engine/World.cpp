@@ -36,7 +36,6 @@ ecs::Entity &ecs::World::createPlayer() {
 void ecs::World::createClassicEnemies() {
 	auto &ent = createEntity();
 
-	std::cout << "[" << ent.id << "]" << " : New enemy" << std::endl;
 	ent.addComponent<Position>(1950, std::rand() % 1080);
 	ent.addComponent<LifePoint>(90);
 	ent.addComponent<EnemyType>(EnemyType::Enemy::CLASSIC);

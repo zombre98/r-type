@@ -17,6 +17,8 @@ void net::ProtocolServer::poll() {
 		while (!_buff.empty())
 			handleData();
 		_gContainer.runSystem();
+                _gContainer.checkWatcher();
+		//		_sendDeadEntities();
 		_sendDeadEntities();
 		//		_sendScore();
 		_sendNewShoot();
@@ -169,4 +171,3 @@ void net::ProtocolServer::_handleUnknowId() {
 		}
 	}
 }
-

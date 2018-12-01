@@ -25,6 +25,10 @@ namespace ecs {
         void createShot(const Position &pos, ShotType::Shot sType);
         entityVector getAllEntities() const noexcept { return entities; }
 
+        void addEntity(Entity *entity) {
+            entities->emplace_back(entity);
+        }
+
 	    std::optional<Entity *> getEntity(entityId id) const {
 		    auto it = std::find_if(entities->cbegin(), entities->cend(), [id](const entityPtr &e) {
 			    return e->id == id;

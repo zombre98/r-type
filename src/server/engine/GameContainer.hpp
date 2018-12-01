@@ -10,6 +10,7 @@
 #include <list>
 #include "World.hpp"
 #include "System.hpp"
+#include "Watcher.hpp"
 
 namespace rtype {
 	using systemPtr = std::unique_ptr<ecs::System>;
@@ -22,6 +23,8 @@ namespace rtype {
 		void runSystem();
 		std::shared_ptr<ecs::World> getWorld() const { return _world; }
 
+                void checkWatcher();
+
 	private:
 		void _initSystem();
 
@@ -29,5 +32,6 @@ namespace rtype {
 	private:
 		std::list<systemPtr> _listSystem;
 		std::shared_ptr<ecs::World> _world;
+                lib::Watcher _watcher;
 	};
 }

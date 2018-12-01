@@ -67,7 +67,7 @@ namespace ecs {
 	public:
 		std::bitset<MAX_COMPONENTS> bit;
 		std::size_t id;
-	private:
+        public:
 		static std::size_t nextId;
 		std::array<std::unique_ptr<Component>, MAX_COMPONENTS> componentArray;
 	};
