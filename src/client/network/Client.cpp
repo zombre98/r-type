@@ -114,6 +114,12 @@ void net::Client::handleMessage() {
 	case opCode::NEW_SHOT : {
 		auto shot = getData<ShotType>();
 		_sceneManager.emit(shot);
+		break;
+	}
+	case opCode::LOSE : {
+		auto lose = getData<IsLose>();
+		if (lose.isLose)
+			_sceneManager.popScene();
 	}
 	default:
 		break;

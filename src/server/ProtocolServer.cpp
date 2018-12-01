@@ -18,10 +18,11 @@ void net::ProtocolServer::poll() {
 			handleData();
 		if (_gContainer.getWorld()->isEmpty())
 			continue;
-		if (_gContainer.getWorld()->isLoose())
-			exit(0);
+		if (_gContainer.getWorld()->isLoose()) {
+			sendDataToAll(IsLose{0, true});
+		}
 		_gContainer.runSystem();
-                _gContainer.checkWatcher();
+		_gContainer.checkWatcher();
 		//		_sendDeadEntities();
 		_sendDeadEntities();
 		//		_sendScore();
@@ -38,7 +39,7 @@ void net::ProtocolServer::handleData() {
 	case opCode::CONNECTION:
 		_handleNewClient();
 		break;
-	case opCode::UNKNOW_ID: {
+	case opCode::UNKNOWN_ID: {
 		_handleUnknowId();
 		break;
 	}
@@ -172,7 +173,7 @@ void net::ProtocolServer::_sendNewShoot() {
 }
 
 void net::ProtocolServer::_handleUnknowId() {
-	auto pkg = getData<UnknowId>();
+	auto pkg = getData<UnknownId>();
 	if (auto entity = _gContainer.getWorld()->getEntity(pkg.id)) {
 		auto &ent = entity.value();
 		if (ent->hasComponent<ecs::EnemyType>()) {
