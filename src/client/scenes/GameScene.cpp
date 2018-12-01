@@ -13,12 +13,13 @@ void GameScene::enter() noexcept {
 	_evtMgr.subscribe<net::Pos>(*this);
 	_evtMgr.subscribe<net::EnemyType>(*this);
 	_evtMgr.subscribe<net::ShotType>(*this);
+	_evtMgr.subscribe<net::Dead>(*this);
+	_evtMgr.subscribe<net::Life>(*this);
 	_resourceMgr.loadTexture("background.png");
-        _bg.setTexture(_resourceMgr.getTexture("background"));
-        _bg.scale(static_cast<float>(_parent.getWindow().getSize().x) /
-                  _bg.getTexture()->getSize().x,
-                  static_cast<float>(_parent.getWindow().getSize().y) /
-                  _bg.getTexture()->getSize().y);
+
+	_bg.setTexture(_resourceMgr.getTexture("background"));
+	_bg.scale(static_cast<float>(_parent.getWindow().getSize().x) / _bg.getTexture()->getSize().x,
+	static_cast<float>(_parent.getWindow().getSize().y) / _bg.getTexture()->getSize().y);
 	_resourceMgr.loadAllTexturesInDirectory("");
 }
 
@@ -31,6 +32,10 @@ void GameScene::displayGame(float timeSinceLastFrame[[maybe_unused]]) noexcept {
         _displayBg(window);
 	for (auto &it : _sprites) {
 		window.draw(it.second);
+		auto recIt = _rectangles.find(it.first);
+		if (recIt != _rectangles.end()) {
+			window.draw(_rectangles.at(it.first));
+		}
 	}
 }
 
@@ -70,9 +75,16 @@ void GameScene::receive(const net::NetPlayer &player) {
 
 void GameScene::receive(const net::Pos &pos) {
 	auto it = _sprites.find(pos.head.id);
-	std::cout << "[" << pos.head.id << "] Pos" << std::endl;
-	if (it == _sprites.end())
+	if (it == _sprites.end()) {
+		_parent.getClient().sendData(net::UnknowId{0, pos.head.id});
 		return;
+	}
+	auto recIt = _rectangles.find(pos.head.id);
+	if (recIt != _rectangles.end()) {
+		_rectangles.at(pos.head.id).setPosition(
+				pos.x - (_sprites.at(pos.head.id).getTexture()->getSize().x * _sprites.at(pos.head.id).getScale().x),
+				pos.y - 5);
+	}
 	_sprites.at(pos.head.id).setPosition(pos.x, pos.y);
 }
 
@@ -80,16 +92,36 @@ void GameScene::receive(const net::EnemyType &eType) {
 	auto it = _sprites.find(eType.head.id);
 	if (it != _sprites.end())
 		return;
-	if (eType.type == net::EnemyType::Enemy::CLASSIC) {
-		std::cout << "Classic Enemy" << std::endl;
-		_sprites.emplace(eType.head.id, _resourceMgr.getTexture("enemy1/frame00"));
-		_sprites[eType.head.id].setPosition(-300, -300);
-	}
+	_sprites.emplace(eType.head.id, _resourceMgr.getTexture("enemy" +
+	std::to_string(static_cast<int>(eType.type)) + "/frame00"));
+	_sprites[eType.head.id].setPosition(-300, -300);
 }
 
 void GameScene::receive(const net::ShotType &sType) {
 	_sprites.emplace(sType.head.id, _resourceMgr.getTexture("shoot" + std::to_string(
 			static_cast<int>(sType.type)) + "/frame0"));
+}
+
+void GameScene::receive(const net::Dead &dead) {
+	auto it = _sprites.find(dead.head.id);
+	if (it == _sprites.end()) {
+		_parent.getClient().sendData(net::UnknowId{0, dead.head.id});
+		return;
+	}
+	_sprites.erase(it);
+}
+
+void GameScene::receive(const net::Life &life) {
+	auto it = _rectangles.find(life.head.id);
+	if (it != _rectangles.end()) {
+		_rectangles.at(life.head.id).setSize(sf::Vector2f(static_cast<float>(life.lifePoint), 3));
+		return;
+	}
+	_rectangles.emplace(life.head.id, sf::Vector2f(static_cast<float>(life.lifePoint), 3));
+	_rectangles.at(life.head.id).setFillColor(sf::Color(100, 250, 50));
+	_rectangles.at(life.head.id).setPosition(
+			_sprites.at(life.head.id).getPosition().x - (_sprites.at(life.head.id).getTexture()->getSize().x * _sprites.at(life.head.id).getScale().x),
+			_sprites.at(life.head.id).getPosition().y - 5);
 }
 
 void GameScene::_displayBg(sf::RenderWindow &window) {
@@ -113,3 +145,5 @@ void GameScene::_displayBg(sf::RenderWindow &window) {
     if (_bg.getPosition().x + _bg.getTexture()->getSize().x * _bg.getScale().x <= 0)
         _bg.setPosition(0, _bg.getPosition().y);
 }
+
+

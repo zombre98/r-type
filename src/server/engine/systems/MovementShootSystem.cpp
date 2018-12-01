@@ -17,10 +17,14 @@ namespace ecs {
 		auto now = std::chrono::steady_clock::now();
 		std::chrono::duration<double> diff = now - _lastMove;
 
-		if (diff.count() > 0.05) {
+		if (diff.count() > 0.009) {
 			for (auto &e : entities) {
 				if (e->getComponent<ShotType>().type == ShotType::Shot::ALLY)
 					e->getComponent<Velocity>().x = 7;
+				if (e->getComponent<ShotType>().type == ShotType::Shot::ENEMY)
+					e->getComponent<Velocity>().x = -7;
+				if (e->getComponent<ShotType>().type == ShotType::Shot::SHIPENEMY)
+					e->getComponent<Velocity>().y = 5;
 			}
 			_lastMove = std::chrono::steady_clock::now();
 		}

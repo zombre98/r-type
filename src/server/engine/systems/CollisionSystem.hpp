@@ -16,10 +16,8 @@ namespace ecs {
         CollisionSystem(entityVector, std::shared_ptr<World>);
         ~CollisionSystem() = default;
 
-        void update(double delta) override final;
+        void update(double delta) override;
     private:
         std::shared_ptr<ecs::World> _world;
-
-        bool _collides(const Entity *e, const Entity *shot);
     };
 }

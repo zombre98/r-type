@@ -26,25 +26,50 @@ ecs::Entity &ecs::World::createPlayer() {
 	ent.addComponent<LifePoint>(100);
 	ent.addComponent<Position>(std::rand() % 1000, std::rand() % 1000);
 	ent.addComponent<Velocity>(0, 0);
+	ent.addComponent<Hitbox>(33, 17);
 	ent.addComponent<Score>(0);
 	ent.addComponent<Input>();
 	return ent;
 }
 
-void ecs::World::createEnemies() {
+
+void ecs::World::createClassicEnemies() {
 	auto &ent = createEntity();
 
 	ent.addComponent<Position>(1950, std::rand() % 1080);
-	ent.addComponent<LifePoint>(10);
+        std::cout << ComponentId::getTypeId<Position>() << std::endl;
+	ent.addComponent<LifePoint>(90);
+        std::cout << ComponentId::getTypeId<LifePoint>() << std::endl;
 	ent.addComponent<EnemyType>(EnemyType::Enemy::CLASSIC);
+        std::cout << ComponentId::getTypeId<EnemyType>() << std::endl;
+	ent.addComponent<Hitbox>(33, 34);
+        std::cout << ComponentId::getTypeId<Hitbox>() << std::endl;
 	ent.addComponent<Velocity>(-1, 0);
+        std::cout << ComponentId::getTypeId<Velocity>() << std::endl << std::endl;
 }
 
-void ecs::World::createAllyShot(const Position &pos) {
+void ecs::World::createShot(const Position &pos, ShotType::Shot sType) {
     auto &ent = createEntity();
 
     ent.addComponent<Position>(pos.x, pos.y);
-    ent.addComponent<Velocity>(0, 3);
-    ent.addComponent<Damage>(30);
-    ent.addComponent<ShotType>(ShotType::Shot::ALLY);
+	ent.addComponent<Velocity>(0, 3);
+	if (sType == ShotType::Shot::ENEMY) {
+	    ent.addComponent<Damage>(30);
+	    ent.addComponent<Hitbox>(18, 16);
+	} else if (sType == ShotType::Shot::SHIPENEMY) {
+		ent.addComponent<Damage>(50);
+		ent.addComponent<Hitbox>(15, 16);
+	}
+    ent.addComponent<LifePoint>(1);
+    ent.addComponent<ShotType>(sType);
+}
+
+void ecs::World::createShipEnemy() {
+	auto &ent = createEntity();
+
+	ent.addComponent<Position>(1950, 1080);
+	ent.addComponent<LifePoint>(150);
+	ent.addComponent<EnemyType>(EnemyType::Enemy::SHIP);
+	ent.addComponent<Hitbox>(66, 50);
+	ent.addComponent<Velocity>(-1, 0);
 }

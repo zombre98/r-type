@@ -19,11 +19,12 @@ void net::ProtocolServer::poll() {
 		_gContainer.runSystem();
                 _gContainer.checkWatcher();
 		//		_sendDeadEntities();
+		_sendDeadEntities();
 		//		_sendScore();
 		_sendNewShoot();
 		_sendAllEnemies();
 		_sendAllPosition();
-		//		_sendLifePoint();
+		_sendLifePoint();
 	}
 }
 
@@ -33,9 +34,8 @@ void net::ProtocolServer::handleData() {
 	case opCode::CONNECTION:
 		_handleNewClient();
 		break;
-	case opCode::POSITION: {
-		auto position = getData<Pos>();
-		sendDataToAll<Pos>(position);
+	case opCode::UNKNOW_ID: {
+		_handleUnknowId();
 		break;
 	}
 	case opCode::INPUT: {
@@ -59,9 +59,13 @@ void net::ProtocolServer::_handleNewClient() {
 	auto vec = _gContainer.getWorld()->getEntities<ecs::Player>();
 	for (auto &it : vec) {
 		auto othId = it->getComponent<ecs::Player>().id;
+		auto pos = it->getComponent<ecs::Position>();
+		auto life = it->getComponent<ecs::LifePoint>();
 		if (othId != entPlayer.id) {
 			NetPlayer oldPly{it->id, opCode::OLD_CONNECTION, othId};
 			sendDataToAll(oldPly);
+			sendDataToAll(Pos{it->id, opCode::POSITION, pos.x, pos.y});
+			sendDataToAll(Life{it->id, life.lifePoint});
 		}
 	}
 }
@@ -77,6 +81,8 @@ void net::ProtocolServer::_sendAllPosition() {
 	auto const &EntitiesWithPos = _gContainer.getWorld()->getEntities<ecs::Position>();
 	for (auto const &ent : EntitiesWithPos) {
 		auto &compPos = ent->getComponent<ecs::Position>();
+		if (ent->hasComponent<ecs::LifePoint>() && ent->getComponent<ecs::LifePoint>().lifePoint <= 0)
+			continue;
 		if (compPos.updated) {
 			sendDataToAll(Pos{ent->id, opCode::POSITION, compPos.x, compPos.y});
 			compPos.updated = false;
@@ -88,6 +94,8 @@ void net::ProtocolServer::_sendLifePoint() {
 	auto const &EntitiesWithLifePoint = _gContainer.getWorld()->getEntities<ecs::LifePoint>();
 	for (auto const &ent : EntitiesWithLifePoint) {
 		auto &compLife = ent->getComponent<ecs::LifePoint>();
+		if (ent->hasComponent<ecs::ShotType>())
+			continue;
 		if (compLife.updated) {
 			sendDataToAll(Life{ent->id, compLife.lifePoint});
 			compLife.updated = false;
@@ -121,7 +129,8 @@ void net::ProtocolServer::_sendAllEnemies() {
 	for (auto const &ent : EntitiesWithEnemies) {
 		auto &compEnemyType = ent->getComponent<ecs::EnemyType>();
 		if (compEnemyType.updated) {
-			EnemyType eType = {ent->id, compEnemyType.type};
+			std::cout << "Enemy got Id : " << ent->id << std::endl;
+			EnemyType eType{ent->id, compEnemyType.type};
 			sendDataToAll(eType);
 			compEnemyType.updated = false;
 		}
@@ -136,6 +145,29 @@ void net::ProtocolServer::_sendNewShoot() {
 			ShotType shot{ent->id, compShot.type};
 			sendDataToAll(shot);
 			compShot.updated = false;
+		}
+	}
+}
+
+void net::ProtocolServer::_handleUnknowId() {
+	auto pkg = getData<UnknowId>();
+	if (auto entity = _gContainer.getWorld()->getEntity(pkg.id)) {
+		auto &ent = entity.value();
+		if (ent->hasComponent<ecs::EnemyType>()) {
+			auto compEnemyType = ent->getComponent<ecs::EnemyType>();
+			sendDataToAll(EnemyType{ent->id, compEnemyType.type});
+		}
+		if (ent->hasComponent<ecs::ShotType>()) {
+			auto compShotType = (*entity)->getComponent<ecs::ShotType>();
+			sendDataToAll(ShotType{(*entity)->id, compShotType.type});
+		}
+		if (ent->hasComponent<ecs::Position>()) {
+			auto compPos = ent->getComponent<ecs::Position>();
+			sendDataToAll(Pos{ent->id, opCode::POSITION, compPos.x, compPos.y});
+		}
+		if (ent->hasComponent<ecs::LifePoint>()) {
+			auto compLife = ent->getComponent<ecs::LifePoint>();
+			sendDataToAll(Life{ent->id, compLife.lifePoint});
 		}
 	}
 }
