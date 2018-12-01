@@ -32,7 +32,7 @@ namespace ecs {
 					_world->createShot(e->getComponent<Position>(), ShotType::Shot::SHIPENEMY);
 				}
 			}
-			_lastClassicShoot = std::chrono::steady_clock::now();
+			_lastShipShoot = std::chrono::steady_clock::now();
 		}
 	}
 };
