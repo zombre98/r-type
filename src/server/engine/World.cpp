@@ -54,6 +54,9 @@ void ecs::World::createShot(const Position &pos, ShotType::Shot sType) {
 	} else if (sType == ShotType::Shot::SHIPENEMY) {
 		ent.addComponent<Damage>(50);
 		ent.addComponent<Hitbox>(15, 16);
+	} else if (sType == ShotType::Shot::ALLY) {
+		ent.addComponent<Damage>(30);
+		ent.addComponent<Hitbox>(18, 16);
 	}
     ent.addComponent<LifePoint>(1);
     ent.addComponent<ShotType>(sType);
