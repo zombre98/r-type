@@ -10,6 +10,7 @@
 #include <experimental/filesystem>
 #include "Scene.hpp"
 #include "events/SfmlEvent.hpp"
+#include "events/ConnectState.hpp"
 
 namespace fs = std::filesystem;
 
@@ -30,7 +31,13 @@ class MenuScene final : public AScene, public Receiver {
 	 * Events Callback
 	 */
 	void receive(const SfmlEvent &event) noexcept;
+	void receive(const ConnectTimeOut &event) noexcept;
+	void receive(const ConnectSuccess &event) noexcept;
 
 	private:
-	std::vector<Texts> _texts;
+	std::map<std::string, sf::Sprite> _sprites;
+	std::map<std::string, Texts> _texts;
+	void handleInput(sf::Event key);
+	std::string _address;
+	void _tryConnection();
 };

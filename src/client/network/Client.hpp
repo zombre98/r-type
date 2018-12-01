@@ -23,8 +23,6 @@ namespace net {
 	class Client {
 	public:
 		Client(ba::io_context &context, SceneManager &_sceneManager);
-		Client(ba::io_context &context, SceneManager &_sceneManager, const std::string &address,
-		       const std::string &port);
 
 		void connect(const std::string &address, const std::string &port);
 		void poll();
@@ -39,6 +37,8 @@ namespace net {
 			boost::array<T, 1> dataToSend = {{data}};
 			_socket.send_to(ba::buffer(dataToSend, sizeof(T)), _senderEndpoint);
 		}
+
+		virtual ~Client();
 
 		template<typename T>
 		void asyncSendData(T data) {
@@ -85,5 +85,7 @@ namespace net {
 		std::queue<message> _buff;
 		size_t _me;
 		bool _connected{false};
+		bool _connecting{false};
+		std::thread _connectionTimeout{};
 	};
 }

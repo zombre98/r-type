@@ -118,8 +118,10 @@ class ResourceManager {
 	void loadAllTexturesInDirectory(const fs::path &filename) {
 		for (const auto &sub : fs::recursive_directory_iterator(_resourceDirectoryPath / filename)) {
 			if (sub.status().type() != fs::file_type::directory) {
-				_texturesRegistry.load(sub.path().parent_path().filename() / sub.path().stem(),
-					sub.path());
+				auto id = sub.path().stem();
+				if (sub.path().parent_path() != _resourceDirectoryPath)
+					id = sub.path().parent_path().filename() / id;
+				_texturesRegistry.load(id, sub.path());
 			}
 		}
 	}

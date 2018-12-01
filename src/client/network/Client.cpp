@@ -4,6 +4,7 @@
 
 #include <string>
 #include "Client.hpp"
+#include "events/ConnectState.hpp"
 
 net::Client::Client(ba::io_context &context, SceneManager &_sceneManager) :
 	_ioContext{context},
@@ -14,17 +15,8 @@ net::Client::Client(ba::io_context &context, SceneManager &_sceneManager) :
 	_socket{_ioContext} {
 }
 
-net::Client::Client(ba::io_context &context, SceneManager &_sceneManager, const std::string &address,
-	const std::string &port) :
-	_ioContext{context},
-	_sceneManager{_sceneManager},
-	_address{address},
-	_port{port},
-	_resolver{_ioContext},
-	_senderEndpoint{*_resolver.resolve(ba::ip::udp::v4(), address, port).begin()},
-	_socket{_ioContext} {
-	_socket.open(ba::ip::udp::v4());
-	sendData(NetPlayer{0, opCode::CONNECTION, 0});
+net::Client::~Client() {
+	_connectionTimeout.join();
 }
 
 void net::Client::connect(const std::string &address, const std::string &port) {
@@ -34,10 +26,14 @@ void net::Client::connect(const std::string &address, const std::string &port) {
 	_socket.open(ba::ip::udp::v4());
 	sendData(NetPlayer{0, opCode::CONNECTION, 0});
 	std::cout << "Called connect" << std::endl;
-	auto bytesRead = _socket.receive_from(ba::buffer(_recvArr), _receiverEndpoint);
-	if (bytesRead)
-		_buff.push(_recvArr);
-	_connected = true;
+	_connectionTimeout = std::thread{[this]() {
+		std::this_thread::sleep_for(std::chrono::seconds{5});
+		if (!_connected) {
+			_sceneManager.emit(ConnectTimeOut{});
+			return;
+		}
+	}};
+	_connecting = true;
 	asyncReceive();
 }
 
@@ -54,7 +50,7 @@ void net::Client::receive(const boost::system::error_code &error, std::size_t by
 }
 
 void net::Client::poll() {
-	if (!_connected)
+	if (!_connected && !_connecting)
 		return;
 	_ioContext.poll();
 	while (!_buff.empty()) {
@@ -66,10 +62,13 @@ void net::Client::handleMessage() {
 	auto head = getData<Header>();
 	switch (head.op) {
 	case opCode::CONNECTION : {
-		auto p = getData<NetPlayer>();
 		std::cout << "Connection success" << std::endl;
+		_connecting = false;
+		_connected = true;
+		auto p = getData<NetPlayer>();
 		_me = p.head.id;
 		_sceneManager.emit(p);
+		_sceneManager.emit(ConnectSuccess{});
 		break;
 	}
 	case opCode::NEW_CONNECTION :
