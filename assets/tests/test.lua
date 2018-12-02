@@ -1,0 +1,21 @@
+local file = assert(loadfile("../lua/sinus_movement_system.lua"))
+file()
+
+print("===SIN FORMULA TESTS===")
+print("test 1")
+assert(sin(-1) > 2003 and sin(-1) < 2004)
+print("test 2")
+assert(sin(0) == 2000)
+print("test 3")
+assert(sin(1) > 1996 and sin(1) < 1997)
+
+print("===REVERT SIN FORMULA TESTS===")
+print("test 1")
+assert(revert_sin(-1) > -924 and revert_sin(-1) < -923)
+print("test 2")
+assert(revert_sin(0) == -920)
+print("test 3")
+assert(revert_sin(1) > -917 and revert_sin(1) < -916)
+
+print("")
+print("All tests passed")
