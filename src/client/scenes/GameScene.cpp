@@ -85,7 +85,9 @@ void GameScene::receive(const SfmlEvent &event) noexcept {
 }
 
 void GameScene::receive(const net::NetPlayer &player) {
-	_sprites.emplace(player.head.id, _resourceMgr.getTexture("ship" + std::to_string(player.id) + "/frame00"));
+	const auto &ship = _animated.emplace(player.head.id, _resourceMgr.copyOrLoadAnimation("ship" + std::to_string(player.id)));
+	ship.first->second.setLoop(true);
+	_sprites.emplace(player.head.id, _resourceMgr.getTexture(ship.first->second.getCurrent()));
 }
 
 void GameScene::receive(const net::Pos &pos) {
