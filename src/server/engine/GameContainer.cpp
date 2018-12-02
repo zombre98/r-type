@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include "InputSystem.hpp"
-#include "EnemiesMovementSystem.hpp"
 #include "MovementSystem.hpp"
 #include "CollisionSystem.hpp"
 #include "InGameBoardSystem.hpp"
@@ -27,7 +26,7 @@ void rtype::GameContainer::_initSystem() {
 	_listSystem.emplace_back(new ecs::MovementSystem(_world->getAllEntities()));
 	_listSystem.emplace_back(new ecs::RemoveSystem(_world->getAllEntities(), _world));
 	_listSystem.emplace_back(new ecs::SpawnMonsterSystem(_world->getAllEntities(), _world, std::chrono::steady_clock::now()));
-	_listSystem.emplace_back(new ecs::EnemiesMovementSystem(_world->getAllEntities(), std::chrono::steady_clock::now()));
+        _listSystem.emplace_back(new ecs::LuaSystem<ecs::EnemyType, ecs::Velocity>(_world->getAllEntities(), "enemies_movement_system.lua"));
         _listSystem.emplace_back(new ecs::LuaSystem<ecs::EnemyType, ecs::Velocity>(_world->getAllEntities(), "sinus_movement_system.lua"));
         _listSystem.emplace_back(new ecs::LuaSystem<ecs::ShotType, ecs::Velocity>(_world->getAllEntities(), "movement_shoot_system.lua"));
 	_listSystem.emplace_back(new ecs::InGameBoardSystem(_world->getAllEntities(), _world));
