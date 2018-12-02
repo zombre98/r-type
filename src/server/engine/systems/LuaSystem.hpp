@@ -55,6 +55,7 @@
                                        COMPONENT_FUNC(Position, int, int),
                                        COMPONENT_FUNC(LifePoint, int),
                                        COMPONENT_FUNC(EnemyType, EnemyType::Enemy),
+                                       COMPONENT_FUNC(ShotType, ShotType::Shot),
                                        COMPONENT_FUNC(Damage, int)
                                        );
 
@@ -87,6 +88,14 @@
                                                         "SHIP", EnemyType::Enemy::SHIP,
                                                         "SINUS", EnemyType::Enemy::SINUS);
 
+             _lua.new_usertype<ShotType>("ShotType",
+                                         sol::constructors<ShotType(ShotType::Shot)>(),
+                                         "type", &ShotType::type);
+
+             _lua["ShotEnum"] = _lua.create_table_with("ALLY", ShotType::Shot::ALLY,
+                                                       "ENEMY", ShotType::Shot::ENEMY,
+                                                       "SHIPENEMY", ShotType::Shot::SHIPENEMY,
+                                                       "SINUSENEMY", ShotType::Shot::SINUSENEMY);
              _lua.new_usertype<Damage>("Damage",
                                        sol::constructors<Damage(int)>(),
                                        "damage", &Damage::damage);
