@@ -8,7 +8,7 @@
 #pragma once
 
 #include <utility>
-#include <iostream>
+#include <optional>
 #include <unordered_map>
 #include <filesystem>
 #include <SFML/Audio.hpp>
@@ -132,11 +132,11 @@ class ResourceManager {
 					auto id = it.path().stem();
 					if (it.path().parent_path() != _resourceDirectoryPath)
 						id = it.path().parent_path().filename() / id;
-					return _texturesRegistry.load(id, it.path());
+					return _texturesRegistry.load(id.string(), it.path().string());
 				}
 			}
 		}
-		return _texturesRegistry.load(std::move(filename.stem()), filename);
+		return _texturesRegistry.load(std::move(filename.stem().string()), filename.string());
 	}
 
 	void loadAllTexturesInDirectory(const fs::path &filename) {
@@ -145,7 +145,7 @@ class ResourceManager {
 				auto id = sub.path().stem();
 				if (sub.path().parent_path() != _resourceDirectoryPath)
 					id = sub.path().parent_path().filename() / id;
-				_texturesRegistry.load(id, sub.path());
+				_texturesRegistry.load(id.string(), sub.path().string());
 			}
 		}
 	}
@@ -164,10 +164,10 @@ class ResourceManager {
 		 */
 		for (const auto &sub : fs::directory_iterator(_resourceDirectoryPath / filename)) {
 			loadTexture(sub.path());
-			_animations[filename].getAnimations().insert(
-				sub.path().parent_path().filename() / sub.path().stem());
+			_animations[filename.string()].getAnimations().insert(
+				(sub.path().parent_path().filename() / sub.path().stem()).string());
 		}
-		return _animations[filename];
+		return _animations[filename.string()];
 	}
 
 	AnimationState &copyOrLoadAnimation(const std::string &id) noexcept {
@@ -180,11 +180,11 @@ class ResourceManager {
 		for (auto &it : fs::recursive_directory_iterator(_resourceDirectoryPath)) {
 			if (it.status().type() != fs::file_type::directory) {
 				if (it.path().filename() == filename) {
-					return _fontsRegistry.load(std::move(filename.stem()), it.path());
+					return _fontsRegistry.load(std::move(filename.stem().string()), it.path().string());
 				}
 			}
 		}
-		return _fontsRegistry.load(std::move(filename.stem()), filename);
+		return _fontsRegistry.load(std::move(filename.stem().string()), filename.string());
 	}
 
 	sf::Font getFont(const std::string &id) {

@@ -44,10 +44,12 @@ set(SERVER
   address.hpp
   )
 
-set(LIBRARY
-  library/Watcher.cpp
-  library/Loader.cpp
-  )
+if(NOT MSVC)
+	set(LIBRARY
+	  library/Watcher.cpp
+	  library/Loader.cpp
+	  )
+endif()
 
 set(SOURCES
   ${CORE}

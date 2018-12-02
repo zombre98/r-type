@@ -6,7 +6,6 @@
 */
 
 #include <iostream>
-#include <unistd.h>
 #include "CollisionSystem.hpp"
 
 ecs::CollisionSystem::CollisionSystem(entityVector allEntities,

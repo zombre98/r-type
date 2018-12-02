@@ -10,7 +10,9 @@
 #include <list>
 #include "World.hpp"
 #include "System.hpp"
+#ifndef MSVC
 #include "Watcher.hpp"
+#endif
 
 namespace rtype {
 	using systemPtr = std::unique_ptr<ecs::System>;
@@ -24,7 +26,9 @@ namespace rtype {
 		void resetSystem();
 		std::shared_ptr<ecs::World> getWorld() const { return _world; }
 
+#ifndef MSVC
 		void checkWatcher();
+#endif
 
 	private:
 		void _initSystem();
@@ -33,6 +37,8 @@ namespace rtype {
 	private:
 		std::list<systemPtr> _listSystem;
 		std::shared_ptr<ecs::World> _world;
+#ifndef MSVC
 		lib::Watcher _watcher;
+#endif
 	};
 }

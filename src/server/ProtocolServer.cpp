@@ -24,7 +24,9 @@ void net::ProtocolServer::poll() {
 			_gContainer.resetSystem();
 		}
 		_gContainer.runSystem();
+#ifndef MSVC
 		_gContainer.checkWatcher();
+#endif
 		//		_sendDeadEntities();
 		_sendDeadEntities();
 		_sendScore();

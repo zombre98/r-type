@@ -11,6 +11,7 @@ target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/networ
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/server/engine)
 
 if (MSVC)
+	add_compile_definitions(_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
 else ()
 	target_link_libraries(${TARGET_NAME} PRIVATE stdc++fs)
 endif ()

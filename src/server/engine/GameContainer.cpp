@@ -18,9 +18,16 @@
 #include "SpawnMonsterSystem.hpp"
 #include "LuaSystem.hpp"
 
-rtype::GameContainer::GameContainer() : _world{std::make_shared<ecs::World>()}, _watcher{"assets/libraries/"} {
+rtype::GameContainer::GameContainer() :
+	_world{std::make_shared<ecs::World>()}
+#ifndef MSVC
+	, _watcher{"assets/libraries/"}
+#endif
+{
     _initSystem();
+#ifndef MSVC
     _watcher.run();
+#endif
 }
 
 void rtype::GameContainer::_initSystem() {
@@ -46,6 +53,7 @@ void rtype::GameContainer::runSystem() {
             it->update(delta);
 }
 
+#ifndef MSVC
 void rtype::GameContainer::checkWatcher() {
     static unsigned int index = 0;
     static std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
@@ -62,6 +70,7 @@ void rtype::GameContainer::checkWatcher() {
     _world->addEntity(entity);
     index++;
 }
+#endif
 
 void rtype::GameContainer::resetSystem() {
 		_listSystem.clear();
