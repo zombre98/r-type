@@ -40,6 +40,7 @@ class GameScene final : public AScene, public Receiver {
 	void receive(const net::ShotType &sType);
 	void receive(const net::Dead &dead);
 	void receive(const net::Life &life);
+	void receive(const net::Bonus &bonus);
 	private:
 	void displayGame(float timeSinceLastFrame) noexcept;
 	void _displayBg(sf::RenderWindow &);

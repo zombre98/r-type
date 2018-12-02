@@ -30,6 +30,7 @@ namespace ecs {
         void createShot(const Position &pos, ShotType::Shot sType);
         void createCustomShot(const Position &, const Velocity &,
                               const Hitbox &, ShotType::Shot, int);
+        void createBonus(Bonus::Object t, Position const &pos);
         entityVector getAllEntities() const noexcept { return entities; }
         bool isLoose();
         bool isEmpty();

@@ -99,6 +99,26 @@ namespace ecs {
 	    std::bitset<Count> input;
     };
 
+    struct Bonus : public Component {
+    	enum class Object : std::size_t {
+    		LIFE_PACK
+    	};
+
+    	Bonus() = default;
+
+    	explicit Bonus(Object o ) : type(o) {}
+		~Bonus() = default;
+    	Object type;
+    };
+
+    struct Destructible : public Component {
+    	Destructible() = default;
+
+    	explicit Destructible(Bonus::Object o) : type(o) {}
+    	~Destructible() = default;
+    	Bonus::Object type;
+    };
+
     struct Damage : public Component {
         Damage() = delete;
 
@@ -113,7 +133,7 @@ namespace ecs {
 		enum class Enemy : std::size_t {
 			CLASSIC,
 			SHIP,
-                        SINUS,
+			SINUS,
 		};
 
 		EnemyType() = delete;
