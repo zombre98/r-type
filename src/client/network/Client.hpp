@@ -25,6 +25,10 @@ namespace net {
 		Client(ba::io_context &context, SceneManager &_sceneManager);
 
 		void connect(const std::string &address, const std::string &port);
+
+		bool isConnected() const noexcept {
+			return _connected;
+		}
 		void poll();
 
 		void restart() { _ioContext.restart(); }

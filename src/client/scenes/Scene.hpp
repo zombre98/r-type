@@ -25,27 +25,18 @@ struct Texts {
 class SceneManager;
 
 class AScene {
-protected:
+	protected:
 	explicit AScene(SceneManager &parent) :
-			_parent(parent) {
+		_parent(parent) {
 	}
 
 	AScene(SceneManager &parent, const fs::path &resourcePath) :
-			_resourceMgr(resourcePath),
-			_parent(parent) {
+		_resourceMgr(resourcePath),
+		_parent(parent) {
 	}
 
-public:
+	public:
 	virtual ~AScene() = default;
-
-	/*
-	 * Create a scene
-	 */
-	template<typename T>
-	static std::unique_ptr<T> create(SceneManager &parent) {
-		static_assert(std::is_base_of<AScene, T>(), "Template parameter is not based of AScene");
-		return std::make_unique<T>(parent);
-	}
 
 	/*
 	 * Scene Manipulation
@@ -61,9 +52,9 @@ public:
 
 	virtual void update(float timeSinceLastFrame) = 0;
 
-public:
+	public:
 	EventManager _evtMgr;
-protected:
+	protected:
 	ResourceManager _resourceMgr;
 	SceneManager &_parent;
 };
@@ -73,10 +64,19 @@ namespace net {
 }
 
 class SceneManager {
-public:
+	public:
 	explicit SceneManager(sf::RenderWindow &window, net::Client &client) :
-			_window(window),
-			_client(client) {
+		_window(window),
+		_client(client) {
+	}
+
+	/*
+	 * Create a scene
+	 */
+	template<typename T>
+	std::unique_ptr<T> create() noexcept {
+		static_assert(std::is_base_of<AScene, T>(), "Template parameter is not based of AScene");
+		return std::make_unique<T>(*this);
 	}
 
 	template<typename EventType>
@@ -95,12 +95,31 @@ public:
 	/*
 	 * Scenes Handlers
 	 */
-	void changeScene(std::unique_ptr<AScene> scenePtr);
-	void pushScene(std::unique_ptr<AScene> scenePtr);
+	template<typename T>
+	void pushScene() {
+		if (!_scenes.empty())
+			_scenes.top()->pause();
+		_scenes.push(create<T>());
+		_scenes.top()->enter();
+	}
+
+	template<typename T>
+	void changeScene() {
+		popScene();
+		pushScene<T>();
+	}
+
 	void popScene();
 	void pauseScene();
 	void resumeScene();
-	void popAllAndPushScene(std::unique_ptr<AScene> scenePtr);
+
+	template<typename T>
+	void popAllAndPushScene() {
+		while (!_scenes.empty()) {
+			_scenes.pop();
+		}
+		pushScene<T>();
+	}
 
 	/*
 	 * Getters
@@ -113,7 +132,7 @@ public:
 		return _client;
 	}
 
-private:
+	private:
 	sf::RenderWindow &_window;
 	net::Client &_client;
 	std::stack<std::unique_ptr<AScene>> _scenes;

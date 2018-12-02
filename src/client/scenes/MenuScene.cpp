@@ -30,10 +30,11 @@ void MenuScene::enter() noexcept {
 }
 
 void MenuScene::exit() noexcept {
-	_evtMgr.unsubscribeAll(*this);
 }
 
 void MenuScene::update(float timeSinceLastFrame[[maybe_unused]]) noexcept {
+	if (_parent.getClient().isConnected())
+		_parent.pushScene<GameScene>();
 	auto &window = _parent.getWindow();
 	window.draw(_sprites["background"]);
 	window.draw(_sprites["button_normal"]);
@@ -56,7 +57,6 @@ void MenuScene::receive(const ConnectTimeOut &) noexcept {
 
 void MenuScene::receive(const ConnectSuccess &) noexcept {
 	_sprites.erase("loading");
-	_parent.pushScene(create<GameScene>(_parent));
 }
 
 void MenuScene::receive(const SfmlEvent &event) noexcept {
@@ -94,6 +94,7 @@ void MenuScene::handleInput(sf::Event textEvent) {
 }
 
 void MenuScene::_tryConnection() {
+	std::cout << "trying connection" << std::endl;
 	_sprites.emplace("loading", sf::Sprite{_resourceMgr.getTexture("loading")});
 	_sprites["loading"].setPosition(900, 500);
 	_sprites["loading"].setOrigin(50, 50);

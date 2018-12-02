@@ -7,12 +7,6 @@
 
 #include "Scene.hpp"
 
-void SceneManager::pushScene(std::unique_ptr<AScene> scenePtr) {
-	if (!_scenes.empty())
-		_scenes.top()->pause();
-	_scenes.push(std::move(scenePtr));
-	_scenes.top()->enter();
-}
 
 void SceneManager::popScene() {
 	if (!_scenes.empty()) {
@@ -24,11 +18,6 @@ void SceneManager::popScene() {
 	}
 }
 
-void SceneManager::changeScene(std::unique_ptr<AScene> scenePtr) {
-	popScene();
-	pushScene(std::move(scenePtr));
-}
-
 void SceneManager::pauseScene() {
 	if (!_scenes.empty())
 		_scenes.top()->pause();
@@ -38,13 +27,6 @@ void SceneManager::resumeScene() {
 	if (!_scenes.empty()) {
 		_scenes.top()->resume();
 	}
-}
-
-void SceneManager::popAllAndPushScene(std::unique_ptr<AScene> scenePtr) {
-	while (!_scenes.empty()) {
-		_scenes.pop();
-	}
-	pushScene(std::move(scenePtr));
 }
 
 void SceneManager::update(float timeSinceLastFrame) noexcept {

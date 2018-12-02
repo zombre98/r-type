@@ -26,6 +26,10 @@ void GameScene::enter() noexcept {
 		static_cast<float>(_parent.getWindow().getSize().y) / _bg.getTexture()->getSize().y);
 }
 
+void GameScene::exit() noexcept {
+	std::cout << "exit game scene" << std::endl;
+}
+
 void GameScene::update(float timeSinceLastFrame) noexcept {
 	for (auto it = _animated.begin(), last = _animated.end(); it != last;) {
 		const auto &nextFrame = it->second.addTime(timeSinceLastFrame);
@@ -51,9 +55,6 @@ void GameScene::displayGame(float timeSinceLastFrame[[maybe_unused]]) noexcept {
 			window.draw(_rectangles.at(it.first));
 		}
 	}
-}
-
-void GameScene::exit() noexcept {
 }
 
 void GameScene::receive(const SfmlEvent &event) noexcept {

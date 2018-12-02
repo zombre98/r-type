@@ -22,8 +22,8 @@ class SplashScene final : public AScene, public Receiver {
 	/*
 	 * Scene Manipulation
 	 */
-	void enter() noexcept override;
-	void exit() noexcept override;
+	void enter() noexcept final;
+	void exit() noexcept final;
 	void update(float timeSinceLastFrame) noexcept override;
 	public:
 	/*
@@ -33,4 +33,5 @@ class SplashScene final : public AScene, public Receiver {
 
 	private:
 	std::vector<Texts> _texts;
+	bool _next{false};
 };

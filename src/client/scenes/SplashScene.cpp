@@ -21,10 +21,11 @@ void SplashScene::enter() noexcept {
 }
 
 void SplashScene::exit() noexcept {
-	_evtMgr.unsubscribeAll(*this);
 }
 
 void SplashScene::update(float timeSinceLastFrame[[maybe_unused]]) noexcept {
+	if (_next)
+		return _parent.pushScene<MenuScene>();
 	auto &window = _parent.getWindow();
 	window.draw(sf::Sprite{_resourceMgr.getTexture("background")});
 	std::for_each(_texts.begin(), _texts.end(), [&window](auto &tc) {
@@ -37,7 +38,7 @@ void SplashScene::receive(const SfmlEvent &event) noexcept {
 		if (event._event.key.code == sf::Keyboard::Escape) {
 			_parent.getWindow().close();
 		} else if (event._event.key.code == sf::Keyboard::Space) {
-			_parent.pushScene(create<MenuScene>(_parent));
+			_next = true;
 		}
 	}
 }
