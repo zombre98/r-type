@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.10)
 project(r-type)
 
 set(CONAN_CMAKE_VER v0.13)
