@@ -28,7 +28,6 @@ void GameScene::enter() noexcept {
 }
 
 void GameScene::exit() noexcept {
-	std::cout << "exit game scene" << std::endl;
 }
 
 void GameScene::update(float timeSinceLastFrame) noexcept {
@@ -176,12 +175,9 @@ void GameScene::receive(const net::Score &score) {
 }
 
 void GameScene::receive(const net::Bonus &bonus) {
-	std::cout << "Receive Bonus" << std::endl;
 	if (_sprites.find(bonus.head.id) != _sprites.end())
 		return;
 	_sprites.emplace(bonus.head.id,
 	                 _resourceMgr.getTexture("bonus" + std::to_string(static_cast<int>(bonus.type)) + "/frame00"));
 	_sprites[bonus.head.id].setPosition(-300, -300);
 }
-
-

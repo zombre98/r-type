@@ -30,7 +30,6 @@ class ResourceHolder {
 		}
 
 		if (!_resources.emplace(id, std::move(res)).second) {
-			std::cout << "Object already exists" << std::endl;
 			return get(id);
 		}
 		return _resources[id];
