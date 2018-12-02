@@ -1,6 +1,8 @@
 r-type_client
 r-type_server
 
+highscore.txt
+
 # Prerequisites
 *.d
 

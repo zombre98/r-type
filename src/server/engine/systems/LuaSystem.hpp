@@ -74,7 +74,8 @@
              _lua.new_usertype<Position>("Position",
                                          sol::constructors<Position(int, int)>(),
                                          "x", &Position::x,
-                                         "y", &Position::y);
+                                         "y", &Position::y,
+                                         "updated", &Position::updated);
 
              _lua.new_usertype<LifePoint>("LifePoint",
                                           sol::constructors<LifePoint(int)>(),
