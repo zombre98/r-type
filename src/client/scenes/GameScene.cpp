@@ -19,7 +19,7 @@ void GameScene::enter() noexcept {
 	_resourceMgr.loadAllTexturesInDirectory("");
 	const auto &font = _resourceMgr.loadFont(fs::current_path() / "assets" / "font" / "prototype.ttf");
 
-	_score = {sf::Text{"Score : 0", font, 50}, {850, 1000}};
+	_score = {sf::Text{"Score : 0", font, 30}, {850, 1030}};
 	_score.t.setPosition(_score.pos);
 	_bg.setTexture(_resourceMgr.getTexture("background"));
 	_bg.scale(static_cast<float>(_parent.getWindow().getSize().x) / _bg.getTexture()->getSize().x,

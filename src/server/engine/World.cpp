@@ -21,7 +21,8 @@ ecs::Entity &ecs::World::createPlayer() {
 	static std::size_t idPlayer = 0;
 	auto &ent = createEntity();
 
-	//	std::cout << "[" << ent.id << "]" << " : New Player" << std::endl;
+	if (idPlayer + 1 >= 5)
+		idPlayer = 0;
 	ent.addComponent<Player>(idPlayer++);
 	ent.addComponent<LifePoint>(100);
 	ent.addComponent<Position>(std::rand() % 1000, std::rand() % 1000);
@@ -94,6 +95,7 @@ void ecs::World::createSinusEnemy() {
 	ent.addComponent<LifePoint>(50);
 	ent.addComponent<EnemyType>(EnemyType::Enemy::SINUS);
 	ent.addComponent<Hitbox>(27, 27);
+	ent.addComponent<ScoreEnemy>(1);
 	ent.addComponent<Velocity>(-5, 0);
 }
 
@@ -120,6 +122,7 @@ bool ecs::World::isEmpty() {
 void ecs::World::reset() {
 	entities->clear();
 	entities = std::make_shared<std::vector<std::unique_ptr<Entity>>>();
+	createUselessEnemy();
 }
 
 void ecs::World::createScore() {
