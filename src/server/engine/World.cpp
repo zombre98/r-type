@@ -39,6 +39,7 @@ void ecs::World::createClassicEnemies() {
 
 	ent.addComponent<Position>(1950, std::rand() % 1080);
 	ent.addComponent<LifePoint>(90);
+	ent.addComponent<Destructible>(Bonus::Object::LIFE_PACK);
 	ent.addComponent<EnemyType>(EnemyType::Enemy::CLASSIC);
 	ent.addComponent<Hitbox>(33, 34);
 	ent.addComponent<Velocity>(-1, 0);
@@ -129,4 +130,13 @@ void ecs::World::createScore() {
 	auto &ent = createEntity();
 
 	ent.addComponent<Score>(0);
+}
+
+void ecs::World::createBonus(Bonus::Object t, ecs::Position const &pos) {
+	auto &ent =  createEntity();
+
+	ent.addComponent<Bonus>(t);
+	ent.addComponent<Position>(pos.x, pos.y);
+	ent.addComponent<Hitbox>(36, 36);
+	ent.addComponent<LifePoint>(1);
 }

@@ -20,23 +20,15 @@ void net::ProtocolServer::poll() {
 		if (_gContainer.getWorld()->isEmpty())
 			continue;
 		if (_gContainer.getWorld()->isLoose()) {
-			auto const &EntitiesWithScore =  _gContainer.getWorld()->getEntities<ecs::Score>();
-			std::cout << EntitiesWithScore.empty() << std::endl;
-			std::ofstream outfile("highscore.txt");
-			for (auto const &ent : EntitiesWithScore) {
-				auto &compScore = ent->getComponent<ecs::Score>();
-				outfile << compScore.score << std::endl;
-				std::cout << "Hight score : " << compScore.score << std::endl;
-			}
 			sendDataToAll(IsLose{0, true});
 			_gContainer.getWorld()->reset();
 			_gContainer.resetSystem();
 		}
 		_gContainer.runSystem();
 		_gContainer.checkWatcher();
-		//		_sendDeadEntities();
 		_sendDeadEntities();
 		_sendScore();
+		_sendBonus();
 		_sendNewShoot();
 		_sendAllEnemies();
 		_sendAllPosition();
@@ -131,7 +123,7 @@ void net::ProtocolServer::_sendLifePoint() {
 	auto const &EntitiesWithLifePoint = _gContainer.getWorld()->getEntities<ecs::LifePoint>();
 	for (auto const &ent : EntitiesWithLifePoint) {
 		auto &compLife = ent->getComponent<ecs::LifePoint>();
-		if (ent->hasComponent<ecs::ShotType>())
+		if (ent->hasComponent<ecs::ShotType>() || ent->hasComponent<ecs::Bonus>())
 			continue;
 		if (compLife.updated) {
 			sendDataToAll(Life{ent->id, compLife.lifePoint});
@@ -176,6 +168,18 @@ void net::ProtocolServer::_sendAllEnemies() {
 	}
 }
 
+void net::ProtocolServer::_sendBonus() {
+	auto const &bonus = _gContainer.getWorld()->getEntities<ecs::Bonus>();
+	for (auto const &ent : bonus) {
+		auto &compBonus = ent->getComponent<ecs::Bonus>();
+		if (compBonus.updated) {
+			Bonus eType{ent->id, compBonus.type};
+			sendDataToAll(eType);
+			compBonus.updated = false;
+		}
+	}
+}
+
 void net::ProtocolServer::_sendNewShoot() {
 	auto const &EntitiesWithShootType =  _gContainer.getWorld()->getEntities<ecs::ShotType>();
 	for (auto const &ent : EntitiesWithShootType) {
@@ -210,3 +214,4 @@ void net::ProtocolServer::_handleUnknowId() {
 		}
 	}
 }
+

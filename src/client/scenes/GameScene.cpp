@@ -16,6 +16,7 @@ void GameScene::enter() noexcept {
 	_evtMgr.subscribe<net::Dead>(*this);
 	_evtMgr.subscribe<net::Life>(*this);
 	_evtMgr.subscribe<net::Score>(*this);
+	_evtMgr.subscribe<net::Bonus>(*this);
 	_resourceMgr.loadAllTexturesInDirectory("");
 	const auto &font = _resourceMgr.loadFont(fs::current_path() / "assets" / "font" / "prototype.ttf");
 
@@ -171,8 +172,16 @@ void GameScene::_displayBg(sf::RenderWindow &window) {
 }
 
 void GameScene::receive(const net::Score &score) {
-	std::cout << "Score :" << score.score << std::endl;
 	_score.t.setString("Score : " + std::to_string(score.score));
+}
+
+void GameScene::receive(const net::Bonus &bonus) {
+	std::cout << "Receive Bonus" << std::endl;
+	if (_sprites.find(bonus.head.id) != _sprites.end())
+		return;
+	_sprites.emplace(bonus.head.id,
+	                 _resourceMgr.getTexture("bonus" + std::to_string(static_cast<int>(bonus.type)) + "/frame00"));
+	_sprites[bonus.head.id].setPosition(-300, -300);
 }
 
 

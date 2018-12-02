@@ -23,6 +23,7 @@ namespace net {
 		SCORE,
 		UNKNOWN_ID,
 		LOSE,
+		BONUS,
 		NEW_STAGE,
 		SPRITE_STAGE,
 		STAGE_IS_WIN
@@ -133,5 +134,11 @@ namespace net {
 
 		IsLose(std::size_t id, bool l) : Package{id, opCode::LOSE}, isLose(l) {}
 		bool isLose;
+	};
+
+	struct Bonus : Package, ecs::Bonus, BaseEvent {
+		Bonus() = delete;
+
+		Bonus(std::size_t id, ecs::Bonus::Object t) : Package{id, opCode::BONUS}, ecs::Bonus(t) {}
 	};
 }

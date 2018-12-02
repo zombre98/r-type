@@ -10,6 +10,7 @@ set(ENGINE
   engine/ComponentId.cpp
   engine/systems/System.hpp
   engine/systems/LuaSystem.hpp
+  engine/systems/PickUpSystem.cpp
   engine/systems/MovementSystem.hpp
   engine/systems/MovementSystem.cpp
   engine/systems/CollisionSystem.hpp

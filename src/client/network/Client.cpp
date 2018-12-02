@@ -92,7 +92,6 @@ void net::Client::handleMessage() {
 	case opCode::LIFE_POINT : {
 		auto life = getData<Life>();
 		_sceneManager.emit<Life>(life);
-		//			std::cout << "Id : " << life.head.id << " LifePoint = " << life.lifePoint << std::endl;
 		break;
 	}
 	case opCode::SCORE : {
@@ -122,6 +121,12 @@ void net::Client::handleMessage() {
 			_socket.close();
 			_connected = false;
 		}
+		break;
+	}
+	case opCode::BONUS : {
+		auto bonus = getData<Bonus>();
+		_sceneManager.emit(bonus);
+		break;
 	}
 	default:
 		break;
