@@ -10,7 +10,8 @@
 namespace ecs {
 	class PickUpSystem : public System {
 	public:
-		PickUpSystem(entityVector,	std::shared_ptr<World>);
+		PickUpSystem(entityVector, std::shared_ptr<World>);
+		~PickUpSystem() = default;
 
 		void update(double delta) override;
 	private:

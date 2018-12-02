@@ -123,7 +123,7 @@ void net::ProtocolServer::_sendLifePoint() {
 	auto const &EntitiesWithLifePoint = _gContainer.getWorld()->getEntities<ecs::LifePoint>();
 	for (auto const &ent : EntitiesWithLifePoint) {
 		auto &compLife = ent->getComponent<ecs::LifePoint>();
-		if (ent->hasComponent<ecs::ShotType>())
+		if (ent->hasComponent<ecs::ShotType>() || ent->hasComponent<ecs::Bonus>())
 			continue;
 		if (compLife.updated) {
 			sendDataToAll(Life{ent->id, compLife.lifePoint});
