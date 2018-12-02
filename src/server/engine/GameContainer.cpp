@@ -27,9 +27,9 @@ void rtype::GameContainer::_initSystem() {
 	_listSystem.emplace_back(new ecs::InputSystem(_world->getAllEntities(), _world));
 	_listSystem.emplace_back(new ecs::MovementSystem(_world->getAllEntities()));
 	_listSystem.emplace_back(new ecs::RemoveSystem(_world->getAllEntities(), _world));
-	_listSystem.emplace_back(new ecs::SpawnMonsterSystem(_world->getAllEntities(), _world, std::chrono::steady_clock::now()));
+	//_listSystem.emplace_back(new ecs::SpawnMonsterSystem(_world->getAllEntities(), _world, std::chrono::steady_clock::now()));
 	_listSystem.emplace_back(new ecs::EnemiesMovementSystem(_world->getAllEntities(), std::chrono::steady_clock::now()));
-        _listSystem.emplace_back(new ecs::LuaSystem<ecs::EnemyType, ecs::Velocity>(_world->getAllEntities(), "sinus_movement_system.lua"));
+	_listSystem.emplace_back(new ecs::LuaSystem<ecs::EnemyType, ecs::Velocity>(_world->getAllEntities(), "sinus_movement_system.lua"));
 	_listSystem.emplace_back(new ecs::MovementShootSystem(_world->getAllEntities(), std::chrono::steady_clock::now()));
 	_listSystem.emplace_back(new ecs::InGameBoardSystem(_world->getAllEntities(), _world));
 	_listSystem.emplace_back(new ecs::CollisionSystem(_world->getAllEntities(), _world));

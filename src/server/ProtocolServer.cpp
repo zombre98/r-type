@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 #include "protocol.hpp"
@@ -19,6 +20,14 @@ void net::ProtocolServer::poll() {
 		if (_gContainer.getWorld()->isEmpty())
 			continue;
 		if (_gContainer.getWorld()->isLoose()) {
+			auto const &EntitiesWithScore =  _gContainer.getWorld()->getEntities<ecs::Score>();
+			std::cout << EntitiesWithScore.empty() << std::endl;
+			std::ofstream outfile("highscore.txt");
+			for (auto const &ent : EntitiesWithScore) {
+				auto &compScore = ent->getComponent<ecs::Score>();
+				outfile << compScore.score << std::endl;
+				std::cout << "Hight score : " << compScore.score << std::endl;
+			}
 			sendDataToAll(IsLose{0, true});
 			_gContainer.getWorld()->reset();
 			_gContainer.resetSystem();
@@ -57,6 +66,9 @@ void net::ProtocolServer::handleData() {
 
 void net::ProtocolServer::_handleNewClient() {
 	getData<NetPlayer>();
+	if (_gContainer.getWorld()->getEntities<ecs::Player>().size() >= 4) {
+		return;
+	}
 	auto &entPlayer = _gContainer.getWorld()->createPlayer();
 	auto playerId = entPlayer.getComponent<ecs::Player>().id;
 	_clients.emplace(entPlayer.id, _targetEndpoint);
@@ -157,7 +169,6 @@ void net::ProtocolServer::_sendAllEnemies() {
 	for (auto const &ent : EntitiesWithEnemies) {
 		auto &compEnemyType = ent->getComponent<ecs::EnemyType>();
 		if (compEnemyType.updated) {
-			std::cout << "Enemy got Id : " << ent->id << std::endl;
 			EnemyType eType{ent->id, compEnemyType.type};
 			sendDataToAll(eType);
 			compEnemyType.updated = false;
