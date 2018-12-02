@@ -81,7 +81,7 @@ void ecs::World::createShipEnemy() {
 	auto &ent = createEntity();
 
 	ent.addComponent<Position>(1950, 1080);
-	ent.addComponent<LifePoint>(150);
+	ent.addComponent<LifePoint>(200);
 	ent.addComponent<EnemyType>(EnemyType::Enemy::SHIP);
 	ent.addComponent<Hitbox>(66, 50);
 	ent.addComponent<Velocity>(-1, 0);
