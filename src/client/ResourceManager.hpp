@@ -13,6 +13,7 @@
 #include <filesystem>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "Logger.hpp"
 
 namespace fs = std::filesystem;
 
@@ -23,6 +24,8 @@ class ResourceHolder {
 
 	template<typename ...Args>
 	Resource &load(const std::string &id, Args &&...args) {
+		logging::error << "[" << __FILE__ << ":" << __LINE__ << "] loaded resource with id '" << id << "'"
+			<< std::endl;
 		Resource res;
 
 		if (!res.loadFromFile(std::forward<Args>(args)...)) {
